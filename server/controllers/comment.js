@@ -19,10 +19,10 @@ const commentController = {
         let queryParams = [userId];
         
         if (eventId && eventId !== "undefined") {
-            sql = "SELECT * FROM Comments WHERE userId = ? AND eventId = ?";
+            sql = "SELECT comment, created_at FROM Comments WHERE userId = ? AND eventId = ?";
             queryParams.push(eventId);
         } else {
-            sql = "SELECT * FROM Comments WHERE userId = ? AND (eventId IS NULL OR eventId = '')";
+            sql = "SELECT comment, created_at FROM Comments WHERE userId = ? AND (eventId IS NULL OR eventId = '')";
         }
     
         try {
