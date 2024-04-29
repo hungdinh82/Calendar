@@ -26,8 +26,8 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     const [isOpen, setIsOpen] = useState(false)
     const [importainTarget, setImportainTarget] = useState([]);
     const [isOpenImportain, setIsOpenImportain] = useState(false);
-    const [currentUser, setCurrentUser] = useState();
     const [currentAvatar, setCurrentAvatar] = useState();
+    const [currentUser, setCurrentUser] = useState();
     const navigate = useNavigate();
     useEffect(() => {
         const filterImportainTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportain)
@@ -35,23 +35,21 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     }, [listEvents])
 
     useEffect(() => {
-        const currentUserId = localStorage.getItem("currentUserId");
-        let listAccounts = (localStorage.getItem("listAccounts") && localStorage.getItem("listAccounts")[0]) ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id));
-        setCurrentUser(user[0])
-        if (user[0]?.userName?.includes("quang")) {
+        const currentUser = localStorage.getItem("currentUser");
+        setCurrentUser(currentUser);
+        if (currentUser?.userName?.includes("quang")) {
             setCurrentAvatar(avatar_quang);
         }
-        else if (user[0]?.userName?.includes("hung")) {
+        else if (currentUser?.userName?.includes("hung")) {
             setCurrentAvatar(avatar_hung)
         }
-        else if (user[0]?.userName?.includes("linh")) {
+        else if (currentUser?.userName?.includes("linh")) {
             setCurrentAvatar(avatar_linh)
         }
-        else if (user[0]?.userName?.includes("nguyet")) {
+        else if (currentUser?.userName?.includes("nguyet")) {
             setCurrentAvatar(avatar_nguyet)
         }
-        else if (user[0]?.userName?.includes("hieu")) {
+        else if (currentUser?.userName?.includes("hieu")) {
             setCurrentAvatar(avatar_hieu)
         }
         else setCurrentAvatar(avatar)
