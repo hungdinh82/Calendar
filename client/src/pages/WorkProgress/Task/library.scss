@@ -1,0 +1,4 @@
+.task.move,
+.task.move ~ .task {
+    transform: translateY(100%);
+}

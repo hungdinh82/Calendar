@@ -1,0 +1,127 @@
+.work-progress {
+    width: 100%;
+    height: 100vh;
+    background-color: #cfdce8;
+    overflow: hidden;
+}
+
+.content {
+    margin-top: 8px;
+}
+
+.content-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .header-title {
+        font-size: 4rem;
+        font-weight: 700;
+    }
+
+    .trash {
+        height: 40px;
+        width: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 125, 125, 0.08);
+        border-radius: 8px;
+        border: 2px dashed #ff0000;
+    }
+}
+
+.content-body {
+    margin-top: 16px;
+    height: calc(100vh - 96px);
+}
+
+.process-bar {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px;
+    margin-right: 26px;
+}
+
+.left-bar {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 8px 16px;
+    .left-bar-header {
+        color: #5c5875;
+        margin-bottom: 16px;
+    }
+}
+
+.left-bar-body {
+    .left-bar-body_text {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .text-title {
+            font-weight: 600;
+        }
+
+        .text-content {
+            color: #413e54;
+        }
+    }
+}
+
+.left-bar-body_process {
+    margin-top: 4px;
+    .process-bar {
+        height: 0.8rem;
+        width: 100%;
+        background-color: #f3f2f7;
+        border-radius: 16px;
+        overflow: hidden;
+
+        .process-value {
+            height: 0.8rem;
+            width: 100%;
+            border-radius: 16px;
+            background-color: #0f75dc;
+        }
+    }
+}
+.right-bar-lists {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.right-bar {
+    flex: 1;
+
+    .right-bar-lists {
+    }
+}
+.right-bar-item {
+    font-size: 1.8rem;
+    .item-title {
+        color: #7a7a7a;
+    }
+
+    .item-content {
+        padding-left: 8px;
+        font-weight: 600;
+    }
+}
+
+.content-title {
+    font-size: 2rem;
+    color: #413e54;
+    font-weight: 600;
+    margin: 16px 0;
+}
+
+.drop-zone {
+    height: calc(100vh - 250px);
+    overflow-y: auto;
+}

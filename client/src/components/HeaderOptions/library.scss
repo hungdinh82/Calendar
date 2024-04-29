@@ -1,0 +1,18 @@
+.ant-popover-content {
+    margin-top: 8px !important;
+}
+
+.Search {
+    .ant-input-affix-wrapper {
+        border-radius: 24px;
+
+        input {
+            padding-left: 0 8px;
+            font-weight: 500;
+        }
+
+        .ant-input-clear-icon {
+            font-size: 1.6rem;
+        }
+    }
+}

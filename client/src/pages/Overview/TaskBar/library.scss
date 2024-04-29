@@ -1,0 +1,36 @@
+.taskbarLibrary {
+    .ant-select-selector {
+        outline: none !important;
+        border-color: transparent !important;
+        background-color: #fff !important;
+        box-shadow: none !important;
+    }
+
+    .ant-select-selection-item {
+        font-weight: 600 !important;
+        border-left: 2px solid currentColor !important;
+        padding-left: 16px !important;
+    }
+
+    .ant-select-selector:focus {
+        outline: none !important;
+        border-color: transparent !important;
+    }
+
+    .ant-select.In-progress .ant-select-selection-item {
+        color: #ff8c93 !important;
+    }
+
+    .ant-select.Done .ant-select-selection-item {
+        color: #95e2a6 !important;
+    }
+
+    .ant-select.Ready .ant-select-selection-item {
+        color: #faae83 !important;
+    }
+
+    .ant-avatar-group.disabled {
+        filter: blur(2px);
+        -webkit-filter: blur(2px);
+    }
+}

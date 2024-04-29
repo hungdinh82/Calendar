@@ -1,0 +1,33 @@
+.DialogDetails {
+
+    & .ant-modal .ant-modal-content {
+        position: relative;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    & .ant-modal .ant-modal-footer {
+        margin-top: 25px;
+    }
+
+    & .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+    .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+        padding-inline-end: 18px;
+        padding-left: 20px;
+        border-left: 3px solid;
+        margin: auto;
+    }
+
+
+    & .ant-select.In-progress .ant-select-selection-item {
+        color: #ff8c93;
+    }
+
+    & .ant-select.Done .ant-select-selection-item {
+        color: #95e2a6;
+    }
+
+    & .ant-select.Ready .ant-select-selection-item {
+        color: #faae83;
+    }
+}

@@ -1,0 +1,233 @@
+.calendarLibrary {
+    & .toastui-calendar-event-title {
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        line-height: 1.6 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-style: normal !important;
+        color: #000000 !important;
+    }
+
+    & .toastui-calendar-detail-container {
+        border: 1px #000000 solid !important;
+        font-family: 'Montserrat' !important;
+        padding: 13px 35px 0 !important;
+    }
+
+    & .toastui-calendar-detail-container .toastui-calendar-section-button {
+        margin-top: 50px !important;
+        position: relative !important;
+    }
+
+    & .toastui-calendar-edit-button {
+        position: relative !important;
+    }
+
+    & .toastui-calendar-detail-container .toastui-calendar-content {
+        font-family: 'Montserrat', sans-serif !important;
+    }
+
+    .toastui-calendar-detail-item toastui-calendar-detail-item-indent {
+        display: none !important;
+    }
+
+    .toastui-calendar-detail-container .toastui-calendar-section-detail {
+        display: none !important;
+    }
+
+    .toastui-calendar-popup-section toastui-calendar-section-detail {
+        display: none !important;
+    }
+
+    & .toastui-calendar-popup-arrow-border {
+        visibility: hidden !important;
+    }
+
+    & .toastui-calendar-detail-item-indent .toastui-calendar-icon.toastui-calendar-ic-user-b {
+        display: none !important;
+    }
+
+    & .toastui-calendar-detail-container .toastui-calendar-icon {
+        border-radius: 50% !important;
+        height: 16px !important;
+        width: 16px !important;
+        top: 3px !important;
+    }
+
+
+    & .toastui-calendar-template-popupDetailState {
+        display: 'none' !important
+    }
+
+
+    & .toastui-calendar-ic-state-b {
+        display: 'none' !important
+    }
+
+
+    & .toastui-calendar-template-popupDetailAttendees {
+        font-size: 15px !important;
+        color: #172b4d !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+    }
+
+
+    & .toastui-calendar-template-popupDetailBody {
+        font-size: 15px !important;
+        color: #172b4d !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+    }
+
+
+    & .toastui-calendar-popup-section toastui-calendar-section-detail {
+        margin-bottom: 0px !important;
+        display: none !important;
+    }
+
+
+    & .toastui-calendar-template-popupDelete {
+        font-family: 'Montserrat', sans-serif !important;
+        color: #172b4d !important;
+        font-size: 14px !important;
+        font-style: normal !important;
+    }
+
+
+    & .toastui-calendar-template-popupEdit {
+        font-family: 'Montserrat', sans-serif !important;
+        color: #172b4d !important;
+        font-size: 14px !important;
+        font-style: normal !important;
+    }
+
+
+    & .toastui-calendar-detail-container {
+        border-radius: 10px !important;
+        width: 100% !important;
+    }
+
+
+    & .toastui-calendar-popup-container {
+        width: 444px !important;
+        height: 264px !important;
+    }
+
+    & .toastui-calendar-panel {
+
+        overflow: overlay !important;
+
+        &::-webkit-scrollbar {
+            transition: all 0.5s linear !important;
+            background-color: transparent !important;
+            width: 10px !important;
+        }
+
+
+        &:hover {
+            &::-webkit-scrollbar {
+                width: "8px",
+            }
+
+
+            &::-webkit-scrollbar-thumb {
+
+                border-radius: 10px !important;
+                background-color: #c1c1c1 !important;
+                border: 2px solid rgba(245, 245, 245, 1) !important;
+
+                &:hover {
+                    border: 1px solid rgba(245, 245, 245, 1) !important
+                }
+            }
+
+
+            &::-webkit-scrollbar-track {
+                border-radius: 3px !important;
+                background-color: rgba(245, 245, 245, 1) !important
+            }
+
+
+        }
+    }
+
+    & .toastui-calendar-panel.toastui-calendar-week-view-day-names {
+        overflow: hidden !important
+    }
+
+    & .radio .ant-radio-group {
+        display: flex !important;
+        justify-content: center !important;
+        margin-bottom: 20px !important;
+    }
+
+    & .btn_custom_2 .ant-btn-default,
+    :where(.css-yp8pcc).ant-btn-default {
+        padding-left: 30px !important;
+        background-color: #0F75DC !important;
+        color: white !important;
+        font-family: 'Montserrat', sans-serif !important;
+
+        &:hover {
+            color: #0F75DC !important;
+            background-color: white !important;
+        }
+    }
+
+    .anticon-caret-left,
+    .anticon-caret-right {
+        border: 1px solid #fff !important;
+        transition-duration: 0.2s !important;
+
+        &:hover {
+            border: 1px solid #807b7b !important;
+            border-radius: 2px !important;
+        }
+    }
+
+    .anticon-caret-left {
+        padding-right: 2px !important;
+    }
+
+    .anticon-caret-right {
+        padding-left: 2px !important;
+    }
+
+    & .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+        z-index: 1 !important;
+        background: #82BDF8 !important;
+        border-color: #82BDF8 !important;
+        color: inherit !important;
+    }
+
+    & .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+        background-color: inherit !important;
+    }
+
+    & :where(abbr[title]) {
+        text-decoration: none !important;
+    }
+
+    & .react-calendar button {
+        font-weight: 500 !important;
+        font-family: 'Montserrat', sans-serif !important;
+    }
+
+
+}
+
+[class^="ant-radio"],
+[class*=" ant-radio"],
+.btn_custom .ant-btn-default,
+.ant-btn,
+[class^="ant-col"],
+[class*=" ant-col"],
+[class^="ant-row"],
+[class*=" ant-row"] {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    font-family: 'Montserrat', sans-serif !important;
+}

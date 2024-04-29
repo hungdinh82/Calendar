@@ -1,0 +1,72 @@
+.notify-item {
+    border: 1px solid #000;
+    border-radius: 8px;
+    margin: 16px 16px 0 16px;
+    padding: 10px;
+    position: relative;
+
+    p {
+        margin: 0 16px 4px 16px;
+        font-size: 1.6rem;
+        color: #000;
+
+        &:hover {
+            cursor: default;
+        }
+    }
+
+    .title {
+        font-weight: 600;
+    }
+
+    .task {
+        font-weight: 700;
+        line-height: 3.2rem;
+        background-color: rgba(243, 242, 247, 1);
+        padding-left: 8px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #D9D9D9;
+            cursor: pointer;
+        }
+    }
+
+    .target {
+        color: #0F75DC;
+        border-bottom: 1px solid;
+    }
+
+    .userName {
+        color: #0F75DC;
+    }
+
+    .button-layout {
+        text-align: center;
+    }
+
+    .rejected-mess {
+        width: 20%;
+        text-align: center;
+        background-color: #FF8C93;
+        color: #140e0e;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        border-radius: 8px;
+    }
+
+    .accepted-mess {
+        width: 20%;
+        text-align: center;
+        background-color: #95E2A6;
+        color: #140e0e;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        border-radius: 8px;
+    }
+
+}

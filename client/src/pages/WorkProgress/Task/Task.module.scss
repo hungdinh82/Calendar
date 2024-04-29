@@ -1,0 +1,40 @@
+.task {
+    height: 50px;
+    background-color: #fff;
+    border-radius: 8px;
+    position: relative;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: all linear 0.01s;
+}
+
+.content {
+    padding: 8px 32px;
+    display: flex;
+    align-items: center;
+
+    .content-title {
+        width: 70%;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-right: 16px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        border-right: 2px solid rgba(92, 88, 117, 0.49);
+    }
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(110%);
+    }
+}
+
+.right-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

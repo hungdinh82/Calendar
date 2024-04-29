@@ -1,0 +1,22 @@
+.comment {
+    height: calc((100vh - 188px) / 2 - 62px);
+    background-color: #fff;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    .wrapper {
+        height: 100%;
+        padding: 16px;
+        flex: 1;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.list-comment {
+    flex: 1;
+    margin-top: 8px;
+    height: calc(100% - 76px);
+    overflow-y: auto;
+}

@@ -1,0 +1,15 @@
+.input_layout {
+    display: flex;
+}
+
+.content {
+    display: flex;
+
+    & .datePicker {
+        display: flex;
+    }
+
+    & .timePicker {
+        display: flex;
+    }
+}

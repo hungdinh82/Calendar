@@ -1,0 +1,31 @@
+.search {
+    height: 50vh;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.search-result {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.target-result {
+    flex: 1;
+}
+
+.task-result {
+    flex: 1;
+}
+
+.search-title,
+.empty-result {
+    font-weight: 600;
+    margin: 8px 0 0 12px;
+}
+
+.empty-result {
+}

@@ -1,0 +1,152 @@
+.layout {
+    flex-basis: 25%;
+    height: 510px;
+    width: 286px;
+    padding: 0px 3px 0px 3px;
+    margin: 4px 15px 4px 0px;
+    contain: size style;
+
+    flex-grow: 1;
+    background-color: var(--ds-surface-sunken, #F7F8F9);
+}
+
+.layout:hover .create_task {
+    display: block; /* Hiển thị phần tử con khi hover đến phần tử cha */
+  }
+
+.content_layout {
+    text-align: center;
+    font-weight: 400;
+    background-color: var(--ds-surface-sunken, #F4F5F7);
+    margin: 0 auto;
+    height: 48px;
+    width: 280px;
+    margin-right:30px;
+    margin-top: 20px;
+
+    border-radius: 4px;
+    position: relative;
+}
+
+.title_content{
+    font-size: 12px;
+    color: #626F86;
+    padding: 15px 0px 15px 15px;
+
+    min-width: 0px;
+    display: flex;
+
+    align-items: center;
+}
+
+.search_icon {
+    position: absolute;
+    left: 15px;
+    top: 6px;
+    font-size: 20px;
+}
+
+.create_task {
+    -webkit-box-align: center;
+    align-items: center;
+    
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 400;
+    max-width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+
+    white-space: nowrap;
+    background: var(--ds-background-neutral-subtle, none);
+    cursor: pointer;
+    height: 36px;
+    line-height: 2.28571em;
+    vertical-align: middle;
+    width: 100%;
+    -webkit-box-pack: center;
+    justify-content: center;
+    outline: none;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border: 0px solid none ;
+    text-align: left;
+    display: none;
+}
+
+.create_button {
+    -webkit-box-align: center;
+    align-items: center;
+    
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    max-width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+
+    white-space: nowrap;
+    background: var(--ds-background-neutral-subtle, none);
+    cursor: pointer;
+    height: 36px;
+    line-height: 2.28571em;
+    vertical-align: middle;
+    width: 100%;
+    -webkit-box-pack: center;
+    outline: none;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border: 0px solid none ;
+    display: flex;
+    border: 0px none ;
+    background: var(--ds-background-neutral-subtle, none);
+    text-align: left;
+}
+
+.create_button:hover {
+    cursor: pointer;
+    background: #cdcfd259;
+}
+
+.plus_icon {
+    display: inline-block;
+    flex-shrink: 0;
+    line-height: 1;
+    width: 16px;
+    height: 16px;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 400;
+    max-width: 100%;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+    background: var(--ds-background-neutral-subtle, none);
+    cursor: pointer;
+    text-align: left;
+}
+
+.content_button {
+    text-align: left;
+    position: relative;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 2.28571em;
+    color: var(--ds-text, #42526E) !important;
+}

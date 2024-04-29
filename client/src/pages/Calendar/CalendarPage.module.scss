@@ -1,0 +1,500 @@
+.layout {
+    background-color: #cfdce8;
+    height: 100vh;
+}
+
+.calendar2 {
+    border: 1px solid #e5e5e5;
+    border-top: none;
+    width: 100%;
+    margin-top: 5px;
+    border-right: none;
+    border-left: none;
+}
+
+.ten-the {
+    display: none;
+}
+
+.header {
+    position: relative;
+
+    .icon-menu {
+        position: absolute;
+        left: 30px;
+        top: 15px;
+    }
+}
+
+.calendar_layout {
+    margin-top: 55px;
+
+    .btn_left_icon,
+    .btn_right_icon {
+        box-sizing: border-box;
+        font-size: 30px;
+        border: 1px solid #fff;
+        color: #a9a3a3;
+        border-radius: 5px;
+        width: 35px;
+    }
+
+    .btn_today_layout {
+        margin-right: 10px;
+    }
+}
+
+.rangeTimeText {
+    font-size: 25px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.search_layout {
+    position: relative;
+    text-align: right;
+    right: 40px;
+}
+
+.filter_layout {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 35px;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.search_icon {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    font-size: 20px;
+}
+
+.filter_item {
+    margin-bottom: 5px;
+}
+
+.input_layout {
+    width: 90%;
+    height: 30px;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid;
+}
+
+.plus_icon_layout {
+    position: absolute;
+    z-index: 1;
+    top: 3px;
+    left: 5px;
+}
+
+.icon-plus {
+    &.w25 {
+        width: 25px;
+        height: 25px;
+        background-color: inherit;
+
+        &:after {
+            width: 15px;
+            height: 4px;
+            left: 5px;
+            top: 11px;
+        }
+
+        &:before {
+            width: 4px;
+            height: 15px;
+            left: 10px;
+            top: 5px;
+        }
+    }
+
+    &:after,
+    &:before {
+        content: '';
+        position: absolute;
+        background: #fff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    &:after {
+        width: 25px;
+        height: 6px;
+        left: 11px;
+        top: 20px;
+    }
+
+    &:before {
+        width: 6px;
+        height: 25px;
+        left: 20px;
+        top: 11px;
+    }
+}
+
+.btn_layout {
+    position: relative;
+    text-align: left;
+    margin-right: 37px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    width: fit-content;
+}
+
+.sidebar {
+    position: relative;
+    margin: 55px 30px 0px 30px;
+}
+
+.sidebar .label {
+    font-weight: 600;
+}
+
+.sidebar input[type='checkbox'] {
+    margin-right: 7px;
+    line-height: 12px;
+    display: none;
+
+    &+label {
+        cursor: pointer;
+
+        span {
+            position: relative;
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            vertical-align: middle;
+            border: 1px solid black;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        span::after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 3px;
+            top: -3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+    }
+}
+
+.sidebar input[type='checkbox']:checked {
+    &+label {
+        span::after {
+            display: block;
+        }
+    }
+}
+
+.sidebar #done:checked {
+    &+label {
+        span {
+            border-color: #42db29;
+        }
+    }
+}
+
+.sidebar #ready:checked {
+    &+label {
+        span {
+            border-color: #eef209;
+        }
+    }
+}
+
+.sidebar #inProgress:checked {
+    &+label {
+        span {
+            border-color: #ff8c93;
+        }
+    }
+}
+
+.sidebar #done:checked {
+    &+label {
+        span::after {
+            border-color: #42db29;
+        }
+    }
+}
+
+.sidebar #ready:checked {
+    &+label {
+        span::after {
+            border-color: #eef209;
+        }
+    }
+}
+
+.sidebar #inProgress:checked {
+    &+label {
+        span::after {
+            border-color: #ff8c93;
+        }
+    }
+}
+
+.sidebar #onlyMe:checked {
+    &+label {
+        span::after {
+            border-color: black;
+        }
+    }
+}
+
+.sidebar #co-work:checked {
+    &+label {
+        span::after {
+            border-color: black;
+        }
+    }
+}
+
+.content_layout {
+    padding-left: 10px;
+}
+
+.EventObj {
+    margin-top: 18px;
+}
+
+.TimeEvent {
+    // background-color: #EEF209;
+    font-size: 12px;
+    display: inline-block;
+    max-height: 60%;
+    border-radius: 5px;
+    left: 0;
+    position: relative;
+}
+
+.TitleEvent {
+    font-size: 14px;
+    color: #7a7a7a;
+    word-wrap: break-word;
+    font-style: serif;
+}
+
+.target_layout {
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
+.icon_folder {
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    position: relative;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.avatar_layout_event {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.circle_status {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    position: relative;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.radio_layout {
+    margin-left: 66%;
+    flex: 0 0 19.66667%;
+    max-width: 19.66667%;
+    position: absolute;
+    right: 0;
+}
+
+.Text_Time {
+    left: 10px;
+    position: relative;
+    color: #B4B4B4;
+}
+
+.circle_status_event {
+    background-color: #EEF209;
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+    top: 20px;
+    right: 24px;
+    position: relative;
+}
+
+.event_layout {
+    bottom: 14px;
+    position: relative;
+}
+
+.detailTime_layout {
+    border-radius: 8px;
+    display: flex;
+}
+
+.detailTitle_layout {
+    display: flex;
+}
+
+.detailTitle {
+    text-shadow: 0px 4px 5px #00000025;
+}
+
+.icon_more {
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    position: absolute;
+    right: -10px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.target_layout {
+    display: flex;
+    margin-top: 14px;
+}
+
+.icon_folder_popup {
+    left: 30px;
+    height: 18px;
+    width: 24px;
+    vertical-align: middle;
+    position: relative;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+.title_folder {
+    font-size: 12px;
+    left: 36px;
+    position: relative;
+
+}
+
+.avatar_layout {
+    display: flex;
+    left: 170px;
+    bottom: 4px;
+    align-items: center;
+    position: relative;
+}
+
+.avatar_status {
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    vertical-align: middle;
+    position: relative;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.title_avatar {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.layout_2 {
+    display: flex;
+    margin-top: 10px;
+}
+
+.title_contributors {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.contributors_status {
+    vertical-align: middle;
+    position: relative;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.comment_layout {
+    margin-left: 60px;
+    top: 4px;
+    position: relative;
+}
+
+.icon_comment {
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+    position: relative;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.comment_total {
+    font-size: 14px;
+    font-weight: 500;
+    bottom: 2px;
+    position: relative;
+}
+
+.time_start {
+    font-size: 14px;
+    left: 38px;
+    position: relative;
+}
+
+.time_end {
+    left: 140px;
+    font-size: 14px;
+    position: relative;
+}
+
+.detail_time {
+    left: 34px;
+    bottom: 4px;
+    font-weight: 400;
+    position: relative;
+}
+
+.detail_day {
+    left: 14px;
+    bottom: 12px;
+    font-weight: 400;
+    position: relative;
+}
+
+.icon_next {
+    left: 102px;
+    top: 36px;
+    width: 30px;
+    height: 30px;
+    position: relative;
+}

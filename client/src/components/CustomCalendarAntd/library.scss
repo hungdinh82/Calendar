@@ -1,0 +1,9 @@
+.customCalendarLibrary {
+    & .ant-picker-calendar .ant-picker-panel {
+        border-top: 1px solid #e5e5e5;
+    }
+
+    & .react-calendar {
+        border-radius: 10px;
+    }
+}

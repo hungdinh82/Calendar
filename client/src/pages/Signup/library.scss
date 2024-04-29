@@ -1,0 +1,16 @@
+.sign-up,
+.login {
+    .ant-checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+            font-size: 1.8rem;
+            color: #6b6b6b !important;
+        }
+    }
+
+    .ant-checkbox {
+        transform: translateY(40%);
+    }
+}

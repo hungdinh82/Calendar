@@ -1,0 +1,93 @@
+.sub-header {
+    margin-left: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #084f95;
+    cursor: pointer;
+
+    span {
+        margin-left: 16px;
+    }
+}
+
+.description-content {
+    border: 1px solid #B4B4B4;
+    border-radius: 8px;
+    min-height: 270px;
+    height: 92%;
+    width: 100%;
+}
+
+.description-layout {
+    width: 60%;
+}
+
+.detail-comment-layout {
+    margin-left: 30px;
+    width: 35%;
+}
+
+.detail-layout {
+    width: 100%;
+    align-items: center;
+}
+
+.detail-content {
+    border: 1px solid #B4B4B4;
+    border-radius: 8px;
+    position: relative;
+    padding: 5px 30px;
+}
+
+.detail-content-label {
+    font-weight: 500;
+}
+
+.detail-row-2 {
+    margin-top: 10px;
+}
+
+.description-label,
+.detail-label,
+.comment-label {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.user-name {
+    margin-left: 10px;
+    font-weight: 500
+}
+
+.line {
+    border-top: 1px solid #B4B4B4;
+    margin: 15px auto;
+}
+
+.icon {
+    color: #b4b4b4;
+    font-size: 30px;
+}
+
+.date-label {
+    font-weight: 500;
+    color: #B4B4B4;
+}
+
+.detail-content-hour,
+.detail-content-date {
+    font-weight: 500;
+}
+
+.comment-content {
+    border: 1px solid #B4B4B4;
+    border-radius: 8px;
+}
+
+.edit-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}

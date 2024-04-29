@@ -1,0 +1,34 @@
+.header-options {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    margin-right: 26px;
+    overflow: hidden;
+}
+
+.header-options.calendar {
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    right: 67px;
+    overflow: hidden;
+}
+
+.option-item {
+    font-size: 1.8rem;
+    padding: 0 16px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #82bdf7;
+    }
+
+    &:hover span {
+        color: #fff;
+    }
+}
+
+.option-item + .option-item {
+    border-left: 1px solid #ccc;
+}
