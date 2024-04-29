@@ -17,10 +17,12 @@ function Comment({ event }) {
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef();
 
+    const currentUser = localStorage.getItem("currentUser")
+
     const eventId = event ? event.id : searchParams.get("eventId");
     const onSubmit = (e) => {
         if (e.keyCode === 13 || e.type === "click") {
-            const userId = localStorage.getItem("currentUserId");
+            const userId = currentUser.id;
             const newComment = {
                 userId: userId,
                 eventId: eventId,

@@ -33,7 +33,7 @@ function Login() {
         signIn({ mail, password})
         .then((res) => {
             if (res.data) {
-                localStorage.setItem("currentUserId", res.data.id);
+                localStorage.setItem("currentUser", res.data);
                 Swal.fire({
                     icon: "success",
                     title: "Success",
@@ -71,8 +71,6 @@ function Login() {
         //     })
         // }
     };
-
-
 
     useEffect(() => {
         document.title = "Log in";

@@ -351,11 +351,12 @@ function CalendarPage() {
         const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
         setListEvents(Events)
         calendar.clear();
-        const currentUserId = localStorage.getItem("currentUserId")
-        let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+        const currentUser = localStorage.getItem("currentUser")
+        // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+
+        // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
         Events.map((event) => {
-            if (event.raw.eventType === "todo" && (Number(event.raw.creatorId) === Number(currentUserId) || event.raw.helper.includes(user[0].mail))) {
+            if (event.raw.eventType === "todo" && (Number(event.raw.creatorId) === Number(currentUser.id) || event.raw.helper.includes(currentUser.mail))) {
                 let backgroundColor = null;
                 let borderColor = null;
                 if (event.raw.status === "Ready") {
@@ -413,8 +414,8 @@ function CalendarPage() {
     useEffect(() => {
         const container = document.getElementById("calendar")
         setCalendar(new Calendar(container, calendarOption))
-        const currentUserId = localStorage.getItem("currentUserId");
-        if (!currentUserId) navigate("/Login")
+        const currentUser = localStorage.getItem("currentUser");
+        if (!currentUser) navigate("/Login")
     }, [])
 
     useEffect(() => {
