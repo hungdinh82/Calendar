@@ -29,12 +29,20 @@ const notiController = {
     },
     updateNotification: async (req, res) => {
         const { id } = req.params;
-        const { toMail, fromMail, text, isResolve, eventId, isAccept } = req.body;
+        const { eventId, isAccept } = req.body;
 
-        const sql = "UPDATE Notifies SET toMail = ?, fromMail = ?, text = ?, isResolve = ?, eventId = ?, isAccept = ? WHERE id = ?";
+        const sql = "UPDATE Notifies SET  isAccept = ? WHERE id = ?";
         try {
-            const [result] = await connect.query(sql, [toMail, fromMail, text, isResolve, eventId, isAccept, id]);
+            const [result] = await connect.query(sql, [ isAccept, id]);
             if (result.affectedRows > 0) {
+                const sqlToGetEventId = "SELECT eventId, toMail  FROM Notifies WHERE id = ?";
+                const eventId = await connect.query(sqlToGetEventId, [id]);
+                const sql2 = "SELECT helper FROM Events WHERE id = ?";
+                const listHelper = await connect.query(sql2, [eventId[0][0].eventId]);
+                // const helperString = listHelper[0][0].helper.replace(/\[/g, '').replace(/\]/g, '').replace(/"/g, '');
+                const sql3 = "UPDATE Events SET helper = ? WHERE id = ?";
+                const listHelperAdd = await connect.query(sql3, [`${listHelper[0][0].helper}, ${eventId[0][0].toMail}`,eventId[0][0].eventId]);
+
                 res.json({ success: true, message: "Notification updated successfully" });
             } else {
                 res.status(404).json({ success: false, message: "Notification not found" });
