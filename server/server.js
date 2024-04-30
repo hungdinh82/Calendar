@@ -6,6 +6,7 @@ import fileUpload from "express-fileupload";
 import comment from "./routers/comment.js";
 import user from "./routers/user.js";
 import event from "./routers/event.js";
+import noti from "./routers/noti.js";
 import session from "express-session";
 import path from "path";
 
@@ -25,6 +26,7 @@ app.use(fileUpload());
 comment(app);
 user(app);
 event(app);
+noti(app);
 
 
 app.listen(port, () => {
