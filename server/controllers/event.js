@@ -1,11 +1,15 @@
 import { connect } from "../db.js";
 
 const eventController = {
-    getAllEvents: async (req, res) => {
-        const sql = "SELECT * FROM Events";
+    getAllEventsByCurrentUser: async (req, res) => {
         try {
+            const currentUser = req.body;
+            const sql = "SELECT * FROM Events";
             const [result] = await connect.query(sql);
-            res.json(result);
+            res.json(result.filter((event) => 
+                event.creatorId === currentUser.id || event.helper.includes(currentUser.mail)
+            ));
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Internal server error" });

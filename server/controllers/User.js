@@ -4,7 +4,7 @@ const userController = {
   signIn: async (req, res) => {
     const { mail, password } = req.body;
     var sql =
-      "SELECT id, userName, avatar FROM Accounts WHERE mail = ? AND password = ?";
+      "SELECT id, userName, mail, avatar FROM Accounts WHERE mail = ? AND password = ?";
     try {
       const [result] = await connect.query(sql, [mail, password]);
       if (result[0] != null) {
@@ -12,6 +12,7 @@ const userController = {
           login: true,
           id: result[0].id,
           userName: result[0].userName,
+          mail: result[0].mail,
           avatar: result[0].avatar,
         })
       } else res.json({ login: false })
