@@ -5,6 +5,7 @@ import fileUpload from "express-fileupload";
 
 import comment from "./routers/comment.js";
 import user from "./routers/user.js";
+import event from "./routers/event.js";
 import session from "express-session";
 import path from "path";
 
@@ -23,6 +24,8 @@ app.use(fileUpload());
 
 comment(app);
 user(app);
+event(app);
+
 
 app.listen(port, () => {
   console.log("Server started on port 4000");
