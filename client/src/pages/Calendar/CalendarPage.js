@@ -359,9 +359,9 @@ function CalendarPage() {
         // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
 
         // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        Events.map((event) => {
+        Events?.map((event) => {
             
-            if (event.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
+            if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
                 let backgroundColor = null;
                 let borderColor = null;
                 if (event.status === "Ready") {

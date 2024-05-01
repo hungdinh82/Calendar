@@ -187,7 +187,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
         const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
         // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
         const Events = eventsPush || [];
-        const filterTarget = Events.filter((event) => event.raw.eventType === "target")
+        const filterTarget = Events.filter((event) => event.eventType === "target")
         const optionTarget = filterTarget.map((event) => {
             return { value: event.id, label: event.eventName }
         })

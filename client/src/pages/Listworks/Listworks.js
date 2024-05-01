@@ -51,12 +51,12 @@ function Listworks() {
             <div className={cx('grid')} style={{ height: "100%" }}>
                 <div className={cx('row')} style={{ height: "100%" }}>
                     <div className={cx(isShowSideBar ? 'col l-2-4' : 'col l-1')}>
-                        {/* <Sidebar
+                        <Sidebar
                             show={setIsShowSideBar}
                             setListEvents={setListEvents}
                             isTargetPage={true}
                             listEvents={listEvents}
-                        ></Sidebar> */}
+                        ></Sidebar>
                     </div>
                     <div className={cx(isShowSideBar ? 'col l-10' : 'col l-11')} style={{ flex: 1 }}>
                         <div className={cx('content')}>
