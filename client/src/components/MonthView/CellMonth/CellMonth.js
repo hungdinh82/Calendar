@@ -30,13 +30,15 @@ const CellMonth = ({ day, dayOfTheWeek, isToday, isCurrentMonth, listEvents, set
         let eventsNew = [];
         listEvents?.map((event) => {
             const startEvent = typeof (event.start) === "string" ? event.start : event.start.d.d;
-            const currentUser = localStorage.getItem("currentUser")
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+            // console.log(currentUser.id);
             // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
             // const user = listAccounts.filter((account) => Number(currentUser) === Number(account.id))
             const condition = new Date(startEvent).getDate() === new Date(day).getDate() && new Date(startEvent).getMonth() === new Date(day).getMonth()
-            const conditionFilter = (filter.done && event.raw.status === "Done") || (filter.ready && event.raw.status === "Ready") || (filter.inProgress && event.raw.status === "In Progress")
-            const conditionUser = event.raw.eventType === "todo" && (Number(event.raw.creatorId) === Number(currentUser) || event.raw.helper.includes(currentUser.mail))
-            const checkMe = event.raw.helper.length === 0;
+            const conditionFilter = (filter.done && event.status === "Done") || (filter.ready && event.status === "Ready") || (filter.inProgress && event.status === "In Progress")
+            const conditionUser = event.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))
+            // const checkMe = event.helper.length === 0;
+            const checkMe = !event.helper || event.helper.length === 0;
             const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
             if (condition && conditionFilter && conditionUser && checkMeCondition) {
                 eventsNew.push(event)

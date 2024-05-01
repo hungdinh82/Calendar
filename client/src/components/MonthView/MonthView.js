@@ -41,7 +41,7 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
     const fetchData = () => {
         // const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
         const events =  eventsPush ? eventsPush : [];
-        const filterEvents = events.filter((e) => (e.raw.eventType === "todo"))
+        const filterEvents = events.filter((e) => (e.eventType === "todo"))
         setListEvents(filterEvents);
     }
 

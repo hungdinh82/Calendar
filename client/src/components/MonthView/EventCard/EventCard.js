@@ -11,7 +11,7 @@ const EventCard = ({ event, key, setOpenParent, setListEvents }) => {
     const [open, setOpen] = useState(false)
 
     const setColor = () => {
-        const status = event.raw.status
+        const status = event.status
         if (status === "Done") {
             setBg("rgba(66,219,41,0.2)")
             setBorderColor("rgb(66,219,41)")

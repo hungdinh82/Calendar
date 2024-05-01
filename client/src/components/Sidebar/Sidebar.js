@@ -30,8 +30,8 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     const [currentUser, setCurrentUser] = useState();
     const navigate = useNavigate();
     useEffect(() => {
-        const filterImportainTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportain)
-        setImportainTarget(filterImportainTarget)
+        // const filterImportainTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportain)
+        // setImportainTarget(filterImportainTarget)
     }, [listEvents])
 
     useEffect(() => {

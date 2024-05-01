@@ -187,7 +187,7 @@ function CalendarPage() {
     const calendarTemplate = {
         time(event) {
             const { start, end, title, raw } = event
-            if (event.raw.targetName)
+            if (event.targetName)
                 return `
             <div class = "${cx("event_layout")}">
                 <div class = "${cx("EventObj")}">
@@ -197,7 +197,7 @@ function CalendarPage() {
                 <span class = "${cx("TitleEvent")}">${title}</span>
                 <div class={cx('target_layout')}>
                     <img class="${cx("icon_folder")}" src="${icon_folder_popup}" alt="folder" />
-                    ${event.raw.targetName}
+                    ${event.targetName}
                 </div>
                 <div class = "${cx("avatar_layout_event")}">
                     <img class="${cx("circle_status")}" src="${avatar_hung}" alt="avatar" />
@@ -229,7 +229,7 @@ function CalendarPage() {
         },
         popupDetailTitle: function (event) {
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(event.raw.creatorId) === Number(account.id))
+            const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
             totalComments = 0;
             let listComments = localStorage.getItem("listComments") ? JSON.parse(localStorage.getItem("listComments")) : [];
             listComments.forEach(element => {
@@ -355,31 +355,32 @@ function CalendarPage() {
         const Events = eventsPush ? eventsPush : [];
         setListEvents(Events)
         calendar.clear();
-        const currentUser = localStorage.getItem("currentUser")
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"))
         // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
 
         // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
         Events.map((event) => {
-            if (event.raw.eventType === "todo" && (Number(event.raw.creatorId) === Number(currentUser.id) || event.raw.helper.includes(currentUser.mail))) {
+            
+            if (event.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
                 let backgroundColor = null;
                 let borderColor = null;
-                if (event.raw.status === "Ready") {
+                if (event.status === "Ready") {
                     backgroundColor = "rgba(238, 242, 9, 0.2)"
                     borderColor = "rgba(238, 242, 9)"
-                } else if (event.raw.status === "Done") {
+                } else if (event.status === "Done") {
                     backgroundColor = "rgba(66,219,41,0.2)"
                     borderColor = "rgba(66,219,41)"
-                } else if (event.raw.status === "In Progress") {
+                } else if (event.status === "In Progress") {
                     backgroundColor = "rgba(253, 11, 98, 0.2)"
                     borderColor = "#FF8C93"
                 }
-                const checkMe = event.raw.helper.length === 0;
-                const conditionFilter = (filter.done && event.raw.status === "Done") || (filter.ready && event.raw.status === "Ready") || (filter.inProgress && event.raw.status === "In Progress")
+                const checkMe = !event.helper || event.helper.length === 0;
+                const conditionFilter = (filter.done && event.status === "Done") || (filter.ready && event.status === "Ready") || (filter.inProgress && event.status === "In Progress")
                 const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
                 if (conditionFilter && checkMeCondition) {
                     let targetName = "";
-                    if (Number(event.raw.target)) {
-                        const targetArray = Events.filter((e) => e.id === event.raw.target)
+                    if (Number(event.target)) {
+                        const targetArray = Events.filter((e) => e.id === event.target)
                         targetName = targetArray[0].eventName
                     }
                     calendar.createEvents([
@@ -389,7 +390,7 @@ function CalendarPage() {
                             title: event.eventName,
                             start: typeof (event.start) === "string" ? event.start : event.start.d.d,
                             end: typeof (event.end) === "string" ? event.end : event.end.d.d,
-                            raw: { ...event.raw, targetName },
+                            raw: { ...event, targetName },
                             backgroundColor,
                             dragBackgroundColor: backgroundColor,
                             borderColor: borderColor,
