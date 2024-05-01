@@ -6,6 +6,8 @@ const user = (app) => {
   app.use("/api/user", router);
   router.post("/signIn", userController.signIn);
   router.post("/signUp", userController.signUp);
+  router.get("/:mail", userController.getUserByMail); 
+  router.post("/", userController.getUserByMails); 
 };
 
 export default user;

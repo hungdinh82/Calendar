@@ -9,6 +9,8 @@ import LabelForm from './LabelForm/LabelFrom';
 import "./Library.scss"
 import { useEffect, useState } from 'react';
 import { message } from 'antd';
+import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+
 
 const cx = classNames.bind(styles)
 
@@ -26,6 +28,8 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
     const [viewer, setViewer] = useState([]);
     const [helper, setHelper] = useState([]);
     const [optionTarget, setOptionTarget] = useState([])
+    
+    const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -130,7 +134,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
                     event: newEvent,
                     id: Date.now()
                 }
-                console.log(createInformation);
+                // console.log(createInformation);
                 listInformation.push(createInformation)
             })
             localStorage.setItem("listInformations", JSON.stringify(listInformation));
@@ -181,7 +185,8 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
 
     const updateValueFields = () => {
         const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
-        const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        const Events = eventsPush || [];
         const filterTarget = Events.filter((event) => event.raw.eventType === "target")
         const optionTarget = filterTarget.map((event) => {
             return { value: event.id, label: event.eventName }

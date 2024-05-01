@@ -18,7 +18,19 @@ export const AuthService = apiService.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
+        getUserByMail: builder.query({
+            query: (mail) => `api/user/${mail}`,
+            providesTags: ['user'],
+        }),
+        getUserByMails: builder.query({
+            query: (data) => ({
+                url: `api/user/`,
+                method: 'POST',
+                body: data,
+            }),
+            providesTags: ['user'],
+        }),
     }),
 });
 
-export const { useSignInMutation, useSignUpMutation } = AuthService;
+export const { useSignInMutation, useSignUpMutation, useGetUserByMailQuery, useGetUserByMailsQuery } = AuthService;

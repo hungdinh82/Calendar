@@ -9,6 +9,8 @@ import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreat
 
 import styles from './WorkCard.module.scss';
 import './library.scss'
+import { useGetUserByMailsQuery } from "../../../app/api/authService";
+
 
 const cx = classNames.bind(styles);
 
@@ -25,6 +27,9 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
     const [target, setTarget] = useState()
     const [isOpen, setIsOpen] = useState(false)
     const [helper, setHelper] = useState([]);
+    
+    const { data: user } = useGetUserByMailsQuery(event.helper);
+    // console.log(user);
     function removeObjectFromArray(listEvents, id, calendarid) {
         return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
     }
@@ -73,7 +78,7 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
             style: { padding: 0 }
         },
     ];
-    const [isImportain, setIsImportain] = useState(event.raw.isImportain || false)
+    // const [isImportain, setIsImportain] = useState(event.raw.isImportain || false)
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -87,23 +92,25 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
     const handleClickStar = (e) => {
         e.stopPropagation();
         const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        const newEvents = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, isImportain: !isImportain } })
-        setListEvents(newEvents)
-        setIsImportain(!isImportain)
-        localStorage.setItem("listEvents", JSON.stringify(newEvents))
+        // const newEvents = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, isImportain: !isImportain } })
+        // setListEvents(newEvents)
+        // setIsImportain(!isImportain)
+        // localStorage.setItem("listEvents", JSON.stringify(newEvents))
     }
     const filterEvent = () => {
-        const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        const Events = listEvents;
+
         const targetArray = Events.filter((e) => {
             return Number(e.id) === Number(event.id)
         })
         setTarget(targetArray[0])
         const eventsOfTarget = Events.filter((event) => {
-            return Number(event.raw.target) === Number(targetArray[0]?.id)
+            return Number(event.target) === Number(targetArray[0]?.id)
         })
-        const listReady = eventsOfTarget.filter((event) => event.raw.status === "Ready")
-        const listInprocess = eventsOfTarget.filter((event) => event.raw.status === "In Progress")
-        const listDone = eventsOfTarget.filter((event) => event.raw.status === "Done")
+        const listReady = eventsOfTarget.filter((event) => event.status === "Ready")
+        const listInprocess = eventsOfTarget.filter((event) => event.status === "In Progress")
+        const listDone = eventsOfTarget.filter((event) => event.status === "Done")
 
         taskLists = [
             listReady,
@@ -115,11 +122,13 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
     }
 
     const getHelper = () => {
-        let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const listHelper = listAccounts.filter((account) => {
-            return event.raw.helper.includes(account.mail) || Number(event.raw.creatorId) === Number(account.id);
-        })
-        setHelper(listHelper)
+        // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+        // let listAccounts = event.helper;
+        // const listHelper = listAccounts.filter((account) => {
+        //     return event.helper.includes(account.mail) || Number(event.creatorId) === Number(account.id);
+        // })
+        // console.log(event.helper);
+        setHelper(event.helper)
     }
 
     useEffect(() => {
@@ -141,16 +150,16 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
                 <div className={cx('header-title')}>{event.eventName}</div>
                 <div className={cx('header-icons')}>
                     {
-                        isImportain ?
+                        // isImportain ?
                             <StarFilled onClick={handleClickStar} style={{ color: "#f48080" }} />
-                            : <StarOutlined onClick={handleClickStar} />
+                            // : <StarOutlined onClick={handleClickStar} />
                     }
                     <ArrowUpOutlined onClick={() => { navigate(`/overview?eventId=${event.id}`) }} />
                 </div>
             </div>
 
             <div className={cx('card-body')}>
-                <p className={cx('description')} dangerouslySetInnerHTML={{ __html: event.raw.description }}></p>
+                <p className={cx('description')} dangerouslySetInnerHTML={{ __html: event.description }}></p>
                 <div className={cx('process')}>
                     <div className={cx('process-title')}>
                         <span>Completion</span>

@@ -5,6 +5,8 @@ import { Row, Col } from 'antd'
 import moment from 'moment'
 import classNames from 'classnames/bind';
 import DayOfWeek from './DayOfWeek/DayOfWeek'
+import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+
 
 const cx = classNames.bind(styles);
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -15,6 +17,8 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
     const indexDayOfWeekEnd = dateRangeEnd.getDay()
     const countStart = -indexDayOfWeekStart;
     const countEnd = Math.round((Date.parse(dateRangeEnd) - Date.parse(dateRangeStart)) / 86400000);
+
+    const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
 
     const addDays = (date, index) => {
         var dat = new Date(date)
@@ -35,7 +39,8 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
     }
 
     const fetchData = () => {
-        const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        const events =  eventsPush ? eventsPush : [];
         const filterEvents = events.filter((e) => (e.raw.eventType === "todo"))
         setListEvents(filterEvents);
     }

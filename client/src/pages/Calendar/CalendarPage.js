@@ -28,6 +28,8 @@ import Contributors from '../../imgs/avatar/Participants.png';
 import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
+import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+
 
 const dateFormat = 'YYYY-MM-DD'
 const monthFormat = 'YYYY/MM'
@@ -49,6 +51,7 @@ function CalendarPage() {
     const [rangeTime, setRangeTime] = useState({})
     const [currentDate, setCurrentDate] = useState()
     const [listEvents, setListEvents] = useState([]);
+    const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [filter, setFilter] = useState({
         ready: true,
         inProgress: true,
@@ -348,7 +351,8 @@ function CalendarPage() {
     }
 
     const fetchData = (calendar) => {
-        const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        const Events = eventsPush ? eventsPush : [];
         setListEvents(Events)
         calendar.clear();
         const currentUser = localStorage.getItem("currentUser")

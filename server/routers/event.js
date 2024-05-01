@@ -5,7 +5,7 @@ const event = (app) => {
     const router = express.Router();
     app.use("/api/event", router);
   
-    router.get("/", eventController.getAllEventsByCurrentUser);
+    router.get("/currentUser/:id", eventController.getAllEventsByCurrentUser);
     router.get("/:id", eventController.getEventById);
     router.get("/target/:targetId", eventController.getTodosByTarget);
     router.post("/", eventController.createEvent);

@@ -33,7 +33,7 @@ function Login() {
         signIn({ mail, password})
         .then((res) => {
             if (res.data) {
-                localStorage.setItem("currentUser", res.data);
+                localStorage.setItem("currentUser", JSON.stringify(res.data));
                 Swal.fire({
                     icon: "success",
                     title: "Success",

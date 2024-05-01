@@ -1,9 +1,9 @@
 import { apiService } from '../store/apiService';
-
+0
 export const eventService = apiService.injectEndpoints({
     endpoints: (builder) => ({
-        getAllEvents: builder.query({
-            query: () => `api/event/`,
+        getAllEventsByCurrentUser: builder.query({
+            query: (id) => `api/event/currentUser/${id}`,
             providesTags: ['event'],
         }),
         getEventById: builder.query({
@@ -38,7 +38,7 @@ export const eventService = apiService.injectEndpoints({
             invalidatesTags: ['event'],
         }),
     }),
-    
+
 });
 
-export const { useGetAllEventsQuery, useGetEventByIdQuery, useGetTodosByTargetQuery, useCreateEventMutation, useEditEventMutation, useDeleteEventMutation } = eventService;
+export const { useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery, useGetTodosByTargetQuery, useCreateEventMutation, useEditEventMutation, useDeleteEventMutation } = eventService;
