@@ -13,6 +13,8 @@ import avatar_linh from '../../imgs/avatar/linh.png';
 import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
 import avatar_quang from '../../imgs/avatar/quang.jpg'
 import avatar_hieu from '../../imgs/avatar/hieu.jpg'
+import { useGetImportantsByUserIdQuery } from "../../app/api/importantService";
+
 const cx = classNames.bind(styles);
 
 const emtpyFunction = (e) => {
@@ -24,19 +26,28 @@ const colors = ["#F4CD80", "#F48080", "#80D9F4", "#C180F4"]
 function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage, targetId, listEvents }) {
     const [visitable, setVisitable] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
-    const [importainTarget, setImportainTarget] = useState([]);
-    const [isOpenImportain, setIsOpenImportain] = useState(false);
+    // const [importainTarget, setImportainTarget] = useState([]);
+    const [isOpenImportant, setIsOpenImportant] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState();
-    const [currentUser, setCurrentUser] = useState();
+    // const [currentUser, setCurrentUser] = useState();
     const navigate = useNavigate();
-    useEffect(() => {
-        // const filterImportainTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportain)
-        // setImportainTarget(filterImportainTarget)
-    }, [listEvents])
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+    // console.log(currentUser.id)
+    const { data: eventImportant } = useGetImportantsByUserIdQuery(currentUser.id);
+
+    // setImportainTarget(eventImportant)
+    const importainTarget = eventImportant;
+    // console.log(importainTarget)
+    // useEffect(() => {
+    //     // const filterImportainTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportant)
+    //     // setImportainTarget(filterImportainTarget)
+    // }, [listEvents])
+
+    // useEffect(() => {
 
     useEffect(() => {
         const currentUser = localStorage.getItem("currentUser");
-        setCurrentUser(currentUser);
         if (currentUser?.userName?.includes("quang")) {
             setCurrentAvatar(avatar_quang);
         }
@@ -113,21 +124,24 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                     </div>
                 </div>
 
-                <div className={cx('important')} onClick={() => setIsOpenImportain(!isOpenImportain)}>
+                <div className={cx('important')} onClick={() => {
+                    console.log(importainTarget);
+                    setIsOpenImportant(!isOpenImportant)}}>
                     <div className={cx('important-header')}>
                         <span>Important</span>
                         <span
-                            className={isOpenImportain ? cx("icon-downOut") : cx("icon-downUp")}
-                            onClick={() => setIsOpenImportain(!isOpenImportain)}
+                            className={isOpenImportant ? cx("icon-downOut") : cx("icon-downUp")}
+                            onClick={() => setIsOpenImportant(!isOpenImportant)}
                         ><DownOutlined /></span>
                     </div>
                     <div className={cx('important-list')}>
                         {
-                            isOpenImportain && importainTarget?.map((e, index) => (
+                            isOpenImportant && eventImportant?.map((e, index) => (
                                 <div className={cx('important-item')} onClick={() => navigate(`/overview?eventId=${e.id}`)}>
                                     <div className={cx('important-item-checkbox')} style={{ backgroundColor: colors[index % 4] }}></div>
-                                    <Tooltip title={e.title || e.eventName}>
-                                        <div className={cx('important-item-title')}>{e.title || e.eventName}</div>
+                                    <Tooltip title={e.eventName}>
+                                        {console.log(e.eventName)}
+                                        <div className={cx('important-item-title')}>{e.eventName}</div>
                                     </Tooltip>
                                 </div>
                             ))

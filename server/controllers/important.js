@@ -4,7 +4,7 @@ const userController = {
     // API để lấy danh sách các sự kiện quan trọng của một người dùng dựa trên userId
     getImportantsByUserId: async (req, res) => {
         const { userId } = req.params;
-        const sql = "SELECT * FROM Importants WHERE userId = ?";
+        const sql = "SELECT * FROM Importants, Events WHERE Importants.eventId = Events.id AND Importants.userId = ?";
         try {
             const [result] = await connect.query(sql, [userId]);
             res.json(result);
