@@ -12,19 +12,21 @@ const cx = classNames.bind(styles);
 function Listworks() {
     const [isShowSideBar, setIsShowSideBar] = useState(true);
     const [listEvents, setListEvents] = useState()
-
+    // const [events, setEvents] = useState([])
     // console.log(localStorage.getItem("currentUser"));
     const { data: events, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     // console.log(useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id));
-    console.log(events);
+    // console.log(events);
 
-    if (isError) {
-        return <h1>Something went wrong!</h1>;
-    } else if (isLoading) {
-        return <h1>Loading ... </h1>;
-    }else {
-        // console.log(events);
-    }
+
+
+    // if (isError) {
+    //     return <h1>Something went wrong!</h1>;
+    // } else if (isLoading) {
+    //     return <h1>Loading ... </h1>;
+    // }else {
+    //     // console.log(events);
+    // }
 
     // const [getAllEventsByCurrentUser] = useGetAllEventsByCurrentUserQuery();
     // const [Lists, setLists] = useState(taskLists)
@@ -41,6 +43,8 @@ function Listworks() {
     //         // setEvents(res.data)
     //     }
     // })
+
+
 
     return (
         <div className={cx('listworks')}>
@@ -65,7 +69,7 @@ function Listworks() {
                                 <div className={cx('grid')}>
                                     <div className={cx('row no-gutters')}>
                                         {events?.map((event) => {
-                                            console.log(events[0]);
+                                            // console.log(events[0]);
                                             return <div key={event.id} className={cx(isShowSideBar ? 'col l-3' : 'col l-2-4')}>
                                                 <WorkCard
                                                     event={event}

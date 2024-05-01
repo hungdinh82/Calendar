@@ -92,7 +92,7 @@ CREATE TABLE `Events` (
   `creatorId` bigint DEFAULT NULL,
   `target` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1688227044821 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1688227044823 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `Events` (
 
 LOCK TABLES `Events` WRITE;
 /*!40000 ALTER TABLE `Events` DISABLE KEYS */;
-INSERT INTO `Events` VALUES (1688224797315,'Ôn thi JLPT N2','calendar1','2023-05-01 15:18:27','2023-06-30 15:48:27','target','<ul><li>Nghe hiểu: 40/60</li><li>Đọc hiểu: 40/60</li><li>Từ vựng: 50/60</li></ul>','Ready',1688181141478,NULL),(1688224990109,'Làm bài 2 dokkai','calendar1','2023-05-10 00:21:12','2023-05-10 01:51:12','todo','<ol><li>Đạt mục tiêu 40/60</li><br></ol>','Done',1688181141478,1688224797315),(1688225062681,'Làm bài 3 choukai','calendar1','2023-05-10 02:23:14','2023-05-10 03:53:14','todo','<ul><li>Đạt 30/40</li><br></ul>','Done',1688224594942,1688224797315),(1688225141821,'Làm đề thi thử N2','calendar1','2023-05-10 13:24:29','2023-05-10 14:54:29','todo','<ul><li>Đạt 120/180</li><br></ul>','In Progress',1688181141478,1688224797315),(1688225588184,'BTL ITSS','calendar1','2023-07-01 15:29:33','2023-07-20 16:59:33','target','<p><span style=\"color: rgb(255, 0, 0);\">Nhóm bài tập lớn ITSS:&nbsp;</span></p><ol><li>Đề bài:&nbsp;</li>Bạn được giao thiết kế và xây dựng ứng dụng quản lý chấm công nhân viên cho các doanh nghiệp sản xuất. Có hai loại nhân viên: công nhân (Worker) và nhân viên văn phòng (Officer). Nhân viên có thông tin cơ bản là họ tên, mã nhân viên, tên bộ phận làm việc (department). Tất cả công nhân thuộc nhánh bộ phận“Nhà máy sản xuất”. Nhân viên văn phòng thuộc các nhánh khác. Những thông tin này được lấy từ API hệ thống quản lý nhân sự.<li>Mục tiêu:&nbsp;</li></ol><ul><li>Hoàn thành sản phẩm đúng hạn 20/7</li><br></ul>','Ready',1688181141478,NULL),(1688226018260,'Đặc tả usecase','calendar1','2023-07-01 15:00:19','2023-07-01 16:09:19','todo','<p><br></p>','Ready',1688181141478,1688225588184),(1688226249088,'Vẽ sơ đồ trình tự','calendar1','2023-07-07 13:43:23','2023-07-07 16:13:23','todo','','Ready',1688181141478,1688225588184),(1688226696262,'BTL UI UX','calendar1','2023-07-01 15:49:08','2023-09-01 16:19:08','target','<p>Nhóm bài tập lớn UX UI:</p><ol><li>Mục tiêu: đạt 9/10</li></ol>','Ready',1688181141478,NULL),(1688226743960,'Tạo tài liệu đặc tả yêu cầu','calendar1','2023-07-10 12:51:41','2023-07-10 16:21:41','todo','','Ready',1688181141478,1688226696262),(1688226792253,'Thu thập yêu cầu người dùng','calendar1','2023-07-04 03:52:31','2023-07-04 13:22:31','todo','','Ready',1688181141478,1688226696262),(1688226867487,'Tạo wireframe','calendar1','2023-07-07 16:05:52','2023-07-08 00:35:52','todo','','Ready',1688181141478,1688226696262),(1688226915186,'Thiết kế giao diện','calendar1','2023-07-10 16:10:01','2023-07-15 17:40:01','todo','','Ready',1688181141478,1688226696262),(1688226997645,'Thiết kế UI với đúng guideline','calendar1','2023-07-08 16:15:34','2023-07-10 16:45:34','todo','','Ready',1688181141478,1688226696262),(1688227044795,'Review UI','calendar1','2023-07-16 16:20:19','2023-07-20 16:50:19','todo','','Ready',1688181141478,1688226696262),(1688227044796,'New Event Name','new_calendar_id','2024-05-01 08:00:00','2024-05-02 08:00:00','todo','Updated event description','Updated Status',123456789,987654321),(1688227044797,'Event Test','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688181141478,1688226696262),(1688227044809,'New Event Name','new_calendar_id','2024-05-01 08:00:00','2024-05-02 08:00:00','todo','Updated event description','Updated Status',123456789,987654321),(1688227044815,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224560728,1688226696262),(1688227044816,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224560728,1688226696262),(1688227044817,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224594942,1688226696262),(1688227044818,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224594942,1688226696262),(1688227044820,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224594942,1688226696262);
+INSERT INTO `Events` VALUES (1688224797315,'Ôn thi JLPT N2','calendar1','2023-05-01 15:18:27','2023-06-30 15:48:27','target','<ul><li>Nghe hiểu: 40/60</li><li>Đọc hiểu: 40/60</li><li>Từ vựng: 50/60</li></ul>','Ready',1688181141478,NULL),(1688224990109,'Làm bài 2 dokkai','calendar1','2023-05-10 00:21:12','2023-05-10 01:51:12','todo','<ol><li>Đạt mục tiêu 40/60</li><br></ol>','Done',1688181141478,1688224797315),(1688225062681,'Làm bài 3 choukai','calendar1','2023-05-10 02:23:14','2023-05-10 03:53:14','todo','<ul><li>Đạt 30/40</li><br></ul>','Done',1688224594942,1688224797315),(1688225141821,'Làm đề thi thử N2','calendar1','2023-05-10 13:24:29','2023-05-10 14:54:29','todo','<ul><li>Đạt 120/180</li><br></ul>','In Progress',1688181141478,1688224797315),(1688225588184,'BTL ITSS','calendar1','2023-07-01 15:29:33','2023-07-20 16:59:33','target','<p><span style=\"color: rgb(255, 0, 0);\">Nhóm bài tập lớn ITSS:&nbsp;</span></p><ol><li>Đề bài:&nbsp;</li>Bạn được giao thiết kế và xây dựng ứng dụng quản lý chấm công nhân viên cho các doanh nghiệp sản xuất. Có hai loại nhân viên: công nhân (Worker) và nhân viên văn phòng (Officer). Nhân viên có thông tin cơ bản là họ tên, mã nhân viên, tên bộ phận làm việc (department). Tất cả công nhân thuộc nhánh bộ phận“Nhà máy sản xuất”. Nhân viên văn phòng thuộc các nhánh khác. Những thông tin này được lấy từ API hệ thống quản lý nhân sự.<li>Mục tiêu:&nbsp;</li></ol><ul><li>Hoàn thành sản phẩm đúng hạn 20/7</li><br></ul>','Ready',1688181141478,NULL),(1688226018260,'Đặc tả usecase','calendar1','2023-07-01 15:00:19','2023-07-01 16:09:19','todo','<p><br></p>','Ready',1688181141478,1688225588184),(1688226249088,'Vẽ sơ đồ trình tự','calendar1','2023-07-07 13:43:23','2023-07-07 16:13:23','todo','','Ready',1688181141478,1688225588184),(1688226696262,'BTL UI UX','calendar1','2023-07-01 15:49:08','2023-09-01 16:19:08','target','<p>Nhóm bài tập lớn UX UI:</p><ol><li>Mục tiêu: đạt 9/10</li></ol>','Ready',1688181141478,NULL),(1688226743960,'Tạo tài liệu đặc tả yêu cầu','calendar1','2023-07-10 12:51:41','2023-07-10 16:21:41','todo','','Ready',1688181141478,1688226696262),(1688226792253,'Thu thập yêu cầu người dùng','calendar1','2023-07-04 03:52:31','2023-07-04 13:22:31','todo','','Ready',1688181141478,1688226696262),(1688226867487,'Tạo wireframe','calendar1','2023-07-07 16:05:52','2023-07-08 00:35:52','todo','','Ready',1688181141478,1688226696262),(1688226915186,'Thiết kế giao diện','calendar1','2023-07-10 16:10:01','2023-07-15 17:40:01','todo','','Ready',1688181141478,1688226696262),(1688226997645,'Thiết kế UI với đúng guideline','calendar1','2023-07-08 16:15:34','2023-07-10 16:45:34','todo','','Ready',1688181141478,1688226696262),(1688227044795,'Review UI','calendar1','2023-07-16 16:20:19','2023-07-20 16:50:19','todo','','Ready',1688181141478,1688226696262),(1688227044796,'New Event Name','new_calendar_id','2024-05-01 08:00:00','2024-05-02 08:00:00','todo','Updated event description','Updated Status',123456789,987654321),(1688227044797,'Event Test','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688181141478,1688226696262),(1688227044809,'New Event Name','new_calendar_id','2024-05-01 08:00:00','2024-05-02 08:00:00','todo','Updated event description','Updated Status',123456789,987654321),(1688227044815,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224560728,1688226696262),(1688227044816,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224560728,1688226696262),(1688227044817,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224594942,1688226696262),(1688227044818,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224594942,1688226696262),(1688227044820,'Event Testtttttttt','calendar1','2023-05-01 15:18:27','2023-05-01 15:18:28','todo','','Ready',1688224594942,1688226696262),(1688227044821,'Event test important','calendar1','2023-05-01 12:18:27','2023-05-01 15:18:30','todo','','Ready',1688181141478,1688226696262),(1688227044822,'Event test important','calendar1','2023-05-01 12:18:27','2023-05-01 15:18:30','todo','','Ready',1688181141478,1688226696262);
 /*!40000 ALTER TABLE `Events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +121,7 @@ CREATE TABLE `Helpers` (
   KEY `fk_event` (`eventId`),
   CONSTRAINT `fk_event` FOREIGN KEY (`eventId`) REFERENCES `Events` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `Accounts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,8 +130,38 @@ CREATE TABLE `Helpers` (
 
 LOCK TABLES `Helpers` WRITE;
 /*!40000 ALTER TABLE `Helpers` DISABLE KEYS */;
-INSERT INTO `Helpers` VALUES (20,1688224560728,1688227044820);
+INSERT INTO `Helpers` VALUES (20,1688224560728,1688227044820),(21,1688224594942,1688227044822);
 /*!40000 ALTER TABLE `Helpers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Importants`
+--
+
+DROP TABLE IF EXISTS `Importants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Importants` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `eventId` bigint NOT NULL,
+  `userId` bigint NOT NULL,
+  `isImportant` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_event_important` (`eventId`),
+  KEY `fk_user_important` (`userId`),
+  CONSTRAINT `fk_event_important` FOREIGN KEY (`eventId`) REFERENCES `Events` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_important` FOREIGN KEY (`userId`) REFERENCES `Accounts` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Importants`
+--
+
+LOCK TABLES `Importants` WRITE;
+/*!40000 ALTER TABLE `Importants` DISABLE KEYS */;
+INSERT INTO `Importants` VALUES (1,1688227044822,1688181141478,0);
+/*!40000 ALTER TABLE `Importants` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -172,4 +202,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-01 18:20:26
+-- Dump completed on 2024-05-01 20:15:13

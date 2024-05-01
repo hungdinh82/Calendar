@@ -3,6 +3,6 @@ import {backEndHost} from '../../config/config.js';
 
 export const apiService = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: backEndHost.url }),
-    tagTypes: ['user',  'event'],
+    tagTypes: ['user',  'event', 'important', 'notify', 'comment', 'account'],
     endpoints: (builder) => ({}),
 });

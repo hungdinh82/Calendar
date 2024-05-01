@@ -72,6 +72,9 @@ const eventController = {
                 ];
                 await connect.query(sql2, values2);
             }
+            // add default importain
+            const sql3 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
+            await connect.query(sql3, [result.insertId, eventData.creatorId]);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Internal server error" });

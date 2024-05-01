@@ -7,6 +7,7 @@ import comment from "./routers/comment.js";
 import user from "./routers/user.js";
 import event from "./routers/event.js";
 import noti from "./routers/noti.js";
+import importain from "./routers/important.js";
 import session from "express-session";
 import path from "path";
 
@@ -27,6 +28,7 @@ comment(app);
 user(app);
 event(app);
 noti(app);
+importain(app);
 
 
 app.listen(port, () => {
