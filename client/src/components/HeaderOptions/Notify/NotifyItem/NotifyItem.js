@@ -4,9 +4,10 @@ import styles from './NotifyItem.module.scss';
 
 import { Button, Tooltip } from "antd";
 import "./Library.scss"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DialogDetails from "../../../DialogDetails/DialogDetails";
+import { useUpdateNotificationMutation } from "../../../../app/api/notiService";
 
 const cx = classNames.bind(styles);
 
@@ -14,20 +15,10 @@ function NotifyItem({ notify }) {
     const [isResolve, setIsResolve] = useState(notify.isResolve)
     const [isAccept, setIsAccept] = useState(notify.isAccept)
     const [isOpen, setIsOpen] = useState(false);
-    // const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    // const sender = listAccounts.filter((account) => account.mail === notify.fromMail)
-    // const listEvents = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-    // let targetName;
-
-    // if (notify.event.raw.target) {
-    //     const target = listEvents.filter((e) => e.id === notify.event.raw.target)
-    //     targetName = target[0].eventName;
-    // }
+    const [updateNotification] = useUpdateNotificationMutation()
 
     const sender = notify.fromMail;
-    console.log(notify)
     let targetName = notify?.target;
-    console.log(targetName);
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -48,24 +39,9 @@ function NotifyItem({ notify }) {
     }
 
     const handleAccept = () => {
-        const listEvents = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        notify.event.raw.helper.push(notify.toMail)
-        const newListEvents = updateArrayObjects(listEvents, notify.event.id, notify.event.calendarId, {
-            raw: {
-                ...notify.event.raw,
-                helper: notify.event.raw.helper
-            }
-        })
-        localStorage.setItem("listEvents", JSON.stringify(newListEvents));
-
-        const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
-        const newListInformation = updateArrayObjectsInformation(listInformation, notify.id, {
-            isResolve: true,
-            isAccept: true,
-        })
-        setIsResolve(true)
-        setIsAccept(true)
-        localStorage.setItem("listInformations", JSON.stringify(newListInformation));
+        updateNotification({ id: notify.id, data: { eventId: notify.eventId, currentUserId: JSON.parse(localStorage.getItem("currentUser")).id, isAccept: 1 } })
+        setIsResolve(1);
+        setIsAccept(1);
         Swal.fire({
             icon: "success",
             title: "Accepted!",
@@ -79,26 +55,23 @@ function NotifyItem({ notify }) {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Continue'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
-                const newListInformation = updateArrayObjectsInformation(listInformation, notify.id, {
-                    isResolve: true,
-                    isAccept: false,
-                })
-                setIsResolve(true)
-                setIsAccept(false)
-                localStorage.setItem("listInformations", JSON.stringify(newListInformation));
+                updateNotification({ id: notify.id, data: { eventId: notify.eventId, currentUserId: JSON.parse(localStorage.getItem("currentUser")).id, isAccept: 0 } })
+                setIsResolve(1);
+                setIsAccept(0);
                 Swal.fire({
                     icon: "success",
                     title: "Rejected!",
                 })
             }
         })
-
-
     }
+
+    useEffect(() => {
+    }, [isResolve]);
+
     return (
         <>
             <div className={cx('notify-item') + " notifyLibrary"}>

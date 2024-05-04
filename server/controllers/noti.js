@@ -3,7 +3,7 @@ import { connect } from "../db.js";
 const notiController = {
     getAllNotificationsByToMail: async (req, res) => {
         const { toMail } = req.params;
-        let sql = "SELECT * FROM Notifies, Events WHERE toMail = ? AND eventId = Events.id";
+        let sql = "SELECT Notifies.id AS id, Notifies.toMail, Notifies.fromMail, Notifies.text, Notifies.isResolve, Notifies.eventId AS notifyEventId, Events.id AS eventId, Events.eventName, Events.calendarId, Events.start, Events.end, Events.eventType, Events.description, Events.status, Events.creatorId, Events.target FROM Notifies JOIN Events ON Notifies.eventId = Events.id WHERE toMail = ?; ";
         let queryParams = [toMail];
 
         try {
@@ -17,21 +17,18 @@ const notiController = {
     },
     updateNotification: async (req, res) => {
         const { id } = req.params;
-        const { eventId, isAccept } = req.body;
+        const { eventId, currentUserId, isAccept } = req.body;
 
-        const sql = "UPDATE Notifies SET  isAccept = ? WHERE id = ?";
+        const sql = "UPDATE Notifies SET isResolve = 1 WHERE id = ?";
         try {
-            const [result] = await connect.query(sql, [ isAccept, id]);
-            if (result.affectedRows > 0) {
-                const sqlToGetEventId = "SELECT eventId, toMail  FROM Notifies WHERE id = ?";
-                const eventId = await connect.query(sqlToGetEventId, [id]);
-                const sql2 = "SELECT helper FROM Events WHERE id = ?";
-                const listHelper = await connect.query(sql2, [eventId[0][0].eventId]);
-                // const helperString = listHelper[0][0].helper.replace(/\[/g, '').replace(/\]/g, '').replace(/"/g, '');
-                const sql3 = "UPDATE Events SET helper = ? WHERE id = ?";
-                const listHelperAdd = await connect.query(sql3, [`${listHelper[0][0].helper}, ${eventId[0][0].toMail}`,eventId[0][0].eventId]);
+            const [result] = await connect.query(sql, [id]);
+            if (isAccept === 1) {
+                const sql2 = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
+                const [result2] = await connect.query(sql2, [currentUserId, eventId]);
 
                 res.json({ success: true, message: "Notification updated successfully" });
+                const sql3 = "UPDATE Notifies SET isAccept = 1 WHERE id = ?";
+                const [result3] = await connect.query(sql3, [id]);
             } else {
                 res.status(404).json({ success: false, message: "Notification not found" });
             }
@@ -43,7 +40,7 @@ const notiController = {
     deleteNotification: async (req, res) => {
         const { id } = req.params;
         const sql = "DELETE FROM Notifies WHERE id = ?";
-        
+
         try {
             const [result] = await connect.query(sql, [id]);
             if (result.affectedRows === 1) {
