@@ -57,22 +57,22 @@ const eventController = {
         try {
             const [result] = await connect.query(sql, values);
             res.json({ id: result.insertId });
-            // console.log(eventData.helper);
-            const eventMailString = [];
-            if (eventData.helper.indexOf(',') !== -1) {
-                eventMailString = eventData.helper.split(',');
-            } else {
-                eventMailString.push(eventData.helper);
-            }
-            const sql2 = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
-            for (let i = 0; i < eventMailString.length; i++) {
-                const values2 = [
-                    eventMailString[i],
-                    result.insertId
+            // add noti (if noti accept thi moi add vao helpers )
+            const sql2 = "SELECT mail FROM Accounts WHERE id = ?"
+            const [result2] = await connect.query(sql2, eventData.creatorId);
+            eventData.helper.forEach(helper => {
+                const sql3 = "INSERT INTO Notifies (toMail, fromMail, text, isResolve, eventId, isAccept) VALUES (?, ?, ?, ?, ?, ?)";
+                const values3 = [
+                    helper,
+                    result2[0].mail,
+                    `assigned you join target ${eventData.eventName}`,
+                    0,
+                    result.insertId,
+                    0
                 ];
-                await connect.query(sql2, values2);
-            }
-            // add default importain
+                connect.query(sql3, values3);
+            })
+            // add default important
             const sql3 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
             await connect.query(sql3, [result.insertId, eventData.creatorId]);
         } catch (error) {
@@ -142,7 +142,7 @@ const eventController = {
             res.status(500).json({ error: "Internal server error" });
         }
     }
-    
+
 };
 
 export default eventController;

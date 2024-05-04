@@ -4,8 +4,6 @@ import notiController from "../controllers/noti.js";
 const noti = (app) => {
     const router = express.Router();
     app.use("/api/noti", router);
-
-    router.post('/', notiController.addNotification);
     router.get('/:toMail', notiController.getAllNotificationsByToMail); 
     router.put('/:id', notiController.updateNotification);
     router.delete('/:id', notiController.deleteNotification);

@@ -26,7 +26,7 @@ const colors = ["#F4CD80", "#F48080", "#80D9F4", "#C180F4"]
 function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage, targetId, listEvents }) {
     const [visitable, setVisitable] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
-    // const [importainTarget, setImportainTarget] = useState([]);
+    // const [importantTarget, setimportantTarget] = useState([]);
     const [isOpenImportant, setIsOpenImportant] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState();
     // const [currentUser, setCurrentUser] = useState();
@@ -36,12 +36,12 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     // console.log(currentUser.id)
     const { data: eventImportant } = useGetImportantsByUserIdQuery(currentUser.id);
 
-    // setImportainTarget(eventImportant)
-    const importainTarget = eventImportant;
-    // console.log(importainTarget)
+    // setimportantTarget(eventImportant)
+    const importantTarget = eventImportant;
+    // console.log(importantTarget)
     // useEffect(() => {
-    //     // const filterImportainTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportant)
-    //     // setImportainTarget(filterImportainTarget)
+    //     // const filterimportantTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportant)
+    //     // setimportantTarget(filterimportantTarget)
     // }, [listEvents])
 
     // useEffect(() => {
@@ -125,8 +125,9 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                 </div>
 
                 <div className={cx('important')} onClick={() => {
-                    console.log(importainTarget);
-                    setIsOpenImportant(!isOpenImportant)}}>
+                    console.log(importantTarget);
+                    setIsOpenImportant(!isOpenImportant)
+                }}>
                     <div className={cx('important-header')}>
                         <span>Important</span>
                         <span

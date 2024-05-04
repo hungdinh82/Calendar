@@ -9,7 +9,8 @@ import LabelForm from './LabelForm/LabelFrom';
 import "./Library.scss"
 import { useEffect, useState } from 'react';
 import { message } from 'antd';
-import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
 
 
 const cx = classNames.bind(styles)
@@ -28,8 +29,9 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
     const [viewer, setViewer] = useState([]);
     const [helper, setHelper] = useState([]);
     const [optionTarget, setOptionTarget] = useState([])
-    
+
     const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const [createEvent] = useCreateEventMutation();
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -98,46 +100,62 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
         const start = startDate.format("YYYY-MM-DD") + " " + startTime.format("HH:mm:ss");
         const end = endDate.format("YYYY-MM-DD") + " " + endTime.format("HH:mm:ss");
         const status = event?.raw?.status || "Ready"
-        const currentUserId = localStorage.getItem("currentUserId")
+        // const currentUserId = localStorage.getItem("currentUserId")
+        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
         const newEvent = {
-            id: event?.id || Date.now(),
+            // id: event?.id || Date.now(),
+            // id: event?.id,
             eventName,
             calendarId: event?.calendarId || "calendar1",
-            start: new Date(start).toISOString(),
-            end: new Date(end).toISOString(),
-            raw: {
-                eventType,
-                target,
-                description,
-                helper: [],
-                status,
-                creatorId: currentUserId,
-            }
+            start,
+            end,
+            eventType,
+            description,
+            status,
+            creatorId: currentUserId,
+            target,
+            helper,
         }
-        let Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // let Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        let Events = eventsPush ? eventsPush : [];
         if (type === "create") {
-            Events.push(newEvent);
-            messageApi.open({
-                type: 'success',
-                content: 'Tạo thành công',
-            });
+            // Events.push(newEvent);
+            createEvent(newEvent)
+                .then(function (response) {
+                    if (response.data.error !== undefined) {
+                        message.error(response.data.error.message);
+                    } else if (response.data.errors !== undefined) {
+                        message.error(response.data.errors[0].message);
+                    } else message.success('Created event successfully');
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            // messageApi.open({
+            //     type: 'success',
+            //     content: 'Tạo thành công',
+            // });
 
-            const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
-            let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-            helper.map((helper) => {
-                const createInformation = {
-                    toMail: helper,
-                    fromMail: user[0].mail,
-                    text: eventType === "todo" ? "assigned you a task on target" : "assigned you join target",
-                    isResolve: false,
-                    event: newEvent,
-                    id: Date.now()
-                }
-                // console.log(createInformation);
-                listInformation.push(createInformation)
-            })
-            localStorage.setItem("listInformations", JSON.stringify(listInformation));
+            // const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
+            // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+            // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+            // const user = JSON.parse(localStorage.getItem("currentUser")).mail
+
+            // helper.map((helper) => {
+            //     const createInformation = {
+            //         toMail: helper,
+            //         fromMail: user,
+            //         text: eventType === "todo" ? "assigned you a task on target" : "assigned you join target",
+            //         isResolve: false,
+            //         eventId: newEvent,
+            //         // id: Date.now()
+            //     }
+            //     // console.log(createInformation);
+            //     // listInformation.push(createInformation)
+            // })
+            // console.log(helper);
+            // localStorage.setItem("listInformations", JSON.stringify(listInformation));
 
         }
         else if (type === "update") {

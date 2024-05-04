@@ -27,7 +27,7 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
     const [target, setTarget] = useState()
     const [isOpen, setIsOpen] = useState(false)
     const [helper, setHelper] = useState([]);
-    
+
     const { data: user } = useGetUserByMailsQuery(event.helper);
     // console.log(user);
     function removeObjectFromArray(listEvents, id, calendarid) {
@@ -78,7 +78,7 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
             style: { padding: 0 }
         },
     ];
-    // const [isImportain, setIsImportain] = useState(event.raw.isImportain || false)
+    // const [isimportant, setIsimportant] = useState(event.raw.isimportant || false)
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -92,9 +92,9 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
     const handleClickStar = (e) => {
         e.stopPropagation();
         const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        // const newEvents = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, isImportain: !isImportain } })
+        // const newEvents = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, isimportant: !isimportant } })
         // setListEvents(newEvents)
-        // setIsImportain(!isImportain)
+        // setIsimportant(!isimportant)
         // localStorage.setItem("listEvents", JSON.stringify(newEvents))
     }
     const filterEvent = () => {
@@ -150,9 +150,9 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
                 <div className={cx('header-title')}>{event.eventName}</div>
                 <div className={cx('header-icons')}>
                     {
-                        // isImportain ?
-                            <StarFilled onClick={handleClickStar} style={{ color: "#f48080" }} />
-                            // : <StarOutlined onClick={handleClickStar} />
+                        // isimportant ?
+                        <StarFilled onClick={handleClickStar} style={{ color: "#f48080" }} />
+                        // : <StarOutlined onClick={handleClickStar} />
                     }
                     <ArrowUpOutlined onClick={() => { navigate(`/overview?eventId=${event.id}`) }} />
                 </div>

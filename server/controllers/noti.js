@@ -1,18 +1,6 @@
 import { connect } from "../db.js";
 
 const notiController = {
-    addNotification: async (req, res) => {
-        const { toMail, fromMail, text, isResolve, eventId, isAccept } = req.body;
-
-        const sql = "INSERT INTO Notifies (toMail, fromMail, text, isResolve, eventId, isAccept) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            const [result] = await connect.query(sql, [toMail, fromMail, text, isResolve, eventId, isAccept]);
-            res.json(true);
-        } catch (error) {
-            console.error(error);
-            res.json(false);
-        }
-    },
     getAllNotificationsByToMail: async (req, res) => {
         const { toMail } = req.params;
         let sql = "SELECT * FROM Notifies WHERE toMail = ?";
