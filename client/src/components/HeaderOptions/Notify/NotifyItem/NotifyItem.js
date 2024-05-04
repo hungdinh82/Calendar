@@ -14,14 +14,20 @@ function NotifyItem({ notify }) {
     const [isResolve, setIsResolve] = useState(notify.isResolve)
     const [isAccept, setIsAccept] = useState(notify.isAccept)
     const [isOpen, setIsOpen] = useState(false);
-    const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    const sender = listAccounts.filter((account) => account.mail === notify.fromMail)
-    const listEvents = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-    let targetName;
-    if (notify.event.raw.target) {
-        const target = listEvents.filter((e) => e.id === notify.event.raw.target)
-        targetName = target[0].eventName;
-    }
+    // const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+    // const sender = listAccounts.filter((account) => account.mail === notify.fromMail)
+    // const listEvents = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+    // let targetName;
+
+    // if (notify.event.raw.target) {
+    //     const target = listEvents.filter((e) => e.id === notify.event.raw.target)
+    //     targetName = target[0].eventName;
+    // }
+
+    const sender = notify.fromMail;
+    console.log(notify)
+    let targetName = notify?.target;
+    console.log(targetName);
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -97,13 +103,13 @@ function NotifyItem({ notify }) {
         <>
             <div className={cx('notify-item') + " notifyLibrary"}>
                 <p className={cx('title')}>
-                    <Tooltip title={sender[0].mail}>
-                        <span className={cx("userName")}>{sender[0].userName + " "}</span>
+                    <Tooltip title={notify.fromMail}>
+                        <span className={cx("userName")}>{notify.fromMail + " "}</span>
                     </Tooltip>
                     {notify.text}
                     <span className={cx("target")}> {targetName || ""} </span>
                 </p>
-                <p className={cx('task')} onClick={() => setIsOpen(true)}>{notify.event.eventName}</p>
+                <p className={cx('task')} onClick={() => setIsOpen(true)}>{notify.eventName}</p>
                 {
                     !isResolve &&
                     <div className={cx("button-layout")}>
