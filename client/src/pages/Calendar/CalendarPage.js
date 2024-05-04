@@ -29,6 +29,7 @@ import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
 import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 
 
 const dateFormat = 'YYYY-MM-DD'
@@ -353,6 +354,7 @@ function CalendarPage() {
     const fetchData = (calendar) => {
         // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
         const Events = eventsPush ? eventsPush : [];
+        // console.log(Events)
         setListEvents(Events)
         calendar.clear();
         const currentUser = JSON.parse(localStorage.getItem("currentUser"))
@@ -360,8 +362,11 @@ function CalendarPage() {
 
         // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
         Events?.map((event) => {
-            
-            if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
+            // kiểm tra xem event này có helper là currentUser không
+            // const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
+            // console.log(helpers)
+
+            if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id))) {
                 let backgroundColor = null;
                 let borderColor = null;
                 if (event.status === "Ready") {

@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react';
 import Accounts from './fileData/Account';
 import Events from './fileData/Event';
 import Notify from './fileData/Notify'
+import { io } from "socket.io-client";
+import { useDispatch } from 'react-redux';
+import { updateSocket, updateUserOnline } from './redux/socketSlice';
 
 function App() {
     const [user, setUser] = useState();
@@ -26,16 +29,17 @@ function App() {
         signUp();
     }, [isSignUp]);
 
+    const dispatch = useDispatch();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const portSocket = "http://localhost:6000"
     useEffect(() => {
-        // if (!localStorage.getItem("listEvents")) localStorage.setItem("listEvents", JSON.stringify(Events));
-        // else console.log(localStorage.getItem("listEvents"));
-        // if (!localStorage.getItem("listAccounts")) localStorage.setItem("listAccounts", JSON.stringify(Accounts));
-        // else console.log(localStorage.getItem("listAccounts"));
-        // if (!localStorage.getItem("listInformations")) localStorage.setItem("listInformations", JSON.stringify(Notify));
-        // else console.log(localStorage.getItem("listInformations"));
-        // if (!localStorage.getItem("listComments")) localStorage.setItem("listComments", JSON.stringify([]));
-        // else console.log(localStorage.getItem("listComments"));
-    }, [])
+        const socket = io(portSocket);
+        dispatch(updateSocket(socket));
+        if (currentUser.id) {
+            socket.emit("add-user", currentUser);
+            dispatch(updateUserOnline(currentUser));
+        }
+    }, []);
     return (
         <Routes>
             <Route path="/" element={<CalendarPage />} />

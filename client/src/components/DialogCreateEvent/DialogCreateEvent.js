@@ -127,7 +127,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
                     } else if (response.data.errors !== undefined) {
                         message.error(response.data.errors[0].message);
                     } else message.success('Created event successfully');
-                    console.log(response);
+                    // console.log(response);
                 })
                 .catch(function (error) {
                     console.log(error);

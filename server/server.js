@@ -8,8 +8,11 @@ import user from "./routers/user.js";
 import event from "./routers/event.js";
 import noti from "./routers/noti.js";
 import important from "./routers/important.js";
+import helper from "./routers/helper.js";
 import session from "express-session";
 import path from "path";
+import connectSocket  from './socket/socket.js';
+
 
 dotenv.config();
 
@@ -29,7 +32,10 @@ user(app);
 event(app);
 noti(app);
 important(app);
+helper(app);
 
+const server = app.listen(6000)
+connectSocket(server)
 
 app.listen(port, () => {
   console.log("Server started on port 4000");
