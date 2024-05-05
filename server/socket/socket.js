@@ -1,5 +1,5 @@
 // import socket from "socket.io";
-import {Server } from "socket.io";
+import { Server } from "socket.io";
 
 global.onlineUsers = [];
 
@@ -18,14 +18,25 @@ const connectSocket = (server, port) => {
       onlineUsers.push({ information: user, socketId: socket.id });
     });
 
-    socket.on("new-notification", ({ notification }) => {
-      onlineUsers
-        .filter((user) => user.information.id === notification.receiver_id)
-        .forEach((followed) => {
+    // socket.on("new-notification", ({ notification }) => {
+    //   onlineUsers
+    //     .filter((user) => user.information.id === notification.receiver_id)
+    //     .forEach((followed) => {
+    //       socket
+    //         .to(followed.socketId)
+    //         .emit("send-notification", { notification });
+    //     });
+    // });
+
+    socket.on("new-notification", (notification) => {
+      console.log(notification);
+      onlineUsers.forEach((user) => {
+        if (user.id === notification.receiverId) {
           socket
-            .to(followed.socketId)
-            .emit("send-notification", { notification });
-        });
+            .to(user.socketId)
+            .emit("receive-notification", { ...notification });
+        }
+      });
     });
 
     socket.on("disconnect", () => {
