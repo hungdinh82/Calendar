@@ -31,11 +31,13 @@ function App() {
 
     const dispatch = useDispatch();
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const portSocket = "http://localhost:6000"
+    const portSocket = "http://localhost:4000"
     useEffect(() => {
         const socket = io(portSocket);
+        console.log(socket); 
+        console.log(currentUser); 
         dispatch(updateSocket(socket));
-        if (currentUser.id) {
+        if (currentUser?.id) {
             socket.emit("add-user", currentUser);
             dispatch(updateUserOnline(currentUser));
         }

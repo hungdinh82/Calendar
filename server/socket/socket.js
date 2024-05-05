@@ -3,7 +3,8 @@ import {Server } from "socket.io";
 
 global.onlineUsers = [];
 
-const connectSocket = (server) => {
+const connectSocket = (server, port) => {
+  console.log("Socket server started on port", port);
   const io = new Server(server, {
     cors: {
       origin: "*",

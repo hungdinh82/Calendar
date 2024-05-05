@@ -34,9 +34,7 @@ noti(app);
 important(app);
 helper(app);
 
-const server = app.listen(6000)
-connectSocket(server)
-
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log("Server started on port 4000");
 });
+connectSocket(server, port);
