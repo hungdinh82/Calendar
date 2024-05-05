@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react';
 import { message } from 'antd';
 import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
 import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
-
+import { useDispatch, useSelector } from 'react-redux';
+// import { socket } from '../../app/socket/socket';
 
 const cx = classNames.bind(styles)
 
@@ -29,6 +30,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
     const [viewer, setViewer] = useState([]);
     const [helper, setHelper] = useState([]);
     const [optionTarget, setOptionTarget] = useState([])
+    const socket = useSelector((state) => state.socket.socket);
 
     const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [createEvent] = useCreateEventMutation();
@@ -126,7 +128,17 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
                         message.error(response.data.error.message);
                     } else if (response.data.errors !== undefined) {
                         message.error(response.data.errors[0].message);
-                    } else message.success('Created event successfully');
+                    } else {
+                        socket?.emit("new-notification", {
+                            toMail: helper,
+                            fromMail: currentUserId,
+                            text: `assigned you join target ${newEvent.eventName}`,
+                            isResolve: 0,
+                            // eventId: result.insertId,
+                            isAccept: 0
+                        });
+                        message.success('Created event successfully')
+                    };
                     // console.log(response);
                 })
                 .catch(function (error) {

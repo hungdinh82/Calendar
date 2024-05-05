@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import DialogDetails from "../../../DialogDetails/DialogDetails";
 import { useUpdateNotificationMutation } from "../../../../app/api/notiService";
 
+
 const cx = classNames.bind(styles);
 
 function NotifyItem({ notify }) {
@@ -67,7 +68,9 @@ function NotifyItem({ notify }) {
                 })
             }
         })
-    }
+    };
+
+  
 
     useEffect(() => {
     }, [isResolve]);
