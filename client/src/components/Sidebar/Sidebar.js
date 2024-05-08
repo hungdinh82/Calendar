@@ -33,9 +33,8 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     const navigate = useNavigate();
 
     const currentUser = JSON.parse(localStorage.getItem("currentUser"))
-    // console.log(currentUser.id)
+    
     const { data: eventImportant } = useGetImportantsByUserIdQuery(currentUser.id);
-
     // setimportantTarget(eventImportant)
     const importantTarget = eventImportant;
     // console.log(importantTarget)
@@ -45,26 +44,32 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     // }, [listEvents])
 
     // useEffect(() => {
+    // console.log(currentUser.userName)
+
+
 
     useEffect(() => {
-        const currentUser = localStorage.getItem("currentUser");
-        if (currentUser?.userName?.includes("quang")) {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        if (currentUser.userName?.includes("quang")) {
             setCurrentAvatar(avatar_quang);
         }
-        else if (currentUser?.userName?.includes("hung")) {
-            setCurrentAvatar(avatar_hung)
+        else if (currentUser.userName?.includes("hung")) {
+            setCurrentAvatar(avatar_hung);
         }
-        else if (currentUser?.userName?.includes("linh")) {
-            setCurrentAvatar(avatar_linh)
+        else if (currentUser.userName?.includes("linh")) {
+            setCurrentAvatar(avatar_linh);
         }
-        else if (currentUser?.userName?.includes("nguyet")) {
-            setCurrentAvatar(avatar_nguyet)
+        else if (currentUser.userName?.includes("nguyet")) {
+            setCurrentAvatar(avatar_nguyet);
         }
-        else if (currentUser?.userName?.includes("hieu")) {
-            setCurrentAvatar(avatar_hieu)
+        else if (currentUser.userName?.includes("hieu")) {
+            setCurrentAvatar(avatar_hieu);
         }
-        else setCurrentAvatar(avatar)
-    }, [])
+        else {
+            setCurrentAvatar(avatar);
+        }
+    }, []);
+    
     return (
         currentUser &&
         <div style={{ position: "relative" }}>
@@ -125,7 +130,7 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                 </div>
 
                 <div className={cx('important')} onClick={() => {
-                    console.log(importantTarget);
+                    // console.log(importantTarget);
                     setIsOpenImportant(!isOpenImportant)
                 }}>
                     <div className={cx('important-header')}>
@@ -141,7 +146,7 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                                 <div className={cx('important-item')} onClick={() => navigate(`/overview?eventId=${e.id}`)}>
                                     <div className={cx('important-item-checkbox')} style={{ backgroundColor: colors[index % 4] }}></div>
                                     <Tooltip title={e.eventName}>
-                                        {console.log(e.eventName)}
+                                        {/* {console.log(e.eventName)} */}
                                         <div className={cx('important-item-title')}>{e.eventName}</div>
                                     </Tooltip>
                                 </div>

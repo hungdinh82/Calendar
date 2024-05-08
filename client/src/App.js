@@ -34,8 +34,8 @@ function App() {
     const portSocket = "http://localhost:4000"
     useEffect(() => {
         const socket = io(portSocket);
-        console.log(socket); 
-        console.log(currentUser); 
+        // console.log(socket); 
+        // console.log(currentUser); 
         dispatch(updateSocket(socket));
         if (currentUser?.id) {
             socket.emit("add-user", currentUser);
