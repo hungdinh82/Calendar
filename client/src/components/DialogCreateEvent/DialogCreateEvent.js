@@ -104,6 +104,8 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
         const status = event?.raw?.status || "Ready"
         // const currentUserId = localStorage.getItem("currentUserId")
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
+        const currentUserMail = JSON.parse(localStorage.getItem("currentUser")).mail
+
         const newEvent = {
             // id: event?.id || Date.now(),
             // id: event?.id,
@@ -131,7 +133,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
                     } else {
                         socket?.emit("new-notification", {
                             toMail: helper,
-                            fromMail: currentUserId,
+                            fromMail: currentUserMail,
                             text: `assigned you join target ${newEvent.eventName}`,
                             isResolve: 0,
                             // eventId: result.insertId,

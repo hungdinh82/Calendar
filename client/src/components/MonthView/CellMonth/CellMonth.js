@@ -36,7 +36,7 @@ const CellMonth = ({ day, dayOfTheWeek, isToday, isCurrentMonth, listEvents, set
             // const user = listAccounts.filter((account) => Number(currentUser) === Number(account.id))
             const condition = new Date(startEvent).getDate() === new Date(day).getDate() && new Date(startEvent).getMonth() === new Date(day).getMonth()
             const conditionFilter = (filter.done && event.status === "Done") || (filter.ready && event.status === "Ready") || (filter.inProgress && event.status === "In Progress")
-            const conditionUser = event.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))
+            const conditionUser = event.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) )
             // const checkMe = event.helper.length === 0;
             const checkMe = !event.helper || event.helper.length === 0;
             const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
