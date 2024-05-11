@@ -14,6 +14,23 @@ const eventController = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
+    getAllEventsTargetsByCurrentUser: async (req, res) => {
+        try {
+            const currentUserId = req.params.id;
+            const userSql1 = "SELECT * FROM Events WHERE creatorId = ? AND eventType = 'target'";
+            const [result1] = await connect.query(userSql1, [currentUserId]);
+            const userSql2 = "SELECT * FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ?";
+            const [result2] = await connect.query(userSql2, [currentUserId]);
+            // Merge the two result sets
+            const resultMerge = [...result1, ...result2];
+
+            res.json(resultMerge);
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    },
     getEventById: async (req, res) => {
         const eventId = req.params.id;
         const sql = "SELECT * FROM Events WHERE id = ?";

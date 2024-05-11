@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles)
 
-const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type, event, isTargetPage, targetId }) => {
+const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTargetPage, targetId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const [eventType, setEventType] = useState()
@@ -208,7 +208,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, setListEvents, type,
 
 
         }
-        setListEvents(Events)
+        // setListEvents(Events)
         localStorage.setItem("listEvents", JSON.stringify(Events));
         setIsOpen(false)
         form.resetFields();

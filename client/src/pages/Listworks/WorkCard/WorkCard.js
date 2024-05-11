@@ -10,7 +10,7 @@ import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreat
 import styles from './WorkCard.module.scss';
 import './library.scss'
 import { useGetUserByMailsQuery } from "../../../app/api/authService";
-
+import { useDeleteEventMutation } from "../../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -19,7 +19,7 @@ let taskLists = [
     [],
     [],
 ]
-function WorkCard({ event, setListEvents, listEvents, isCreator }) {
+function WorkCard({ event, listEvents, isCreator }) {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams()
     const [Lists, setLists] = useState(taskLists);
@@ -29,6 +29,7 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
     const [helper, setHelper] = useState([]);
 
     const { data: user } = useGetUserByMailsQuery(event.helper);
+    const [deleteEvent] = useDeleteEventMutation();
     // console.log(user);
     function removeObjectFromArray(listEvents, id, calendarid) {
         return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
@@ -44,16 +45,26 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
-                const updateListEvents = listEventsStorage.reduce((res, currentValue) => {
-                    if (currentValue.raw.target === event.id) {
-                        return res
-                    }
-                    return [...res, currentValue]
-                }, [])
-                const listEventsNew = removeObjectFromArray(updateListEvents, event.id, event.calendarId)
-                localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
-                setListEvents(listEventsNew)
+                // const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
+                // const updateListEvents = listEventsStorage.reduce((res, currentValue) => {
+                //     if (currentValue.raw.target === event.id) {
+                //         return res
+                //     }
+                //     return [...res, currentValue]
+                // }, [])
+                // const listEventsNew = removeObjectFromArray(updateListEvents, event.id, event.calendarId)
+                // localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
+                console.log(event.id);
+
+                deleteEvent(event.id).then(
+                    (response) => {
+                        // if (response.data.error !== undefined) {
+                        //     message.error(response.data.error.message);
+                        // } else message.success('Deleted successfully');
+                        console.log(response);
+                    },
+                );
+                // setListEvents(listEventsNew)
                 Swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
@@ -197,7 +208,7 @@ function WorkCard({ event, setListEvents, listEvents, isCreator }) {
                     end={event.end}
                     event={event}
                     type={"update"}
-                    setListEvents={setListEvents}
+                    // setListEvents={setListEvents}
                     isTargetPage={true}
                     targetId={event.id}
                 />
