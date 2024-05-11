@@ -146,9 +146,12 @@ const eventController = {
         const eventId = req.params.id;
         const sqlDeleteEvents = "DELETE FROM Events WHERE id = ?";
         const sqlDeleteHelpers = "DELETE FROM Helpers WHERE eventId = ?";
+        const sqlDeleteNotifies = "DELETE FROM Notifies WHERE eventId = ?";
+
         try {
             await connect.query(sqlDeleteHelpers, [eventId]); // Xóa bản ghi từ bảng Helpers
             const [result] = await connect.query(sqlDeleteEvents, [eventId]); // Xóa bản ghi từ bảng Events
+            await connect.query(sqlDeleteNotifies, [eventId]); // Xóa bản ghi từ bảng Notifies
             if (result.affectedRows === 0) {
                 res.status(404).json({ error: "Event not found" });
             } else {

@@ -14,7 +14,9 @@ const rootReducer = {
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false
+      }).concat(apiService.middleware),
 });
 
 // export const persistor = persistStore(store);

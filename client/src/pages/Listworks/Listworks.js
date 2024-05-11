@@ -16,11 +16,10 @@ function Listworks() {
     // const [events, setEvents] = useState([])
     // console.log(localStorage.getItem("currentUser"));
     // const { data: events, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
-    const { data: events} = useGetAllEventsTargetsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const { data: events } = useGetAllEventsTargetsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const listEvents = events;
     // console.log(useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id));
     // console.log(events);
-
 
 
     // if (isError) {
@@ -46,8 +45,6 @@ function Listworks() {
     //         // setEvents(res.data)
     //     }
     // })
-
-
 
     return (
         <div className={cx('listworks')}>

@@ -3,14 +3,14 @@ import { ArrowUpOutlined, StarFilled, AntDesignOutlined, UserOutlined, StarOutli
 import { Avatar } from 'antd';
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Dropdown, Space, Tooltip } from "antd"
+import { Dropdown, Space, Tooltip, message } from "antd"
 import Swal from "sweetalert2";
 import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreateEvent";
 
 import styles from './WorkCard.module.scss';
 import './library.scss'
 // import { useGetUserByMailsQuery } from "../../../app/api/authService";
-import { useDeleteEventMutation } from "../../../app/api/eventService";
+import { useDeleteEventMutation} from "../../../app/api/eventService";
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../../app/api/authService";
 
@@ -62,9 +62,9 @@ function WorkCard({ event, listEvents, isCreator }) {
 
                 deleteEvent(event.id).then(
                     (response) => {
-                        // if (response.data.error !== undefined) {
-                        //     message.error(response.data.error.message);
-                        // } else message.success('Deleted successfully');
+                        if (response.data.error !== undefined) {
+                            message.error(response.data.error.message);
+                        } else message.success('Deleted successfully');
                         console.log(response);
                     },
                 );

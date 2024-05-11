@@ -5,7 +5,7 @@ import { Popover } from 'antd'
 import PopUp from '../../PopUp/PopUp'
 const cx = classNames.bind(styles)
 
-const EventCard = ({ event, key, setOpenParent, setListEvents }) => {
+const EventCard = ({ event, setOpenParent, setListEvents }) => {
     const [bg, setBg] = useState()
     const [borderColor, setBorderColor] = useState()
     const [open, setOpen] = useState(false)
@@ -30,7 +30,7 @@ const EventCard = ({ event, key, setOpenParent, setListEvents }) => {
     useEffect(() => setColor(), [event])
     return (
         <Popover content={<PopUp event={event} callBack={[setOpen, setOpenParent]} setListEvents={setListEvents}></PopUp>} trigger="click" open={open} onOpenChange={() => setOpen(prev => !prev)}>
-            <div className={cx("layout")} style={{ background: bg, borderColor: borderColor, cursor: "pointer" }} key={key}>{event.eventName}</div>
+            <div className={cx("layout")} style={{ background: bg, borderColor: borderColor, cursor: "pointer" }} >{event.eventName}</div>
         </Popover>
     )
 }

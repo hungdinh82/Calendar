@@ -12,13 +12,15 @@ const cx = classNames.bind(styles);
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, filter }) => {
-    const [listEvents, setListEvents] = useState()
+    // const [listEvents, setListEvents] = useState()
     const indexDayOfWeekStart = dateRangeStart.getDay() - 1
     const indexDayOfWeekEnd = dateRangeEnd.getDay()
     const countStart = -indexDayOfWeekStart;
     const countEnd = Math.round((Date.parse(dateRangeEnd) - Date.parse(dateRangeStart)) / 86400000);
 
-    const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const listEvents =  eventsPush ? eventsPush : [];
+    console.log(listEvents);
 
     const addDays = (date, index) => {
         var dat = new Date(date)
@@ -38,16 +40,16 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
         listDayOfMonthView.push(addDays(dateRangeStart, i));
     }
 
-    const fetchData = () => {
-        // const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        const events =  eventsPush ? eventsPush : [];
-        const filterEvents = events.filter((e) => (e?.eventType === "todo"))
-        setListEvents(filterEvents);
-    }
+    // const fetchData = () => {
+    //     // const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+    //     const events =  eventsPush ? eventsPush : [];
+    //     const filterEvents = events.filter((e) => (e?.eventType === "todo"))
+    //     setListEvents(filterEvents);
+    // }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
+    // useEffect(() => {
+    //     fetchData()
+    // }, [])
 
 
 
@@ -71,7 +73,7 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
                                     isToday={isToday}
                                     isCurrentMonth={isCurrentMonth}
                                     listEvents={listEvents}
-                                    setListEvents={setListEvents}
+                                    // setListEvents={setListEvents}
                                 />
                             </div>
 

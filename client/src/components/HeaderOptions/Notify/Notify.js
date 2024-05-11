@@ -59,13 +59,13 @@ function Notify() {
     return (
         <div className={cx("notify")}>
             {/* {newNotification && <NotifyItem notify={newNotification} ></NotifyItem>} */}
-            {notifications?.map((item) => {
+            {notifications?.map((item, index) => {
                 // const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
                 // const currentUserId = localStorage.getItem("currentUserId")
                 // const user = listAccounts.filter((account) => Number(account.id) === Number(currentUserId))
                 // const user = JSON.parse(localStorage.getItem("currentUser"))
                 // if (item.toMail === user[0].mail) return <NotifyItem notify={item} ></NotifyItem>
-                return <NotifyItem notify={item} ></NotifyItem>
+                return <NotifyItem key={index} notify={item} ></NotifyItem>
             })}
         </div>
     );
