@@ -78,7 +78,7 @@ function Listworks() {
                                                     event={event}
                                                     // setListEvents={setListEvents}
                                                     listEvents={events}
-                                                    isCreator={event.creatorId === localStorage.getItem("currentUser").id}
+                                                    isCreator={event.creatorId === JSON.parse(localStorage.getItem("currentUser")).id}
                                                 ></WorkCard>
                                             </div>
                                         })}

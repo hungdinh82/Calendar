@@ -30,12 +30,9 @@ function WorkCard({ event, listEvents, isCreator }) {
     const [isOpen, setIsOpen] = useState(false)
     // const [helper, setHelper] = useState([]);
 
-    // const { data: user } = useGetUserByMailsQuery(event.helper);
     const [deleteEvent] = useDeleteEventMutation();
-    // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
-    console.log(creator);
 
 
     function removeObjectFromArray(listEvents, id, calendarid) {
