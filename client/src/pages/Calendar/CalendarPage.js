@@ -29,7 +29,7 @@ import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
 import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
-import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+// import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 
 
 const dateFormat = 'YYYY-MM-DD'

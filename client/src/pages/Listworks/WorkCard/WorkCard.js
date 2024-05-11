@@ -9,8 +9,10 @@ import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreat
 
 import styles from './WorkCard.module.scss';
 import './library.scss'
-import { useGetUserByMailsQuery } from "../../../app/api/authService";
+// import { useGetUserByMailsQuery } from "../../../app/api/authService";
 import { useDeleteEventMutation } from "../../../app/api/eventService";
+import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
+import { useGetCreatorByIdQuery } from "../../../app/api/authService";
 
 const cx = classNames.bind(styles);
 
@@ -26,11 +28,16 @@ function WorkCard({ event, listEvents, isCreator }) {
     const [width, setWidth] = useState((Lists[2]?.length / (Lists[0]?.length + Lists[1]?.length + Lists[2]?.length)) * 100 + '%');
     const [target, setTarget] = useState()
     const [isOpen, setIsOpen] = useState(false)
-    const [helper, setHelper] = useState([]);
+    // const [helper, setHelper] = useState([]);
 
-    const { data: user } = useGetUserByMailsQuery(event.helper);
+    // const { data: user } = useGetUserByMailsQuery(event.helper);
     const [deleteEvent] = useDeleteEventMutation();
-    // console.log(user);
+    // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
+    const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
+    console.log(creator);
+
+
     function removeObjectFromArray(listEvents, id, calendarid) {
         return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
     }
@@ -132,15 +139,15 @@ function WorkCard({ event, listEvents, isCreator }) {
         setLists(taskLists)
     }
 
-    const getHelper = () => {
-        // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        // let listAccounts = event.helper;
-        // const listHelper = listAccounts.filter((account) => {
-        //     return event.helper.includes(account.mail) || Number(event.creatorId) === Number(account.id);
-        // })
-        // console.log(event.helper);
-        setHelper(event.helper)
-    }
+    // const getHelper = () => {
+    //     // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+    //     // let listAccounts = event.helper;
+    //     // const listHelper = listAccounts.filter((account) => {
+    //     //     return event.helper.includes(account.mail) || Number(event.creatorId) === Number(account.id);
+    //     // })
+    //     // console.log(event.helper);
+    //     setHelper(event.helper)
+    // }
 
     useEffect(() => {
         const lamTronSo = (Lists[2]?.length / (Lists[0]?.length + Lists[1]?.length + Lists[2]?.length)).toFixed(4);
@@ -152,9 +159,12 @@ function WorkCard({ event, listEvents, isCreator }) {
         filterEvent()
     }, [searchParams.get("eventId"), listEvents])
 
-    useEffect(() => {
-        getHelper();
-    }, [event])
+    // useEffect(() => {
+    //     getHelper();
+    // }, [event])
+
+    // useEffect(() => {
+    // }, [helpers])
     return (
         <div className={cx('card') + " card"} onClick={() => { navigate(`/overview?eventId=${event.id}`) }}>
             <div className={cx('card-header')}>
@@ -182,8 +192,11 @@ function WorkCard({ event, listEvents, isCreator }) {
                 </div>
                 <div className={cx('members')} onClick={(e) => e.stopPropagation()}>
                     <Avatar.Group size="small" maxCount={4} maxStyle={{ color: 'white', backgroundColor: '#413E54' }}>
+                        <Tooltip title={creator?.userName} placement="bottom">
+                            <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={creator?.avatar} />
+                        </Tooltip>
                         {
-                            helper?.map((helper) => (
+                            helpers?.map((helper) => (
                                 <Tooltip title={helper.userName} placement="bottom">
                                     <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
                                 </Tooltip>

@@ -22,15 +22,11 @@ export const AuthService = apiService.injectEndpoints({
             query: (mail) => `api/user/${mail}`,
             providesTags: ['user'],
         }),
-        getUserByMails: builder.query({
-            query: (data) => ({
-                url: `api/user/`,
-                method: 'POST',
-                body: data,
-            }),
+        getCreatorById: builder.query({
+            query: (userId) => `api/user/creator/${userId}`,
             providesTags: ['user'],
         }),
     }),
 });
 
-export const { useSignInMutation, useSignUpMutation, useGetUserByMailQuery, useGetUserByMailsQuery } = AuthService;
+export const { useSignInMutation, useSignUpMutation, useGetUserByMailQuery,  useGetCreatorByIdQuery } = AuthService;

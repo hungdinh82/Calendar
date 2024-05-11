@@ -29,7 +29,7 @@ import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
 import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
-import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+// import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 
 
 const dateFormat = 'YYYY-MM-DD'
@@ -50,8 +50,8 @@ function CalendarEvent() {
         Events?.map((event) => {
             // kiểm tra xem event này có helper là currentUser không
             console.log(event);
-            const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
-            console.log(helpers)
+            // const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
+            // console.log(helpers)
 
             if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
                 let backgroundColor = null;

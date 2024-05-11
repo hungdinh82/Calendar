@@ -7,7 +7,7 @@ const user = (app) => {
   router.post("/signIn", userController.signIn);
   router.post("/signUp", userController.signUp);
   router.get("/:mail", userController.getUserByMail); 
-  router.post("/", userController.getUserByMails); 
+  router.get("/creator/:userId", userController.getCreatorById);
 };
 
 export default user;

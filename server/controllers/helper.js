@@ -3,7 +3,7 @@ import { connect } from "../db.js";
 const helperController = {
     getAllHelperByEventId: async (req, res) => {
         const eventId = req.params.eventId;
-        const sql = "SELECT * FROM Helpers WHERE eventId = ?";
+        const sql = "SELECT * FROM Helpers,Accounts WHERE Helpers.userId = Accounts.id AND eventId = ?";
         
         try {
             // Execute the SQL query
