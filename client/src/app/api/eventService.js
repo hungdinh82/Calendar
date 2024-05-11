@@ -1,5 +1,5 @@
 import { apiService } from '../store/apiService';
-0
+
 export const eventService = apiService.injectEndpoints({
     endpoints: (builder) => ({
         getAllEventsByCurrentUser: builder.query({

@@ -2,8 +2,13 @@ import { apiService } from '../store/apiService';
 
 export const notiService = apiService.injectEndpoints({
     endpoints: (builder) => ({
-        getAllNotificationsByToMail: builder.query({
+        // getAllNotificationsByToMail: builder.query({
+        //     query: (toMail) => `api/noti/${toMail}`,
+        //     providesTags: ['notifications'],
+        // }),
+        getAllNotificationsByToMail: builder.mutation({
             query: (toMail) => `api/noti/${toMail}`,
+            method: 'GET',
             providesTags: ['notifications'],
         }),
         updateNotification: builder.mutation({
@@ -25,4 +30,4 @@ export const notiService = apiService.injectEndpoints({
     
 });
 
-export const { useGetAllNotificationsByToMailQuery, useUpdateNotificationMutation, useDeleteNotificationMutation } = notiService;
+export const { useGetAllNotificationsByToMailMutation, useUpdateNotificationMutation, useDeleteNotificationMutation } = notiService;
