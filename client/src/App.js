@@ -40,6 +40,7 @@ function App() {
             dispatch(updateUserOnline(currentUser));
         }
     }, []);
+    
     return (
         <Routes>
             <Route path="/" element={<CalendarPage />} />

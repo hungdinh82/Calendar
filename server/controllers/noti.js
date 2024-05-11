@@ -3,7 +3,7 @@ import { connect } from "../db.js";
 const notiController = {
     getAllNotificationsByToMail: async (req, res) => {
         const { toMail } = req.params;
-        let sql = "SELECT Notifies.id AS id, Notifies.toMail, Notifies.fromMail, Notifies.text, Notifies.isResolve, Notifies.eventId AS notifyEventId, Events.id AS eventId, Events.eventName, Events.calendarId, Events.start, Events.end, Events.eventType, Events.description, Events.status, Events.creatorId, Events.target FROM Notifies JOIN Events ON Notifies.eventId = Events.id WHERE toMail = ?; ";
+        let sql = "SELECT Notifies.id AS id, Notifies.toMail, Notifies.fromMail, Notifies.text, Notifies.isResolve, Notifies.isAccept, Notifies.eventId AS notifyEventId, Events.id AS eventId, Events.eventName, Events.calendarId, Events.start, Events.end, Events.eventType, Events.description, Events.status, Events.creatorId, Events.target FROM Notifies JOIN Events ON Notifies.eventId = Events.id WHERE toMail = ?; ";
         let queryParams = [toMail];
 
         try {

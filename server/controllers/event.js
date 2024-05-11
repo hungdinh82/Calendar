@@ -88,6 +88,7 @@ const eventController = {
                     0
                 ];
                 connect.query(sql3, values3);
+                console.log(values3);
             })
             // add default important
             const sql3 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
