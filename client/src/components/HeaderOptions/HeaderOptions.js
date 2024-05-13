@@ -39,7 +39,7 @@ function HeaderOptions({ calendar = false }) {
     useEffect(() => {
         getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(
             (response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 var reverseNoti = response.data.slice(); 
                 reverseNoti.reverse();
                 setNotifications(reverseNoti);

@@ -11,6 +11,7 @@ import TaskBar from './TaskBar/Taskbar';
 import Detail from './Detail/Detail';
 import Comment from '../../components/Comment/Comment';
 import HeaderOptions from '../../components/HeaderOptions/HeaderOptions';
+import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery } from "../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -23,97 +24,64 @@ let taskLists = [
 function Overview() {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    const [Lists, setLists] = useState(taskLists)
-    const [width, setWidth] = useState((Lists[2].length / (Lists[0].length + Lists[1].length + Lists[2].length)) * 100 + '%')
+    // const [Lists, setLists] = useState(taskLists)
+    // const [width, setWidth] = useState((Lists[2].length / (Lists[0].length + Lists[1].length + Lists[2].length)) * 100 + '%')
     const [filterType, setFilterType] = useState("All");
     const [isShowSideBar, setIsShowSideBar] = useState(true);
     const [listEvents, setListEvents] = useState([]);
     const [target, setTarget] = useState()
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
-
-    function updateArrayObjects(listEvents, id, calendarId, changes) {
-        return listEvents.map(obj => {
-            if (obj.id === id && obj.calendarId === calendarId) {
-                return { ...obj, ...changes }
-            }
-            return obj;
-        });
-    }
-
-    const onChangeLists = (event, newprocess, coloumnId, userNumber) => {
-        const temp = JSON.parse(JSON.stringify(Lists))
-        const newLists = temp.reduce((result, currentValue, index) => {
-
-            if (newprocess === "Ready" && index === 0) {
-                return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
-            }
-            if (newprocess === "In Progress" && index === 1) {
-                return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
-            }
-            if (newprocess === "Done" && index === 2)
-                return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
-
-            if (index === coloumnId) {
-                const newArr = currentValue.reduce((res, element, index) => {
-                    if (element.id === event.id)
-                        return res;
-                    return [...res, element];
-                }, []);
-                return [...result, newArr];
-            }
-            return [...result, currentValue]
-        }, []);
+    console.log(Number(searchParams.get("eventId")));
+    const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
+    const { data: targetTo } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
+    console.log(todos);
 
 
-        setLists(newLists);
-        newLists.map((status) => {
-            status.map((event) => {
-                const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-                const eventsNew = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, status: event.raw.status } })
-                localStorage.setItem("listEvents", JSON.stringify(eventsNew));
-            })
-        })
+    // const onChangeLists = (event, newprocess, coloumnId, userNumber) => {
+    //     const temp = JSON.parse(JSON.stringify(Lists))
+    //     const newLists = temp.reduce((result, currentValue, index) => {
 
-    }
+    //         if (newprocess === "Ready" && index === 0) {
+    //             return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
+    //         }
+    //         if (newprocess === "In Progress" && index === 1) {
+    //             return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
+    //         }
+    //         if (newprocess === "Done" && index === 2)
+    //             return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
 
-    const filterEvent = () => {
-        const targetArray = listEvents.filter((event) => {
-            return Number(event.id) === Number(searchParams.get("eventId"))
-        })
-        setTarget(targetArray[0])
-        const eventsOfTarget = listEvents.filter((event) => {
-            return Number(event.raw.target) === Number(targetArray[0].id)
-        })
-        const listReady = eventsOfTarget.filter((event) => event.raw.status === "Ready")
-        const listInprocess = eventsOfTarget.filter((event) => event.raw.status === "In Progress")
-        const listDone = eventsOfTarget.filter((event) => event.raw.status === "Done")
-
-        taskLists = [
-            listReady,
-            listInprocess,
-            listDone
-        ]
-        setLists(taskLists)
-    }
+    //         if (index === coloumnId) {
+    //             const newArr = currentValue.reduce((res, element, index) => {
+    //                 if (element.id === event.id)
+    //                     return res;
+    //                 return [...res, element];
+    //             }, []);
+    //             return [...result, newArr];
+    //         }
+    //         return [...result, currentValue]
+    //     }, []);
 
 
-    useEffect(() => {
-        setWidth((Lists[2].length / (Lists[0].length + Lists[1].length + Lists[2].length)) * 100 + '%');
-    }, [Lists])
+    //     setLists(newLists);
+    //     newLists.map((status) => {
+    //         status.map((event) => {
+    //             const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+    //             const eventsNew = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, status: event.raw.status } })
+    //             localStorage.setItem("listEvents", JSON.stringify(eventsNew));
+    //         })
+    //     })
 
-    useEffect(() => {
-        const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        setListEvents(Events)
-    }, [])
+    // }
 
-    useEffect(() => {
-        filterEvent()
-    }, [searchParams.get("eventId"), listEvents])
+    // useEffect(() => {
+    //     setWidth((Lists[2].length / (Lists[0].length + Lists[1].length + Lists[2].length)) * 100 + '%');
+    // }, [Lists])
 
-    useEffect(() => {
-        const currentUserId = localStorage.getItem("currentUserId")
-        setIsCreatorTarget(Number(target?.raw?.creatorId) === Number(currentUserId))
-    }, [target])
+
+    // useEffect(() => {
+    //     const currentUserId = localStorage.getItem("currentUserId")
+    //     setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
+    // }, [target])
 
 
     return (
@@ -124,7 +92,7 @@ function Overview() {
                     <div className={cx(isShowSideBar ? 'col l-2-4' : 'col l-1')}>
                         <Sidebar
                             show={setIsShowSideBar}
-                            setListEvents={setListEvents}
+                            // setListEvents={setListEvents}
                             targetId={target?.id}
                             listEvents={listEvents}
                         ></Sidebar>
@@ -148,11 +116,11 @@ function Overview() {
                                                     <div className={cx('left-bar-body')}>
                                                         <div className={cx('left-bar-body_text')}>
                                                             <span className={cx('text-title')}>Completed :</span>
-                                                            <span className={cx('text-content')}>{Lists[2].length + '/' + (Lists[0].length + Lists[1].length + Lists[2].length)}</span>
+                                                            {/* <span className={cx('text-content')}>{Lists[2].length + '/' + (Lists[0].length + Lists[1].length + Lists[2].length)}</span> */}
                                                         </div>
                                                         <div className={cx('left-bar-body_process')}>
                                                             <div className={cx('process-bar')}>
-                                                                <div className={cx('process-value')} style={{ width: width }}></div>
+                                                                {/* <div className={cx('process-value')} style={{ width: width }}></div> */}
                                                             </div>
 
                                                         </div>
@@ -162,19 +130,19 @@ function Overview() {
                                                     <div className={cx('right-bar-lists')}>
                                                         <div className={cx('right-bar-item')} >
                                                             <div className={cx('item-title')}>Total :</div>
-                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #0F75DC" }}>{(Lists[0].length + Lists[1].length + Lists[2].length)}</div>
+                                                            {/* <div className={cx('item-content')} style={{ 'border-left': "2px solid #0F75DC" }}>{(Lists[0].length + Lists[1].length + Lists[2].length)}</div> */}
                                                         </div>
                                                         <div className={cx('right-bar-item')} >
                                                             <div className={cx('item-title')}>Ready :</div>
-                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #FAAE83" }}>{Lists[0].length}</div>
+                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #FAAE83" }}>{todos?.filter((event) => event.status === "Ready").length}</div>
                                                         </div>
                                                         <div className={cx('right-bar-item')} >
                                                             <div className={cx('item-title')}>In progress :</div>
-                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #FAAE83" }}>{Lists[1].length}</div>
+                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #FAAE83" }}>{todos?.filter((event) => event.status === "In Progress").length}</div>
                                                         </div>
                                                         <div className={cx('right-bar-item')} >
                                                             <div className={cx('item-title')}>Done :</div>
-                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #95E2A6" }}>{Lists[2].length}</div>
+                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #95E2A6" }}>{todos?.filter((event) => event.status === "Done").length}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -206,37 +174,37 @@ function Overview() {
                                                         />
                                                     </div>
                                                     <div className={cx('task-list')}>
-                                                        {(filterType === "In Progress" || filterType === "All") && Lists[1].map((value, index) => {
+                                                        {(filterType === "In Progress" || filterType === "All") && todos?.filter((event) => event.status === "In Progress").map((value, index) => {
                                                             return <TaskBar
-                                                                setLists={onChangeLists}
+                                                                // setLists={onChangeLists}
                                                                 key={value.id}
                                                                 event={value}
                                                                 userNumber={2}
                                                                 coloumnId={1}
-                                                                setListEvents={setListEvents}
+                                                                // setListEvents={setListEvents}
                                                                 isCreatorTarget={isCreatorTarget}
                                                             ></TaskBar>
                                                         })}
-                                                        {(filterType === "Ready" || filterType === "All") && Lists[0].map((value, index) => {
+                                                        {(filterType === "Ready" || filterType === "All") && todos?.filter((event) => event.status === "Ready").map((value, index) => {
                                                             return <TaskBar
-                                                                setLists={onChangeLists}
+                                                                // setLists={onChangeLists}
                                                                 key={value.id}
                                                                 event={value}
                                                                 userNumber={2}
                                                                 coloumnId={0}
-                                                                setListEvents={setListEvents}
+                                                                // setListEvents={setListEvents}
                                                                 isCreatorTarget={isCreatorTarget}
                                                             ></TaskBar>
 
                                                         })}
-                                                        {(filterType === "Done" || filterType === "All") && Lists[2].map((value, index) => {
+                                                        {(filterType === "Done" || filterType === "All") && todos?.filter((event) => event.status === "Done").map((value, index) => {
                                                             return <TaskBar
-                                                                setLists={onChangeLists}
+                                                                // setLists={onChangeLists}
                                                                 key={value.id}
                                                                 event={value}
                                                                 userNumber={2}
                                                                 coloumnId={2}
-                                                                setListEvents={setListEvents}
+                                                                // setListEvents={setListEvents}
                                                                 isCreatorTarget={isCreatorTarget}
                                                             ></TaskBar>
 
@@ -257,7 +225,10 @@ function Overview() {
                                             <div className={cx('content-wrapper')}>
                                                 <div className={cx('detail')}>
                                                     <div className={cx('content-title')}>Detail</div>
-                                                    <Detail event={target} setListEvents={setListEvents}></Detail>
+                                                    {/* {console.log(target)}   */}
+                                                    <Detail event={target}
+                                                    // setListEvents={setListEvents}
+                                                    ></Detail>
                                                 </div>
 
                                                 <div className={cx('comment')}>

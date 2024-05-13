@@ -10,6 +10,10 @@ export const eventService = apiService.injectEndpoints({
             query: (id) => `api/event/getTargets/currentUser/${id}`,
             providesTags: ['event'],
         }),
+        getAllTodoByTargetId: builder.query({
+            query: (targetId) =>  `api/event/target/${targetId}/todos`,
+            providesTags: ['event'],
+        }),
         getEventById: builder.query({
             query: (id) => `api/event/${id}`,
             providesTags: ['event'],
@@ -45,4 +49,4 @@ export const eventService = apiService.injectEndpoints({
 
 });
 
-export const { useGetAllEventsByCurrentUserQuery, useGetAllEventsTargetsByCurrentUserQuery, useGetEventByIdQuery, useGetTodosByTargetQuery, useCreateEventMutation, useEditEventMutation, useDeleteEventMutation } = eventService;
+export const { useGetAllEventsByCurrentUserQuery, useGetAllEventsTargetsByCurrentUserQuery, useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useGetTodosByTargetQuery, useCreateEventMutation, useEditEventMutation, useDeleteEventMutation } = eventService;

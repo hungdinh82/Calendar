@@ -20,7 +20,6 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
 
     const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const listEvents =  eventsPush ? eventsPush : [];
-    console.log(listEvents);
 
     const addDays = (date, index) => {
         var dat = new Date(date)

@@ -31,6 +31,19 @@ const eventController = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
+    getAllTodoByTargetId: async (req, res) => {
+        try {
+            const { targetId } = req.params;
+    
+            // Query all events with the given targetId and eventType is 'todo'
+            const sql = "SELECT * FROM Events WHERE target = ? AND eventType = 'todo'";
+            const [result] = await connect.query(sql, [targetId]);
+            res.json(result);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    },    
     getEventById: async (req, res) => {
         const eventId = req.params.id;
         const sql = "SELECT * FROM Events WHERE id = ?";

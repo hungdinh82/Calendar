@@ -5,7 +5,7 @@ import styles from './Listworks.module.scss';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import WorkCard from "./WorkCard/WorkCard";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
-import { useGetAllEventsByCurrentUserQuery, useGetAllEventsTargetsByCurrentUserQuery } from "../../app/api/eventService";
+import { useGetAllEventsTargetsByCurrentUserQuery } from "../../app/api/eventService";
 
 
 const cx = classNames.bind(styles);

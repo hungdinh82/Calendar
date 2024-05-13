@@ -36,7 +36,7 @@ function PopUp({ event, callBack, setListEvents }) {
     const [isOpenDetail, setIsOpenDetail] = useState(false);
 
     let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    const user = listAccounts.filter((account) => Number(event.raw.creatorId) === Number(account.id))
+    const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
     const [target, setTarget] = useState()
     const [startTime, setStartTime] = useState();
     const [startDate, setStartDate] = useState();
@@ -125,7 +125,7 @@ function PopUp({ event, callBack, setListEvents }) {
             }
 
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(event.raw.creatorId) === Number(account.id))
+            const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
             setCreator(user[0])
             if (user[0].userName.includes("quang")) {
                 setCreatorAvatar(avatar_quang);

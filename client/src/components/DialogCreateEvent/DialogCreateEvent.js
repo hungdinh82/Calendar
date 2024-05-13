@@ -32,7 +32,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const [optionTarget, setOptionTarget] = useState([])
     const socket = useSelector((state) => state.socket.socket);
 
-    const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [createEvent] = useCreateEventMutation();
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
