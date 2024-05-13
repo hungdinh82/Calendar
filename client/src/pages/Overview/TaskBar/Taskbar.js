@@ -75,7 +75,7 @@ function TaskBar({ callback, isCreatorTarget, event, protype, userNumber = 1, co
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
                     event={event}
-                    setListEvents={setListEvents}
+                    // setListEvents={setListEvents}
                 />
             }
         </>

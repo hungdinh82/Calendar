@@ -58,7 +58,7 @@ function PopUp({ event, callBack, setListEvents }) {
 
     const getHelper = () => {
         let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const currentUserId = localStorage.getItem("currentUserId")
+        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
         const listHelper = listAccounts.filter((account) => {
             return event.raw.helper?.includes(account.mail);
         })

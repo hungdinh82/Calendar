@@ -246,7 +246,7 @@ function WorkProgress() {
     }, [searchParams.get("eventId"), listEvents])
 
     useEffect(() => {
-        const currentUserId = localStorage.getItem("currentUserId")
+        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
         setIsCreatorTarget(Number(target?.raw?.creatorId) === Number(currentUserId))
     }, [target])
 

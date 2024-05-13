@@ -52,7 +52,7 @@ function HeaderOptions({ calendar = false }) {
         let notifyLength = 0;
         listInformation.map((notify) => {
             const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const currentUserId = localStorage.getItem("currentUserId")
+            const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
             const user = listAccounts.filter((account) => Number(account.id) === Number(currentUserId))
             if (notify?.toMail === user[0]?.mail && !notify.isResolve) notifyLength++;
         })

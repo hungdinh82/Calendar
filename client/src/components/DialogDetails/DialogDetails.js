@@ -14,12 +14,15 @@ import { useEffect, useState } from "react"
 import DialogCreateEvent from "../DialogCreateEvent/DialogCreateEvent"
 import { useNavigate } from "react-router-dom"
 import "./library.scss"
+import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+import { useEditEventMutation } from "../../app/api/eventService";
+
 
 const cx = classNames.bind(styles)
 
 const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) => {
     const navigate = useNavigate();
-    const [filterType, setFilterType] = useState(event.raw.status);
+    const [filterType, setFilterType] = useState(event.status);
     const [colorSelect, setColorSelect] = useState()
     const [target, setTarget] = useState()
     const [startTime, setStartTime] = useState();
@@ -28,38 +31,47 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
     const [endDate, setEndDate] = useState();
     const [creator, setCreator] = useState();
     const [creatorAvatar, setCreatorAvatar] = useState();
-    const [helper, setHelper] = useState([]);
+    // const [helper, setHelper] = useState([]);
     const [isPermission, setIsPermission] = useState([]);
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
 
-    function updateArrayObjects(listEvents, id, calendarId, changes) {
-        return listEvents.map(obj => {
-            if (obj.id === id && obj.calendarId === calendarId) {
-                return { ...obj, ...changes }
-            }
-            return obj;
-        });
-    }
+    const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
+    const [editEvent] = useEditEventMutation();
+
+
+    // function updateArrayObjects(listEvents, id, calendarId, changes) {
+    //     return listEvents.map(obj => {
+    //         if (obj.id === id && obj.calendarId === calendarId) {
+    //             return { ...obj, ...changes }
+    //         }
+    //         return obj;
+    //     });
+    // }
 
     const handleOnOk = () => {
-        const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        const newEvents = updateArrayObjects(events, event.id, event.calendarId, { raw: { ...event.raw, status: filterType } })
-        localStorage.setItem("listEvents", JSON.stringify(newEvents));
-        setListEvents(newEvents)
+        // const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // const newEvents = updateArrayObjects(events, event.id, event.calendarId, { raw: { ...event.raw, status: filterType } })
+        // localStorage.setItem("listEvents", JSON.stringify(newEvents));
+        // setListEvents(newEvents)
+        // editEvent({
+        //     id: event.id, data: {
+        //         ...event, status: filterType
+        //     }
+        // });
         setIsOpen(false)
     }
 
     const getHelper = () => {
         let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const currentUserId = localStorage.getItem("currentUserId")
-        const listHelper = listAccounts.filter((account) => {
-            return event.helper.includes(account.mail);
-        })
-        setHelper(listHelper)
+        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
+        // const listHelper = listAccounts.filter((account) => {
+        //     return event.helper.includes(account.mail);
+        // })
+        // setHelper(listHelper)
         const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        setIsPermission(Number(event.raw.creatorId) === Number(currentUserId) || event.raw.helper.includes(user[0].mail))
-        setIsCreatorTarget(Number(target?.raw?.creatorId) === Number(currentUserId))
+        setIsPermission(Number(event.creatorId) === Number(currentUserId) || event.helper.includes(user[0].mail))
+        setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
     }
 
 
@@ -82,10 +94,10 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            if (event.raw.target) {
+            if (event.target) {
                 const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
                 const eventArray = Events.filter((e) => {
-                    return Number(e.id) === Number(event.raw.target)
+                    return Number(e.id) === Number(event.target)
                 })
                 setTarget(eventArray[0])
             }
@@ -130,7 +142,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                     okButtonProps={{ disabled: isOnlyView }}
                 >
                     {
-                        event.raw.target &&
+                        event.target &&
                         <div className={cx('sub-header')} onClick={() => {
                             navigate(`/overview?eventId=${target.id}`)
                             setIsOpen(false)
@@ -166,7 +178,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                         <div className={cx("description-layout")}>
                             <div className={cx("description-label")} >Description</div>
                             <div className={cx("description-content")}>
-                                <div dangerouslySetInnerHTML={{ __html: event.raw.description }} />
+                                <div dangerouslySetInnerHTML={{ __html: event.description }} />
                             </div>
                         </div>
                         <div className={cx("detail-comment-layout")}>
