@@ -37,8 +37,7 @@ function Overview() {
     const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
     (todos?.filter((event) => event.status === "Ready").length + 
     todos?.filter((event) => event.status === "In Progress").length + 
-    todos?.filter((event) => event.status === "Done").length)) * 100 + '%')
-    // console.log(todos);
+    todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
 
 
     // const onChangeLists = (event, newprocess, coloumnId, userNumber) => {
@@ -85,10 +84,10 @@ function Overview() {
     }, [todos])
 
 
-    // useEffect(() => {
-    //     const currentUserId = localStorage.getItem("currentUserId")
-    //     setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
-    // }, [target])
+    useEffect(() => {
+        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
+        setIsCreatorTarget(Number(target?.creatorId) == Number(currentUserId))
+    }, [target])
 
 
     return (

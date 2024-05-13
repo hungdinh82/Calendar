@@ -7,28 +7,33 @@ import DialogDetails from "../../../components/DialogDetails/DialogDetails";
 import styles from './TaskBar.module.scss';
 import './library.scss'
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
+import { useEditEventMutation } from "../../../app/api/eventService";
+
 
 const cx = classNames.bind(styles);
 
 function TaskBar({ callback, isCreatorTarget, event, protype, userNumber = 1, coloumnId, setLists, disabled = false, process = "", border = false, setListEvents }) {
     const navigate = useNavigate();
-    const [processType, setProcesstype] = useState(event?.raw?.status);
+    const [processType, setProcesstype] = useState(event?.status);
     const [isOpen, setIsOpen] = useState(false)
-    // const [helper, setHelper] = useState([]);
     const [isPermission, setIsPermission] = useState(false);
-    // console.log(event.eventId);
     const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
-    console.log(helper);
+    const [editEvent] = useEditEventMutation();
     const handleChangeSelect = (value) => {
         if (value !== protype) {
-            setLists(event, value, coloumnId, userNumber)
+            editEvent({
+                id: event.id, data: {
+                    ...event, status: value
+                }
+            });
             setProcesstype(value);
         }
     }
 
+
     return (
         <>
-            <div className={cx('taskbar', border ? "border" : "") + " taskbarLibrary"} onClick={() => { setIsOpen(true); if(callback) callback(false) }}>
+            <div className={cx('taskbar', border ? "border" : "") + " taskbarLibrary"} onClick={() => { setIsOpen(true); if (callback) callback(false) }}>
                 <div className={cx('task-content')}>
                     <div className={cx('content-title')}>{event?.eventName}</div>
                     <div className={cx('right-content')}>

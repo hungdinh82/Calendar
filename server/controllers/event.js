@@ -1,4 +1,5 @@
 import { connect } from "../db.js";
+import moment from 'moment';
 
 const eventController = {
     getAllEventsByCurrentUser: async (req, res) => {
@@ -34,7 +35,7 @@ const eventController = {
     getAllTodoByTargetId: async (req, res) => {
         try {
             const { targetId } = req.params;
-    
+
             // Query all events with the given targetId and eventType is 'todo'
             const sql = "SELECT * FROM Events WHERE target = ? AND eventType = 'todo'";
             const [result] = await connect.query(sql, [targetId]);
@@ -43,7 +44,7 @@ const eventController = {
             console.error(error);
             res.status(500).json({ error: "Internal server error" });
         }
-    },    
+    },
     getEventById: async (req, res) => {
         const eventId = req.params.id;
         const sql = "SELECT * FROM Events WHERE id = ?";
@@ -101,7 +102,6 @@ const eventController = {
                     0
                 ];
                 connect.query(sql3, values3);
-                console.log(values3);
             })
             // add default important
             const sql3 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
@@ -111,10 +111,72 @@ const eventController = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
+    // editEvent: async (req, res) => {
+    //     const eventData = req.body;
+    //     const eventId = req.params.id; // Lấy ID của sự kiện cần cập nhật từ URL
+    //     // Định dạng lại startDate và endDate
+    //     const formattedStartDate = moment(eventData.startDate).format("YYYY-MM-DD HH:mm:ss");
+    //     const formattedEndDate = moment(eventData.endDate).format("YYYY-MM-DD HH:mm:ss");
+
+    //     // Cập nhật giá trị mới vào eventData
+    //     eventData.start = formattedStartDate;
+    //     eventData.end = formattedEndDate;
+
+    //     console.log(eventData);
+
+    //     // Cập nhật sự kiện trong bảng Events
+    //     const updateEventSql = "UPDATE Events SET eventName = ?, calendarId = ?, start = ?, end = ?, eventType = ?, description = ?, status = ?, creatorId = ?, target = ? WHERE id = ?";
+    //     const updateEventValues = [
+    //         eventData.eventName,
+    //         eventData.calendarId,
+    //         eventData.start,
+    //         eventData.end,
+    //         eventData.eventType,
+    //         eventData.description,
+    //         eventData.status,
+    //         eventData.creatorId,
+    //         eventData.target,
+    //         eventId // Sử dụng ID của sự kiện để xác định sự kiện cần cập nhật
+    //     ];
+
+    //     // Cập nhật sự kiện trong bảng Events
+    //     try {
+    //         await connect.query(updateEventSql, updateEventValues);
+
+    //         // Xóa các liên kết cũ giữa sự kiện và người dùng trong bảng Helpers
+    //         const deleteHelperSql = "DELETE FROM Helpers WHERE eventId = ?";
+    //         await connect.query(deleteHelperSql, [eventId]);
+
+    //         // Thêm lại các liên kết mới giữa sự kiện và người dùng trong bảng Helpers
+    //         const eventMailString = eventData.helper.split(',');
+    //         const insertHelperSql = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
+    //         for (let i = 0; i < eventMailString.length; i++) {
+    //             const insertHelperValues = [
+    //                 eventMailString[i],
+    //                 eventId
+    //             ];
+    //             await connect.query(insertHelperSql, insertHelperValues);
+    //         }
+
+    //         res.json({ success: true });
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).json({ error: "Internal server error" });
+    //     }
+    // },
+
     editEvent: async (req, res) => {
         const eventData = req.body;
-        const eventId = req.params.id; // Lấy ID của sự kiện cần cập nhật từ URL
-
+        const eventId = req.params.id;
+    
+        // Định dạng lại ngày bắt đầu và kết thúc nếu cần
+        const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
+        const formattedEndDate = moment(eventData.end).format("YYYY-MM-DD HH:mm:ss");
+    
+        // Cập nhật giá trị mới vào eventData
+        eventData.start = formattedStartDate;
+        eventData.end = formattedEndDate;
+    
         // Cập nhật sự kiện trong bảng Events
         const updateEventSql = "UPDATE Events SET eventName = ?, calendarId = ?, start = ?, end = ?, eventType = ?, description = ?, status = ?, creatorId = ?, target = ? WHERE id = ?";
         const updateEventValues = [
@@ -127,34 +189,31 @@ const eventController = {
             eventData.status,
             eventData.creatorId,
             eventData.target,
-            eventId // Sử dụng ID của sự kiện để xác định sự kiện cần cập nhật
+            eventId
         ];
-
-        // Cập nhật sự kiện trong bảng Events
+    
         try {
+            // Thực hiện câu lệnh SQL để cập nhật sự kiện trong bảng Events
             await connect.query(updateEventSql, updateEventValues);
-
-            // Xóa các liên kết cũ giữa sự kiện và người dùng trong bảng Helpers
-            const deleteHelperSql = "DELETE FROM Helpers WHERE eventId = ?";
-            await connect.query(deleteHelperSql, [eventId]);
-
-            // Thêm lại các liên kết mới giữa sự kiện và người dùng trong bảng Helpers
-            const eventMailString = eventData.helper.split(',');
-            const insertHelperSql = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
-            for (let i = 0; i < eventMailString.length; i++) {
-                const insertHelperValues = [
-                    eventMailString[i],
-                    eventId
-                ];
-                await connect.query(insertHelperSql, insertHelperValues);
-            }
-
+    
+            // // Xóa các liên kết cũ giữa sự kiện và người dùng trong bảng Helpers
+            // const deleteHelperSql = "DELETE FROM Helpers WHERE eventId = ?";
+            // await connect.query(deleteHelperSql, [eventId]);
+    
+            // // Thêm lại các liên kết mới giữa sự kiện và người dùng trong bảng Helpers
+            // for (const helper of eventData.helper) {
+            //     const insertHelperSql = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
+            //     const insertHelperValues = [helper, eventId];
+            //     await connect.query(insertHelperSql, insertHelperValues);
+            // }
+    
             res.json({ success: true });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Internal server error" });
         }
     },
+    
 
     deleteEvent: async (req, res) => {
         const eventId = req.params.id;
