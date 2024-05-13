@@ -31,14 +31,14 @@ function Overview() {
     const [listEvents, setListEvents] = useState([]);
     // const [target, setTarget] = useState()
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
-    console.log(Number(searchParams.get("eventId")));
+    // console.log(Number(searchParams.get("eventId")));
     const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
     const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
     (todos?.filter((event) => event.status === "Ready").length + 
     todos?.filter((event) => event.status === "In Progress").length + 
     todos?.filter((event) => event.status === "Done").length)) * 100 + '%')
-    console.log(todos);
+    // console.log(todos);
 
 
     // const onChangeLists = (event, newprocess, coloumnId, userNumber) => {

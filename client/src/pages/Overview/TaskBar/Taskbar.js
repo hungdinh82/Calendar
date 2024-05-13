@@ -6,7 +6,7 @@ import DialogDetails from "../../../components/DialogDetails/DialogDetails";
 
 import styles from './TaskBar.module.scss';
 import './library.scss'
-
+import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 
 const cx = classNames.bind(styles);
 
@@ -14,29 +14,17 @@ function TaskBar({ callback, isCreatorTarget, event, protype, userNumber = 1, co
     const navigate = useNavigate();
     const [processType, setProcesstype] = useState(event?.raw?.status);
     const [isOpen, setIsOpen] = useState(false)
-    const [helper, setHelper] = useState([]);
+    // const [helper, setHelper] = useState([]);
     const [isPermission, setIsPermission] = useState(false);
+    // console.log(event.eventId);
+    const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
+    console.log(helper);
     const handleChangeSelect = (value) => {
         if (value !== protype) {
             setLists(event, value, coloumnId, userNumber)
             setProcesstype(value);
         }
     }
-
-    // const getHelper = () => {
-    //     let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    //     const currentUserId = localStorage.getItem("currentUserId")
-    //     const listHelper = listAccounts.filter((account) => {
-    //         return event.helper.includes(account.mail);
-    //     })
-    //     setHelper(listHelper)
-    //     const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-    //     setIsPermission(Number(event.raw.creatorId) === Number(currentUserId) || event.raw.helper.includes(user[0].mail))
-    // }
-
-    // useEffect(() => {
-    //     getHelper();
-    // }, [event])
 
     return (
         <>

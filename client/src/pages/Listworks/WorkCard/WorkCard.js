@@ -31,7 +31,7 @@ function WorkCard({ event, listEvents, isCreator }) {
     // const [helper, setHelper] = useState([]);
 
     const [deleteEvent] = useDeleteEventMutation();
-    const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
+    const { data: helpers } = useGetAllHelperByEventIdQuery(event.id);
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
 
 
