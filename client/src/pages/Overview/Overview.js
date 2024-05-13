@@ -25,15 +25,19 @@ function Overview() {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     // const [Lists, setLists] = useState(taskLists)
-    // const [width, setWidth] = useState((Lists[2].length / (Lists[0].length + Lists[1].length + Lists[2].length)) * 100 + '%')
+    
     const [filterType, setFilterType] = useState("All");
     const [isShowSideBar, setIsShowSideBar] = useState(true);
     const [listEvents, setListEvents] = useState([]);
-    const [target, setTarget] = useState()
+    // const [target, setTarget] = useState()
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
     console.log(Number(searchParams.get("eventId")));
     const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
-    const { data: targetTo } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
+    const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
+    const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
+    (todos?.filter((event) => event.status === "Ready").length + 
+    todos?.filter((event) => event.status === "In Progress").length + 
+    todos?.filter((event) => event.status === "Done").length)) * 100 + '%')
     console.log(todos);
 
 
@@ -73,9 +77,12 @@ function Overview() {
 
     // }
 
-    // useEffect(() => {
-    //     setWidth((Lists[2].length / (Lists[0].length + Lists[1].length + Lists[2].length)) * 100 + '%');
-    // }, [Lists])
+    useEffect(() => {
+        setWidth((todos?.filter((event) => event.status === "Done").length / 
+        (todos?.filter((event) => event.status === "Ready").length + 
+        todos?.filter((event) => event.status === "In Progress").length + 
+        todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+    }, [todos])
 
 
     // useEffect(() => {
@@ -116,11 +123,11 @@ function Overview() {
                                                     <div className={cx('left-bar-body')}>
                                                         <div className={cx('left-bar-body_text')}>
                                                             <span className={cx('text-title')}>Completed :</span>
-                                                            {/* <span className={cx('text-content')}>{Lists[2].length + '/' + (Lists[0].length + Lists[1].length + Lists[2].length)}</span> */}
+                                                            <span className={cx('text-content')}>{todos?.filter((event) => event.status === "Done").length + '/' + (todos?.filter((event) => event.status === "Ready").length + todos?.filter((event) => event.status === "In Progress").length + todos?.filter((event) => event.status === "Done").length)}</span>
                                                         </div>
                                                         <div className={cx('left-bar-body_process')}>
                                                             <div className={cx('process-bar')}>
-                                                                {/* <div className={cx('process-value')} style={{ width: width }}></div> */}
+                                                                <div className={cx('process-value')} style={{ width: width }}></div>
                                                             </div>
 
                                                         </div>
@@ -130,7 +137,7 @@ function Overview() {
                                                     <div className={cx('right-bar-lists')}>
                                                         <div className={cx('right-bar-item')} >
                                                             <div className={cx('item-title')}>Total :</div>
-                                                            {/* <div className={cx('item-content')} style={{ 'border-left': "2px solid #0F75DC" }}>{(Lists[0].length + Lists[1].length + Lists[2].length)}</div> */}
+                                                            <div className={cx('item-content')} style={{ 'border-left': "2px solid #0F75DC" }}>{(todos?.filter((event) => event.status === "Ready").length + todos?.filter((event) => event.status === "In Progress").length + todos?.filter((event) => event.status === "Done").length)}</div>
                                                         </div>
                                                         <div className={cx('right-bar-item')} >
                                                             <div className={cx('item-title')}>Ready :</div>

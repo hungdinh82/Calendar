@@ -39,11 +39,11 @@ function Detail({ event, setListEvents }) {
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(event.raw.creatorId) === Number(account.id))
-            const listHelper = listAccounts.filter((account) => {
-                return event.raw.helper.includes(account.mail);
-            })
-            setHelper(listHelper)
+            const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
+            // const listHelper = listAccounts.filter((account) => {
+            //     // return event.helper.includes(account.mail);
+            // })
+            // setHelper(listHelper)
             setCreator(user[0])
             if (user[0].userName.includes("quang")) {
                 setCreatorAvatar(avatar_quang);
