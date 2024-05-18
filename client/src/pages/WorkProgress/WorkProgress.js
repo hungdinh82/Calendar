@@ -7,7 +7,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import trashIcon from '../../imgs/trash-2-outline.png'
 import Task from "./Task/Task";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
-import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery } from "../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useEditEventMutation } from "../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -16,7 +16,7 @@ function WorkProgress() {
     const [isShowSideBar, setIsShowSideBar] = useState(true);
     const [listEvents, setListEvents] = useState([])
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
-
+    const [editEvent] = useEditEventMutation();
     const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
     const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length /
@@ -37,6 +37,7 @@ function WorkProgress() {
 
         let currentNode = e.target;
         const [fromColumnId, event, useNumber] = JSON.parse(e.dataTransfer.getData('text/plain'));
+
         while (!currentNode.className.includes("drop-zone")) {
             if (currentNode.className.includes("trash")) {
                 const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
@@ -49,71 +50,12 @@ function WorkProgress() {
         }
 
         const columnId = parseInt(currentNode.id) - 1;
-        const newLists = Lists.reduce((result, currentValue, index) => {
-            if (index === fromColumnId && index === columnId) {
-                if (prevMovedElement) {
-                    const newArr = currentValue.reduce((res, element, index) => {
-                        if (element.eventName === prevMovedElement.innerText) {
-                            if (event.id === element.id) {
-                                return [...res, event];
-                            } else return [...res, event, element];
-                        }
-                        if (element.id === event.id)
-                            return res;
-                        return [...res, element];
-                    }, []);
-                    return [...result, newArr];
-                } else return [...result, currentValue];
+        const status = ["Ready", "In Progress", "Done"]
+        editEvent({
+            id: event.id, data: {
+                ...event, status: status[columnId]
             }
-
-            if (index === fromColumnId && index !== columnId) {
-                if (!prevMovedElement) {
-                    const newArr = currentValue.reduce((res, element, index) => {
-                        if (element.id === event.id)
-                            return res;
-                        return [...res, element];
-                    }, []);
-                    return [...result, newArr];
-                } else {
-                    const newArr = currentValue.reduce((res, element, index) => {
-                        if (element.eventName === prevMovedElement.innerText)
-                            return [...res, event, element];
-                        if (element.id === event.id)
-                            return res;
-                        return [...res, element];
-                    }, []);
-                    return [...result, newArr];
-                }
-            }
-
-            if (index === columnId && index !== fromColumnId) {
-                let status = event.status
-                if (columnId === 0) status = "Ready"
-                if (columnId === 1) status = "In Progress"
-                if (columnId === 2) status = "Done"
-                if (!prevMovedElement) {
-                    return [...result, [...currentValue, { ...event, raw: { ...event, status } }]];
-                } else {
-                    const newArr = currentValue.reduce((res, element, index) => {
-                        if (element.eventName === prevMovedElement.innerText)
-                            return [...res, { ...event, raw: { ...event, status } }, element];
-                        return [...res, element];
-                    }, []);
-                    return [...result, newArr];
-                }
-            }
-
-            return [...result, currentValue];
-        }, [])
-        setLists(newLists);
-        newLists.map((status) => {
-            status.map((event) => {
-                const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-                const eventsNew = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event, status: event.status } })
-                localStorage.setItem("listEvents", JSON.stringify(eventsNew));
-            })
-        })
-
+        });
 
         if (prevMovedElement) {
             prevMovedElement.classList.remove("move");
