@@ -91,7 +91,7 @@ const eventController = {
             // add noti (if noti accept thi moi add vao helpers )
             const sql2 = "SELECT mail FROM Accounts WHERE id = ?"
             const [result2] = await connect.query(sql2, eventData.creatorId);
-            eventData.helper.forEach(helper => {
+            eventData.helper.forEach(async helper => {
                 const sql3 = "INSERT INTO Notifies (toMail, fromMail, text, isResolve, eventId, isAccept) VALUES (?, ?, ?, ?, ?, ?)";
                 const values3 = [
                     helper,
@@ -101,11 +101,11 @@ const eventController = {
                     result.insertId,
                     0
                 ];
-                connect.query(sql3, values3);
+                await connect.query(sql3, values3);
             })
             // add default important
-            const sql3 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
-            await connect.query(sql3, [result.insertId, eventData.creatorId]);
+            const sql4 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
+            await connect.query(sql4, [result.insertId, eventData.creatorId]);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Internal server error" });

@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { Avatar, Tooltip } from 'antd';
 import { UserOutlined, EditOutlined } from '@ant-design/icons';
 import { useState, useEffect } from "react";
-
+import { useSearchParams, useNavigate } from "react-router-dom";
 import styles from './Detail.module.scss';
 import DialogDetails from "../../../components/DialogDetails/DialogDetails";
 import avatar from '../../../imgs/img6.png';
@@ -12,18 +12,23 @@ import avatar_nguyet from '../../../imgs/avatar/nguyet.jpg'
 import avatar_quang from '../../../imgs/avatar/quang.jpg'
 import avatar_hieu from '../../../imgs/avatar/hieu.jpg'
 import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreateEvent";
+import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
+import { useGetEventByIdQuery } from "../../../app/api/eventService";
+
 
 const cx = classNames.bind(styles);
 
 function Detail({ event, setListEvents }) {
+    const [searchParams, setSearchParams] = useSearchParams()
     const [startTime, setStartTime] = useState();
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
     const [creator, setCreator] = useState();
     const [creatorAvatar, setCreatorAvatar] = useState();
-    const [helper, setHelper] = useState([]);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
+    const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
+    const { data: helpers } = useGetAllHelperByEventIdQuery(target?.id);
 
     useEffect(() => {
         if (event) {
@@ -40,10 +45,6 @@ function Detail({ event, setListEvents }) {
             setEndDate(endDateNew)
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
             const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
-            // const listHelper = listAccounts.filter((account) => {
-            //     // return event.helper.includes(account.mail);
-            // })
-            // setHelper(listHelper)
             setCreator(user[0])
             if (user[0].userName.includes("quang")) {
                 setCreatorAvatar(avatar_quang);
@@ -80,7 +81,7 @@ function Detail({ event, setListEvents }) {
                             </div>
                             <Avatar.Group size="small" maxCount={4} maxStyle={{ color: '#FFFFFF', backgroundColor: '#413E54' }}>
                                 {
-                                    helper?.map((helper) => (
+                                    helpers?.map((helper) => (
                                         <Tooltip title={helper.userName} placement="bottom">
                                             <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
                                         </Tooltip>
