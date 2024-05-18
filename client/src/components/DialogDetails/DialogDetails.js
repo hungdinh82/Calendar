@@ -39,26 +39,12 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
     const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
     const [editEvent] = useEditEventMutation();
 
-
-    // function updateArrayObjects(listEvents, id, calendarId, changes) {
-    //     return listEvents.map(obj => {
-    //         if (obj.id === id && obj.calendarId === calendarId) {
-    //             return { ...obj, ...changes }
-    //         }
-    //         return obj;
-    //     });
-    // }
-
     const handleOnOk = () => {
-        // const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        // const newEvents = updateArrayObjects(events, event.id, event.calendarId, { raw: { ...event.raw, status: filterType } })
-        // localStorage.setItem("listEvents", JSON.stringify(newEvents));
-        // setListEvents(newEvents)
-        // editEvent({
-        //     id: event.id, data: {
-        //         ...event, status: filterType
-        //     }
-        // });
+        editEvent({
+            id: event.id, data: {
+                ...event, status: filterType
+            }
+        });
         setIsOpen(false)
     }
 
