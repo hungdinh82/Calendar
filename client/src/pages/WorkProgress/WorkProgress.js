@@ -1,13 +1,14 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import {  message } from 'antd';
 
 import styles from './WorkProgress.module.scss';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import trashIcon from '../../imgs/trash-2-outline.png'
 import Task from "./Task/Task";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
-import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useEditEventMutation } from "../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useEditEventMutation, useDeleteEventMutation } from "../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +18,7 @@ function WorkProgress() {
     const [listEvents, setListEvents] = useState([])
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
     const [editEvent] = useEditEventMutation();
+    const [deleteEvent] = useDeleteEventMutation();
     const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
     const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length /
@@ -40,9 +42,14 @@ function WorkProgress() {
 
         while (!currentNode.className.includes("drop-zone")) {
             if (currentNode.className.includes("trash")) {
-                const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-                const newEvents = removeObjectFromArray(Events, event.id, event.calendarId)
-                localStorage.setItem("listEvents", JSON.stringify(newEvents))
+                deleteEvent(
+                    event.id,
+                ).then(
+                    (response) => {
+                        if (response.data.error !== undefined) {
+                            message.error(response.data.error.message);
+                        } else message.success('Deleted successfully');
+                    });
                 break;
             }
             currentNode = currentNode.parentNode;
