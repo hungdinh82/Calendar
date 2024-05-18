@@ -15,17 +15,9 @@ import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery } from "../../app/ap
 
 const cx = classNames.bind(styles);
 
-let taskLists = [
-    [],
-    [],
-    [],
-]
-
 function Overview() {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    // const [Lists, setLists] = useState(taskLists)
-    
     const [filterType, setFilterType] = useState("All");
     const [isShowSideBar, setIsShowSideBar] = useState(true);
     const [listEvents, setListEvents] = useState([]);
@@ -38,43 +30,6 @@ function Overview() {
     (todos?.filter((event) => event.status === "Ready").length + 
     todos?.filter((event) => event.status === "In Progress").length + 
     todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
-
-
-    // const onChangeLists = (event, newprocess, coloumnId, userNumber) => {
-    //     const temp = JSON.parse(JSON.stringify(Lists))
-    //     const newLists = temp.reduce((result, currentValue, index) => {
-
-    //         if (newprocess === "Ready" && index === 0) {
-    //             return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
-    //         }
-    //         if (newprocess === "In Progress" && index === 1) {
-    //             return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
-    //         }
-    //         if (newprocess === "Done" && index === 2)
-    //             return [...result, [...currentValue, { ...event, raw: { ...event.raw, status: newprocess } }]]
-
-    //         if (index === coloumnId) {
-    //             const newArr = currentValue.reduce((res, element, index) => {
-    //                 if (element.id === event.id)
-    //                     return res;
-    //                 return [...res, element];
-    //             }, []);
-    //             return [...result, newArr];
-    //         }
-    //         return [...result, currentValue]
-    //     }, []);
-
-
-    //     setLists(newLists);
-    //     newLists.map((status) => {
-    //         status.map((event) => {
-    //             const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-    //             const eventsNew = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, status: event.raw.status } })
-    //             localStorage.setItem("listEvents", JSON.stringify(eventsNew));
-    //         })
-    //     })
-
-    // }
 
     useEffect(() => {
         setWidth((todos?.filter((event) => event.status === "Done").length / 
@@ -128,7 +83,6 @@ function Overview() {
                                                             <div className={cx('process-bar')}>
                                                                 <div className={cx('process-value')} style={{ width: width }}></div>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>

@@ -16,11 +16,11 @@ const cx = classNames.bind(styles);
 const notify_List = [
     {
         title: "Task completed",
-        task: "Thiết kế cái quần"
+        task: "Task completed",
     },
 
     {
-        title: "Hiếu Phạm assigned you a task",
+        title: "Hùng Đinh assigned you a task",
         task: "Vẽ user flow"
     },
 
