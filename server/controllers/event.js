@@ -5,7 +5,9 @@ const eventController = {
     getAllEventsByCurrentUser: async (req, res) => {
         try {
             const currentUserId = req.params.id;
-            const userSql = "SELECT * FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ? UNION SELECT * FROM Helpers,Events WHERE creatorId = ?";
+            const userSql = "SELECT Events.id AS eventId, Events.eventName, Events.calendarId, Events.start , Events.end, Events.eventType, Events.description, Events.status,  Events.creatorId, Events.target FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ? UNION SELECT Events.id AS eventId, Events.eventName, Events.calendarId, Events.start , Events.end, Events.eventType, Events.description, Events.status,  Events.creatorId, Events.target FROM Helpers,Events WHERE Events.creatorId = ?";    
+            //  FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ? UNION SELECT * FROM Helpers,Events WHERE creatorId = ?";
+            // SELECT Notifies.id AS id, Notifies.toMail, Notifies.fromMail, Notifies.text, Notifies.isResolve, Notifies.isAccept, Notifies.eventId AS notifyEventId, Events.id AS eventId, Events.eventName, Events.calendarId, Events.start, Events.end, Events.eventType, Events.description, Events.status, Events.creatorId, Events.target FROM Notifies JOIN Events ON Notifies.eventId = Events.id WHERE toMail = ?; ";
             const [result] = await connect.query(userSql, [currentUserId, currentUserId]);
             // console.log(result);
             res.json(result);

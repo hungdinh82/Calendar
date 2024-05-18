@@ -41,7 +41,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
 
     const handleOnOk = () => {
         editEvent({
-            id: event.id, data: {
+            id: event.eventId, data: {
                 ...event, status: filterType
             }
         });
@@ -49,14 +49,14 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
     }
 
     const getHelper = () => {
-        let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+        // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
         // const listHelper = listAccounts.filter((account) => {
         //     return event.helper.includes(account.mail);
         // })
         // setHelper(listHelper)
-        const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        setIsPermission(Number(event.creatorId) === Number(currentUserId) || event.helper.includes(user[0].mail))
+        // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+        setIsPermission(Number(event.creatorId) === Number(currentUserId))
         setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
     }
 

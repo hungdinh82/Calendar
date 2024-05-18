@@ -10,21 +10,19 @@ const cx = classNames.bind(styles);
 
 function Search({ workList, setOpen }) {
     const [searchValue, setSearchValue] = useState("");
-    const [targetList, setTargetList] = useState([]);
-    const [taskList, setTaskList] = useState([]);
     const [targetFilter, setTargetFilter] = useState([]);
     const [taskFilter, setTaskFilter] = useState([]);
 
     const handleChangeSearchValue = (e) => {
-        const value = e.target.value;
+        const value = e.target.value.toLowerCase();
         if (value !== "") {
 
-            const target_Filter = targetList.filter((item, index) => {
-                return item.eventName.includes(value);
+            const target_Filter = workList.filter((item, index) => {
+                return item.eventName.toLowerCase().includes(value) && item.eventType === "target";
             })
 
-            const task_Filter = taskList.filter((item, index) => {
-                return item.eventName.includes(value);
+            const task_Filter = workList.filter((item, index) => {
+                return item.eventName.toLowerCase().includes(value) && item.eventType === "todo";
             })
             setTargetFilter(target_Filter);
             setTaskFilter(task_Filter);
@@ -35,20 +33,6 @@ function Search({ workList, setOpen }) {
 
         setSearchValue(value);
     }
-
-
-    useEffect(() => {
-        console.log(workList);
-        const target_List = workList.filter((item, index) => {
-            return item.raw.eventType === "target";
-        })
-        const task_List = workList.filter((item, index) => {
-            return item.raw.eventType === "todo";
-        })
-
-        setTargetList(target_List);
-        setTaskList(task_List);
-    }, [])
 
     return (
         <div className={cx("search") + " Search"}>

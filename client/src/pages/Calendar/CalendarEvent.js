@@ -44,14 +44,11 @@ function CalendarEvent() {
         setListEvents(Events)
         calendar.clear();
         const currentUser = JSON.parse(localStorage.getItem("currentUser"))
-        // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
 
-        // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+
         Events?.map((event) => {
             // kiểm tra xem event này có helper là currentUser không
             console.log(event);
-            // const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
-            // console.log(helpers)
 
             if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
                 let backgroundColor = null;
@@ -72,7 +69,8 @@ function CalendarEvent() {
                 if (conditionFilter && checkMeCondition) {
                     let targetName = "";
                     if (Number(event.target)) {
-                        const targetArray = Events.filter((e) => e.id === event.target)
+                        
+                        const targetArray = Events.filter((e) => e.eventId === event.target)
                         targetName = targetArray[0].eventName
                     }
                     calendar.createEvents([

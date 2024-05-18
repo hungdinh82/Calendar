@@ -10,24 +10,13 @@ import Search from './Search/Search';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetAllNotificationsByToMailMutation } from "../../app/api/notiService";
+import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
-const notify_List = [
-    {
-        title: "Task completed",
-        task: "Task completed",
-    },
-
-    {
-        title: "Hùng Đinh assigned you a task",
-        task: "Vẽ user flow"
-    },
-
-];
 
 function HeaderOptions({ calendar = false }) {
-    const [listEvents, setListEvents] = useState((localStorage.getItem("listEvents") && localStorage.getItem("listEvents")[0]) ? JSON.parse(localStorage.getItem("listEvents")) : []);
+    // const [listEvents, setListEvents] = useState((localStorage.getItem("listEvents") && localStorage.getItem("listEvents")[0]) ? JSON.parse(localStorage.getItem("listEvents")) : []);
     const [notifyLength, setNotifyLength] = useState();
     const [searchOpen, setSearchOpen] = useState(false);
     const [notyOpen, setNotyOpen] = useState(false);
@@ -36,6 +25,10 @@ function HeaderOptions({ calendar = false }) {
     const [getAllNoti] = useGetAllNotificationsByToMailMutation();
     const [notifications, setNotifications] = useState([]);
     const [noLoop, setNoLoop] = useState(false);
+    const { data: events } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const listEvents = events;
+
+
     useEffect(() => {
         getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(
             (response) => {
@@ -47,17 +40,17 @@ function HeaderOptions({ calendar = false }) {
         )
     }, [noLoop]);
 
-    const listInformation = (localStorage.getItem("listInformations") && localStorage.getItem("listInformations")[0]) ? JSON.parse(localStorage.getItem("listInformations")) : [];
-    useEffect(() => {
-        let notifyLength = 0;
-        listInformation.map((notify) => {
-            const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-            const user = listAccounts.filter((account) => Number(account.id) === Number(currentUserId))
-            if (notify?.toMail === user[0]?.mail && !notify.isResolve) notifyLength++;
-        })
-        setNotifyLength(notifyLength)
-    }, [])
+    // const listInformation = (localStorage.getItem("listInformations") && localStorage.getItem("listInformations")[0]) ? JSON.parse(localStorage.getItem("listInformations")) : [];
+    // useEffect(() => {
+    //     let notifyLength = 0;
+    //     listInformation.map((notify) => {
+    //         const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+    //         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
+    //         const user = listAccounts.filter((account) => Number(account.id) === Number(currentUserId))
+    //         if (notify?.toMail === user[0]?.mail && !notify.isResolve) notifyLength++;
+    //     })
+    //     setNotifyLength(notifyLength)
+    // }, [])
     useEffect(() => {
         socket?.on("receive-notification", (notification) => {
             getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(

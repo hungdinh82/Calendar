@@ -385,7 +385,7 @@ function CalendarPage() {
                 if (conditionFilter && checkMeCondition) {
                     let targetName = "";
                     if (Number(event.target)) {
-                        const targetArray = Events.filter((e) => e.id === event.target)
+                        const targetArray = Events.filter((e) => e.eventId === event.target)
                         targetName = targetArray[0].eventName
                     }
                     calendar.createEvents([
