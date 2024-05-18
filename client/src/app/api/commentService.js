@@ -10,11 +10,11 @@ export const commentService = apiService.injectEndpoints({
             }),
             invalidatesTags: ['comment'],
         }),
-        getComment: builder.query({
-            query: () => `api/comment/`,
+        getCommentByEventId: builder.query({
+            query: (eventId) => `api/comment/${eventId}`,
             providesTags: ['comment'],
         }),
     }),
 });
 
-export const { useAddCommentMutation, useGetCommentQuery } = commentService;
+export const { useAddCommentMutation, useGetCommentByEventIdQuery } = commentService;

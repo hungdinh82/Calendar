@@ -35,9 +35,6 @@ function WorkCard({ event, listEvents, isCreator }) {
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
 
 
-    function removeObjectFromArray(listEvents, id, calendarid) {
-        return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
-    }
     const handleDeleteEvent = () => {
         Swal.fire({
             title: 'Bạn thực sự muốn xóa?',
@@ -49,16 +46,6 @@ function WorkCard({ event, listEvents, isCreator }) {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
-                // const updateListEvents = listEventsStorage.reduce((res, currentValue) => {
-                //     if (currentValue.raw.target === event.id) {
-                //         return res
-                //     }
-                //     return [...res, currentValue]
-                // }, [])
-                // const listEventsNew = removeObjectFromArray(updateListEvents, event.id, event.calendarId)
-                // localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
-                console.log(event.id);
 
                 deleteEvent(event.id).then(
                     (response) => {

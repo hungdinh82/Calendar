@@ -107,8 +107,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
         const currentUserMail = JSON.parse(localStorage.getItem("currentUser")).mail
 
         const newEvent = {
-            // id: event?.id || Date.now(),
-            // id: event?.id,
             eventName,
             calendarId: event?.calendarId || "calendar1",
             start,
@@ -132,16 +130,9 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                         message.error(response.data.errors[0].message);
                     } else {
                         socket?.emit("new-notification", {
-                            // toMail: helper,
-                            // fromMail: currentUserMail,
-                            // text: `assigned you join target ${newEvent.eventName}`,
-                            // isResolve: 0,
-                            // // eventId: result.insertId,
-                            // isAccept: 0
                         });
                         message.success('Created event successfully')
                     };
-                    // console.log(response);
                 })
                 .catch(function (error) {
                     console.log(error);

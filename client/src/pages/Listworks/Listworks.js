@@ -12,39 +12,8 @@ const cx = classNames.bind(styles);
 
 function Listworks() {
     const [isShowSideBar, setIsShowSideBar] = useState(true);
-    // const [listEvents, setListEvents] = useState()
-    // const [events, setEvents] = useState([])
-    // console.log(localStorage.getItem("currentUser"));
-    // const { data: events, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const { data: events } = useGetAllEventsTargetsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const listEvents = events;
-    // console.log(useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id));
-    // console.log(events);
-
-
-    // if (isError) {
-    //     return <h1>Something went wrong!</h1>;
-    // } else if (isLoading) {
-    //     return <h1>Loading ... </h1>;
-    // }else {
-    //     // console.log(events);
-    // }
-
-    // const [getAllEventsByCurrentUser] = useGetAllEventsByCurrentUserQuery();
-    // const [Lists, setLists] = useState(taskLists)
-    // const [width, setWidth] = useState((Lists[2]?.length / (Lists[0]?.length + Lists[1]?.length + Lists[2]?.length)) * 100 + '%');
-
-    // useEffect(() => {
-    //     setWidth((Lists[2]?.length / (Lists[0]?.length + Lists[1]?.length + Lists[2]?.length)) * 100 + '%');
-    // }, [Lists])
-
-    // getAllEventsByCurrentUser(localStorage.getItem("currentUser"))
-    // .then((res) => {
-    //     console.log(res);
-    //     if (res.data) {
-    //         // setEvents(res.data)
-    //     }
-    // })
 
     return (
         <div className={cx('listworks')}>

@@ -5,7 +5,7 @@ const comment = (app) => {
     const router = express.Router();
     app.use("/api/comment", router);
     router.post("/", commentController.addComment);
-    router.get("/", commentController.getComment);
+    router.get("/:eventId", commentController.getCommentByEventId);
 }
 
 export default comment;

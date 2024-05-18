@@ -13,23 +13,18 @@ const commentController = {
             res.json(false);
         }
     },
-    getComment: async (req, res) => {
-        const { userId, eventId } = req.query;
-        let sql;
-        let queryParams = [userId];
+    getCommentByEventId: async (req, res) => {
+        const eventId = req.params.eventId;
+        const sql = "SELECT * FROM Comments WHERE eventId = ?";
         
-        if (eventId && eventId !== "undefined") {
-            sql = "SELECT comment, created_at FROM Comments WHERE userId = ? AND eventId = ?";
-            queryParams.push(eventId);
-        } else {
-            sql = "SELECT comment, created_at FROM Comments WHERE userId = ? AND (eventId IS NULL OR eventId = '')";
-        }
-    
         try {
-            const [result] = await connect.query(sql, queryParams);
-            const comments = result.map(comment => ({ ...comment }));
-            res.json(comments);
+            // Execute the SQL query
+            const [result] = await connect.query(sql, [eventId]);
+            
+            // Send the query result as JSON response
+            res.json(result);
         } catch (error) {
+            // Handle any errors that occur during execution
             console.error(error);
             res.status(500).json({ error: "Internal server error" });
         }

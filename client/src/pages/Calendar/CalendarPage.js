@@ -424,7 +424,7 @@ function CalendarPage() {
     useEffect(() => {
         const container = document.getElementById("calendar")
         setCalendar(new Calendar(container, calendarOption))
-        const currentUser = localStorage.getItem("currentUser");
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         if (!currentUser) navigate("/Login")
     }, [])
 
