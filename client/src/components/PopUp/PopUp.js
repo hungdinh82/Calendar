@@ -60,12 +60,12 @@ function PopUp({ event, callBack, setListEvents }) {
         let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
         const listHelper = listAccounts.filter((account) => {
-            return event.raw.helper?.includes(account.mail);
+            return event.helper?.includes(account.mail);
         })
         setHelper(listHelper)
         const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        setIsPermission(Number(event.raw.creatorId) === Number(currentUserId) || event.raw.helper.includes(user[0].mail))
-        setIsCreatorTarget(Number(target?.raw?.creatorId) === Number(currentUserId))
+        setIsPermission(Number(event.creatorId) === Number(currentUserId) || event.helper.includes(user[0].mail))
+        setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
     }
 
     const onClickDelete = () => {
@@ -116,10 +116,10 @@ function PopUp({ event, callBack, setListEvents }) {
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            if (event.raw.target) {
+            if (event.target) {
                 const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
                 const eventArray = Events.filter((e) => {
-                    return Number(e.id) === Number(event.raw.target)
+                    return Number(e.id) === Number(event.target)
                 })
                 setTarget(eventArray[0])
             }
@@ -159,9 +159,9 @@ function PopUp({ event, callBack, setListEvents }) {
                 {
                     <div className={cx("popup")}>
                         <div className={cx('header')}>
-                            {event.raw.status === "Ready" && <div className={cx('dot')} style={{ backgroundColor: "#EEF209" }}></div>}
-                            {event.raw.status === "In Progress" && <div className={cx('dot')} style={{ backgroundColor: "#FF8C93" }}></div>}
-                            {event.raw.status === "Done" && <div className={cx('dot')} style={{ backgroundColor: "#42DB29" }}></div>}
+                            {event.status === "Ready" && <div className={cx('dot')} style={{ backgroundColor: "#EEF209" }}></div>}
+                            {event.status === "In Progress" && <div className={cx('dot')} style={{ backgroundColor: "#FF8C93" }}></div>}
+                            {event.status === "Done" && <div className={cx('dot')} style={{ backgroundColor: "#42DB29" }}></div>}
                             <span>{event.eventName}</span>
                             <img className={cx("icon_more")} src={icon_more} onClick={() => { setIsOpenDetail(true) }} />
 
