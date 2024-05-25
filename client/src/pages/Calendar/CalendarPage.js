@@ -367,7 +367,6 @@ function CalendarPage() {
             // console.log(helpers)
 
             if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id))) {
-                console.log(event)
 
                 let backgroundColor = null;
                 let borderColor = null;
@@ -382,18 +381,19 @@ function CalendarPage() {
                     borderColor = "#FF8C93"
                 }
                 // Kiểm tra chỉ lấy event todo không có helper
-                const checkMe = !event.helper || event.helper.length === 0;
+                // const checkMe = !event.helper || event.helper.length === 0;
                 const conditionFilter = (filter.done && event.status === "Done") || (filter.ready && event.status === "Ready") || (filter.inProgress && event.status === "In Progress")
-                const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
-                if (conditionFilter && checkMeCondition) {
+                // const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
+                if (conditionFilter) {
                     let targetName = "";
-                    console.log(event);
-
-                    if (Number(event.target)) {
-                        const targetArray = Events.filter((e) => e.eventId === event.target)
-                        console.log(targetArray);
-                        targetName = targetArray[0].eventName
-                    }
+                    
+                    // if (Number(event.target)) {
+                    //     console.log(event.eventId);
+                    //     console.log(event.target);
+                    //     const targetArray = Events.filter((e) => e.eventId === event.target)
+                    //     console.log(targetArray);
+                    //     targetName = targetArray[0].eventName
+                    // }
                     calendar.createEvents([
                         {
                             id: event.id,
