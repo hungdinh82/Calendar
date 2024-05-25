@@ -12,7 +12,7 @@ import { useEditEventMutation } from "../../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
-function TaskBar({ callback, isCreatorTarget, event, protype, userNumber = 1, coloumnId, setLists, disabled = false, process = "", border = false, setListEvents }) {
+function TaskBar({ callback, isCreatorTarget, event, protype, coloumnId, setLists, disabled = false, process = "", border = false, setListEvents }) {
     const navigate = useNavigate();
     const [processType, setProcesstype] = useState(event?.status);
     const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +29,6 @@ function TaskBar({ callback, isCreatorTarget, event, protype, userNumber = 1, co
             setProcesstype(value);
         }
     }
-
 
     return (
         <>

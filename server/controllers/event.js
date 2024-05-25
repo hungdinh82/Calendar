@@ -22,7 +22,7 @@ const eventController = {
             const currentUserId = req.params.id;
             const userSql1 = "SELECT * FROM Events WHERE creatorId = ? AND eventType = 'target'";
             const [result1] = await connect.query(userSql1, [currentUserId]);
-            const userSql2 = "SELECT * FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ?";
+            const userSql2 = "SELECT * FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ? AND eventType = 'target'";
             const [result2] = await connect.query(userSql2, [currentUserId]);
             // Merge the two result sets
             const resultMerge = [...result1, ...result2];

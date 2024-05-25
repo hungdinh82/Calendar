@@ -48,7 +48,16 @@ function Search({ workList, setOpen }) {
                     {targetFilter.length < 1 && searchValue !== "" ? <p className={cx('empty-result')}>Don’t find any target with “{searchValue}”.</p> :
                         <div className={cx('search-list')}>
                             {targetFilter.map((item, index) => {
-                                return <TaskBar callback={setOpen} key={index} event={item} process={item.process} disabled userNumber={item.member} border></TaskBar>
+                                console.log(item);
+                                return <TaskBar 
+                                callback={setOpen} 
+                                key={index} 
+                                event={item} 
+                                process={item.process} 
+                                disabled 
+                                // userNumber={item.member} 
+                                border
+                                ></TaskBar>
                             })}
                         </div>
                     }

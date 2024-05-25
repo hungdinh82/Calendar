@@ -16,11 +16,6 @@ import { useGetCreatorByIdQuery } from "../../../app/api/authService";
 
 const cx = classNames.bind(styles);
 
-let taskLists = [
-    [],
-    [],
-    [],
-]
 function WorkCard({ event, listEvents, isCreator }) {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams()

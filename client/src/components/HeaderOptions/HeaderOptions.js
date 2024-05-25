@@ -16,7 +16,6 @@ const cx = classNames.bind(styles);
 
 
 function HeaderOptions({ calendar = false }) {
-    // const [listEvents, setListEvents] = useState((localStorage.getItem("listEvents") && localStorage.getItem("listEvents")[0]) ? JSON.parse(localStorage.getItem("listEvents")) : []);
     const [notifyLength, setNotifyLength] = useState();
     const [searchOpen, setSearchOpen] = useState(false);
     const [notyOpen, setNotyOpen] = useState(false);
@@ -32,7 +31,6 @@ function HeaderOptions({ calendar = false }) {
     useEffect(() => {
         getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(
             (response) => {
-                // console.log(response.data);
                 var reverseNoti = response.data.slice(); 
                 reverseNoti.reverse();
                 setNotifications(reverseNoti);
@@ -40,17 +38,6 @@ function HeaderOptions({ calendar = false }) {
         )
     }, [noLoop]);
 
-    // const listInformation = (localStorage.getItem("listInformations") && localStorage.getItem("listInformations")[0]) ? JSON.parse(localStorage.getItem("listInformations")) : [];
-    // useEffect(() => {
-    //     let notifyLength = 0;
-    //     listInformation.map((notify) => {
-    //         const listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    //         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-    //         const user = listAccounts.filter((account) => Number(account.id) === Number(currentUserId))
-    //         if (notify?.toMail === user[0]?.mail && !notify.isResolve) notifyLength++;
-    //     })
-    //     setNotifyLength(notifyLength)
-    // }, [])
     useEffect(() => {
         socket?.on("receive-notification", (notification) => {
             getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(

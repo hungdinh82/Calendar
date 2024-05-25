@@ -367,6 +367,8 @@ function CalendarPage() {
             // console.log(helpers)
 
             if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id))) {
+                console.log(event)
+
                 let backgroundColor = null;
                 let borderColor = null;
                 if (event.status === "Ready") {
@@ -379,13 +381,17 @@ function CalendarPage() {
                     backgroundColor = "rgba(253, 11, 98, 0.2)"
                     borderColor = "#FF8C93"
                 }
+                // Kiểm tra chỉ lấy event todo không có helper
                 const checkMe = !event.helper || event.helper.length === 0;
                 const conditionFilter = (filter.done && event.status === "Done") || (filter.ready && event.status === "Ready") || (filter.inProgress && event.status === "In Progress")
                 const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
                 if (conditionFilter && checkMeCondition) {
                     let targetName = "";
+                    console.log(event);
+
                     if (Number(event.target)) {
                         const targetArray = Events.filter((e) => e.eventId === event.target)
+                        console.log(targetArray);
                         targetName = targetArray[0].eventName
                     }
                     calendar.createEvents([
