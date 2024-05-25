@@ -10,7 +10,7 @@ import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreat
 import styles from './WorkCard.module.scss';
 import './library.scss'
 // import { useGetUserByMailsQuery } from "../../../app/api/authService";
-import { useDeleteEventMutation} from "../../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation} from "../../../app/api/eventService";
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../../app/api/authService";
 
@@ -24,16 +24,23 @@ let taskLists = [
 function WorkCard({ event, listEvents, isCreator }) {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams()
-    const [Lists, setLists] = useState(taskLists);
-    const [width, setWidth] = useState((Lists[2]?.length / (Lists[0]?.length + Lists[1]?.length + Lists[2]?.length)) * 100 + '%');
-    const [target, setTarget] = useState()
-    const [isOpen, setIsOpen] = useState(false)
-    // const [helper, setHelper] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
 
     const [deleteEvent] = useDeleteEventMutation();
     const { data: helpers } = useGetAllHelperByEventIdQuery(event.id);
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
+    const { data: todos } = useGetAllTodoByTargetIdQuery(event.id);
+    const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
+    (todos?.filter((event) => event.status === "Ready").length + 
+    todos?.filter((event) => event.status === "In Progress").length + 
+    todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
 
+    useEffect(() => {
+        setWidth((todos?.filter((event) => event.status === "Done").length / 
+        (todos?.filter((event) => event.status === "Ready").length + 
+        todos?.filter((event) => event.status === "In Progress").length + 
+        todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+    }, [todos])
 
     const handleDeleteEvent = () => {
         Swal.fire({
@@ -55,7 +62,6 @@ function WorkCard({ event, listEvents, isCreator }) {
                         console.log(response);
                     },
                 );
-                // setListEvents(listEventsNew)
                 Swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
@@ -99,56 +105,7 @@ function WorkCard({ event, listEvents, isCreator }) {
         // setIsimportant(!isimportant)
         // localStorage.setItem("listEvents", JSON.stringify(newEvents))
     }
-    const filterEvent = () => {
-        // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        const Events = listEvents;
-
-        const targetArray = Events.filter((e) => {
-            return Number(e.id) === Number(event.id)
-        })
-        setTarget(targetArray[0])
-        const eventsOfTarget = Events.filter((event) => {
-            return Number(event.target) === Number(targetArray[0]?.id)
-        })
-        const listReady = eventsOfTarget.filter((event) => event.status === "Ready")
-        const listInprocess = eventsOfTarget.filter((event) => event.status === "In Progress")
-        const listDone = eventsOfTarget.filter((event) => event.status === "Done")
-
-        taskLists = [
-            listReady,
-            listInprocess,
-            listDone
-        ]
-
-        setLists(taskLists)
-    }
-
-    // const getHelper = () => {
-    //     // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    //     // let listAccounts = event.helper;
-    //     // const listHelper = listAccounts.filter((account) => {
-    //     //     return event.helper.includes(account.mail) || Number(event.creatorId) === Number(account.id);
-    //     // })
-    //     // console.log(event.helper);
-    //     setHelper(event.helper)
-    // }
-
-    useEffect(() => {
-        const lamTronSo = (Lists[2]?.length / (Lists[0]?.length + Lists[1]?.length + Lists[2]?.length)).toFixed(4);
-        setWidth(lamTronSo * 100 + '%')
-    }, [Lists])
-
-
-    useEffect(() => {
-        filterEvent()
-    }, [searchParams.get("eventId"), listEvents])
-
-    // useEffect(() => {
-    //     getHelper();
-    // }, [event])
-
-    // useEffect(() => {
-    // }, [helpers])
+    
     return (
         <div className={cx('card') + " card"} onClick={() => { navigate(`/overview?eventId=${event.id}`) }}>
             <div className={cx('card-header')}>
@@ -168,7 +125,7 @@ function WorkCard({ event, listEvents, isCreator }) {
                 <div className={cx('process')}>
                     <div className={cx('process-title')}>
                         <span>Completion</span>
-                        <span className={cx('text-content')}>{Lists[2].length + '/' + (Lists[0].length + Lists[1].length + Lists[2].length)}</span>
+                        <span className={cx('text-content')}>{todos?.filter((event) => event.status === "Done").length + '/' + (todos?.filter((event) => event.status === "Ready").length + todos?.filter((event) => event.status === "In Progress").length + todos?.filter((event) => event.status === "Done").length)}</span>
                     </div>
                     <div className={cx('process-bar')}>
                         <div className={cx('process-value')} style={{ width: width }}></div>
