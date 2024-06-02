@@ -47,7 +47,6 @@ function Comment({ event }) {
                     console.log(error);
                 });
         }
-
     }
 
     return (

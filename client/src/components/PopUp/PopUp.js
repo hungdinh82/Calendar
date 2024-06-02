@@ -124,26 +124,44 @@ function PopUp({ event, callBack, setListEvents }) {
                 setTarget(eventArray[0])
             }
 
-            let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
-            setCreator(user[0])
-            if (user[0].userName.includes("quang")) {
+            // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+            // const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
+            // setCreator(user[0])
+            // if (user[0].userName.includes("quang")) {
+            //     setCreatorAvatar(avatar_quang);
+            // }
+            // else if (user[0].userName.includes("hung")) {
+            //     setCreatorAvatar(avatar_hung)
+            // }
+            // else if (user[0].userName.includes("linh")) {
+            //     setCreatorAvatar(avatar_linh)
+            // }
+            // else if (user[0].userName.includes("nguyet")) {
+            //     setCreatorAvatar(avatar_nguyet)
+            // }
+            // else if (user[0].userName.includes("hieu")) {
+            //     setCreatorAvatar(avatar_hieu)
+            // }
+            // else setCreatorAvatar(avatar)
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (currentUser.userName?.includes("quang")) {
                 setCreatorAvatar(avatar_quang);
             }
-            else if (user[0].userName.includes("hung")) {
-                setCreatorAvatar(avatar_hung)
+            else if (currentUser.userName?.includes("hung")) {
+                setCreatorAvatar(avatar_hung);
             }
-            else if (user[0].userName.includes("linh")) {
-                setCreatorAvatar(avatar_linh)
+            else if (currentUser.userName?.includes("linh")) {
+                setCreatorAvatar(avatar_linh);
             }
-            else if (user[0].userName.includes("nguyet")) {
-                setCreatorAvatar(avatar_nguyet)
+            else if (currentUser.userName?.includes("nguyet")) {
+                setCreatorAvatar(avatar_nguyet);
             }
-            else if (user[0].userName.includes("hieu")) {
-                setCreatorAvatar(avatar_hieu)
+            else if (currentUser.userName?.includes("hieu")) {
+                setCreatorAvatar(avatar_hieu);
             }
-            else setCreatorAvatar(avatar)
-
+            else {
+                setCreatorAvatar(avatar);
+            }
 
         }
 
