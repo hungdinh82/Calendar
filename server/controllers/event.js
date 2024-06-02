@@ -222,11 +222,13 @@ const eventController = {
         const sqlDeleteHelpers = "DELETE FROM Helpers WHERE eventId = ?";
         const sqlDeleteNotifies = "DELETE FROM Notifies WHERE eventId = ?";
         const sqlDeleteEvents = "DELETE FROM Events WHERE id = ?";
+        const sqlDeleteImportants = "DELETE FROM Importants WHERE eventId = ?";
         
         try {
             await connect.query(sqlDeleteComments, [eventId]); // Xóa bản ghi từ bảng Comments
             await connect.query(sqlDeleteHelpers, [eventId]); // Xóa bản ghi từ bảng Helpers
             await connect.query(sqlDeleteNotifies, [eventId]); // Xóa bản ghi từ bảng Notifies
+            await connect.query(sqlDeleteImportants, [eventId]); // Xóa bản ghi từ bảng Importants
             const [result] = await connect.query(sqlDeleteEvents, [eventId]); // Xóa bản ghi từ bảng Events
     
             if (result.affectedRows === 0) {
