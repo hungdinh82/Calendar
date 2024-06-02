@@ -10,7 +10,7 @@ import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreat
 import styles from './WorkCard.module.scss';
 import './library.scss'
 // import { useGetUserByMailsQuery } from "../../../app/api/authService";
-import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation} from "../../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation } from "../../../app/api/eventService";
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../../app/api/authService";
 import { useGetImportantByEventIdUserIdQuery, useUpdateImportantMutation } from "../../../app/api/importantService";
@@ -32,7 +32,7 @@ function WorkCard({ event, listEvents, isCreator }) {
     // console.log(userId);
     const { data } = useGetImportantByEventIdUserIdQuery({ eventId: event.id, userId });
     const isImportant = data ? data.isImportant : null;
-    console.log(isImportant);
+    // console.log(isImportant);
     // const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
     // (todos?.filter((event) => event.status === "Ready").length + 
     // todos?.filter((event) => event.status === "In Progress").length + 
@@ -43,26 +43,26 @@ function WorkCard({ event, listEvents, isCreator }) {
         const readyCount = todos?.filter((event) => event.status === "Ready").length || 0;
         const inProgressCount = todos?.filter((event) => event.status === "In Progress").length || 0;
         const totalCount = doneCount + readyCount + inProgressCount;
-    
+
         if (totalCount > 0) {
             return (doneCount / totalCount) * 100 + '%';
         } else {
             return '0%'; // Default to 0% if there are no todos
         }
     };
-    
+
     const [width, setWidth] = useState(calculateWidth(todos));
-    
+
     // If todos change and you want to recalculate the width
     useEffect(() => {
         setWidth(calculateWidth(todos));
-    }, [todos]);    
+    }, [todos]);
 
     useEffect(() => {
-        setWidth((todos?.filter((event) => event.status === "Done").length / 
-        (todos?.filter((event) => event.status === "Ready").length + 
-        todos?.filter((event) => event.status === "In Progress").length + 
-        todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+        setWidth((todos?.filter((event) => event.status === "Done").length /
+            (todos?.filter((event) => event.status === "Ready").length +
+                todos?.filter((event) => event.status === "In Progress").length +
+                todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
     }, [todos])
 
     const handleDeleteEvent = () => {
@@ -120,8 +120,17 @@ function WorkCard({ event, listEvents, isCreator }) {
         // setListEvents(newEvents)
         // setIsimportant(!isimportant)
         // localStorage.setItem("listEvents", JSON.stringify(newEvents))
+        console.log(event.id);
+        console.log(userId);
+        updateImportant({ eventId: event.id, userId }).then((result) => {
+            Swal.fire(
+                'Important!',
+                'Your event has been updated',
+                'success'
+            )
+        })
     }
-    
+
     return (
         <div className={cx('card') + " card"} onClick={() => { navigate(`/overview?eventId=${event.id}`) }}>
             <div className={cx('card-header')}>
@@ -129,8 +138,8 @@ function WorkCard({ event, listEvents, isCreator }) {
                 <div className={cx('header-icons')}>
                     {
                         isImportant === 1 ?
-                        <StarFilled onClick={handleClickStar} style={{ color: "#f48080" }} />
-                        : <StarOutlined onClick={handleClickStar} />
+                            <StarFilled onClick={handleClickStar} style={{ color: "#f48080" }} />
+                            : <StarOutlined onClick={handleClickStar} />
                     }
                     <ArrowUpOutlined onClick={() => { navigate(`/overview?eventId=${event.id}`) }} />
                 </div>
