@@ -6,6 +6,10 @@ export const importantService = apiService.injectEndpoints({
             query: (userId) => `api/important/${userId}`,
             providesTags: ['importants'],
         }),
+        getImportantByEventIdUserId: builder.query({
+            query: ({ eventId, userId }) => `api/important/${eventId}/${userId}`,
+            providesTags: ['importants'],
+        }),
         updateImportant: builder.mutation({
             query: ({ eventId, userId }) => ({
                 url: `api/important/${eventId}/${userId}`,
@@ -16,4 +20,4 @@ export const importantService = apiService.injectEndpoints({
     }),
 });
 
-export const { useGetImportantsByUserIdQuery, useUpdateImportantMutation } = importantService;
+export const { useGetImportantsByUserIdQuery, useUpdateImportantMutation, useGetImportantByEventIdUserIdQuery } = importantService;

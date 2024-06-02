@@ -101,7 +101,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const handleSubmit = (values) => {
         const start = startDate.format("YYYY-MM-DD") + " " + startTime.format("HH:mm:ss");
         const end = endDate.format("YYYY-MM-DD") + " " + endTime.format("HH:mm:ss");
-        const status = event?.raw?.status || "Ready"
+        const status = event?.status || "Ready"
         // const currentUserId = localStorage.getItem("currentUserId")
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
         const currentUserMail = JSON.parse(localStorage.getItem("currentUser")).mail
@@ -171,9 +171,9 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             const eventUpdate = {
                 ...newEvent,
                 raw: {
-                    ...newEvent.raw,
-                    creatorId: event.raw.creatorId,
-                    helper: event.raw.helper || []
+                    ...newEvent,
+                    creatorId: event.creatorId,
+                    helper: event.helper || []
                 }
             }
 
@@ -181,7 +181,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
             const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
             helper.map((helper) => {
-                if (!event.raw.helper.includes(helper)) {
+                if (!event.helper.includes(helper)) {
                     const createInformation = {
                         toMail: helper,
                         fromMail: user[0].mail,
@@ -252,21 +252,21 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            setDescription(event.raw.description)
-            setEventType(event.raw.eventType)
-            setTarget(event.raw.target)
+            setDescription(event.description)
+            setEventType(event.eventType)
+            setTarget(event.target)
             setEventName(event.title || event.eventName)
-            setHelper(event.raw.helper)
+            setHelper(event.helper)
             form.setFieldsValue({
                 event_name: event.title || event.eventName,
                 startTime: startTimeNew,
                 startDate: startDateNew,
                 endTime: endTimeNew,
                 endDate: endDateNew,
-                description: event.raw.description,
-                event_type: event.raw.eventType,
-                target: event.raw.target,
-                helper: event.raw.helper,
+                description: event.description,
+                event_type: event.eventType,
+                target: event.target,
+                helper: event.helper,
             })
 
         }

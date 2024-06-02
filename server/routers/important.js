@@ -6,6 +6,7 @@ const important = (app) => {
   app.use("/api/important", router);
 
   router.get("/:userId", importantController.getImportantsByUserId);
+  router.get("/:eventId/:userId", importantController.getImportantByEventIdUserId);
   router.put("/:eventId/:userId", importantController.updateImportant);
 };
 

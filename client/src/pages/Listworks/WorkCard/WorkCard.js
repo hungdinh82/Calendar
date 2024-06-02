@@ -13,6 +13,7 @@ import './library.scss'
 import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation} from "../../../app/api/eventService";
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../../app/api/authService";
+import { useGetImportantByEventIdUserIdQuery, useUpdateImportantMutation } from "../../../app/api/importantService";
 
 const cx = classNames.bind(styles);
 
@@ -22,9 +23,16 @@ function WorkCard({ event, listEvents, isCreator }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const [deleteEvent] = useDeleteEventMutation();
+    const [updateImportant] = useUpdateImportantMutation();
     const { data: helpers } = useGetAllHelperByEventIdQuery(event.id);
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
     const { data: todos } = useGetAllTodoByTargetIdQuery(event.id);
+    const userId = JSON.parse(localStorage.getItem("currentUser")).id;
+    // console.log(event.id);
+    // console.log(userId);
+    const { data } = useGetImportantByEventIdUserIdQuery({ eventId: event.id, userId });
+    const isImportant = data ? data.isImportant : null;
+    console.log(isImportant);
     // const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
     // (todos?.filter((event) => event.status === "Ready").length + 
     // todos?.filter((event) => event.status === "In Progress").length + 
@@ -101,21 +109,14 @@ function WorkCard({ event, listEvents, isCreator }) {
             style: { padding: 0 }
         },
     ];
-    // const [isimportant, setIsimportant] = useState(event.raw.isimportant || false)
+    // const [isImportant, setIsImportant] = useState(event.isImportant || false)
 
-    function updateArrayObjects(listEvents, id, calendarId, changes) {
-        return listEvents.map(obj => {
-            if (obj.id === id && obj.calendarId === calendarId) {
-                return { ...obj, ...changes }
-            }
-            return obj;
-        });
-    }
 
     const handleClickStar = (e) => {
+        console.log(e);
         e.stopPropagation();
-        const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        // const newEvents = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event.raw, isimportant: !isimportant } })
+        // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+        // const newEvents = updateArrayObjects(Events, event.id, event.calendarId, { raw: { ...event, isimportant: !isimportant } })
         // setListEvents(newEvents)
         // setIsimportant(!isimportant)
         // localStorage.setItem("listEvents", JSON.stringify(newEvents))
@@ -127,9 +128,9 @@ function WorkCard({ event, listEvents, isCreator }) {
                 <div className={cx('header-title')}>{event.eventName}</div>
                 <div className={cx('header-icons')}>
                     {
-                        // isimportant ?
+                        isImportant === 1 ?
                         <StarFilled onClick={handleClickStar} style={{ color: "#f48080" }} />
-                        // : <StarOutlined onClick={handleClickStar} />
+                        : <StarOutlined onClick={handleClickStar} />
                     }
                     <ArrowUpOutlined onClick={() => { navigate(`/overview?eventId=${event.id}`) }} />
                 </div>
