@@ -63,7 +63,7 @@ function HeaderOptions({ calendar = false }) {
 
     return (
         <div className={cx('header-options', calendar ? "calendar" : "") + " header-options"}>
-            <Popover defaultOpen={notyOpen} content={<Notify notifications={notifications} setOpen={setNotyOpen}></Notify>} trigger="click" placement="bottomRight" arrow={false}>
+            <Popover defaultOpen={notyOpen} content={<Notify setNotifyLength={setNotifyLength} notifications={notifications} setOpen={setNotyOpen}></Notify>} trigger="click" placement="bottomRight" arrow={false}>
                 <div className={cx('option-item')} onClick={() => { setNotyOpen(true); setSearchOpen(false) }} >
                     <Badge count={notifyLength} size="small">
                         <BellOutlined />

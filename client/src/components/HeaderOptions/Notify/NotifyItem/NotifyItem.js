@@ -12,7 +12,7 @@ import { useUpdateNotificationMutation } from "../../../../app/api/notiService";
 
 const cx = classNames.bind(styles);
 
-function NotifyItem({ notify }) {
+function NotifyItem({ notify, setNotifyLength }) {
     const [isResolve, setIsResolve] = useState(notify.isResolve)
     const [isAccept, setIsAccept] = useState(notify.isAccept)
     const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +25,7 @@ function NotifyItem({ notify }) {
         updateNotification({ id: notify.id, data: { eventId: notify.eventId, currentUserId: JSON.parse(localStorage.getItem("currentUser")).id, isAccept: 1 } })
         setIsResolve(1);
         setIsAccept(1);
+        setNotifyLength((prev) => prev - 1);
         Swal.fire({
             icon: "success",
             title: "Accepted!",
@@ -44,6 +45,7 @@ function NotifyItem({ notify }) {
                 updateNotification({ id: notify.id, data: { eventId: notify.eventId, currentUserId: JSON.parse(localStorage.getItem("currentUser")).id, isAccept: 0 } })
                 setIsResolve(1);
                 setIsAccept(0);
+                setNotifyLength((prev) => prev - 1);
                 Swal.fire({
                     icon: "success",
                     title: "Rejected!",

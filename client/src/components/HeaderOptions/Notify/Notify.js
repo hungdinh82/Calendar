@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function Notify({notifications}) {
+function Notify({notifications, setNotifyLength}) {
     // const socket = useSelector((state) => state.socket.socket);
 
     return (
         <div className={cx("notify")}>
             {notifications?.map((item) => {
-                return <NotifyItem key={item.id} notify={item} ></NotifyItem>
+                return <NotifyItem setNotifyLength={setNotifyLength} key={item.id} notify={item} ></NotifyItem>
             })}
         </div>
     );
