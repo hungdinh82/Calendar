@@ -9,7 +9,7 @@ import LabelForm from './LabelForm/LabelFrom';
 import "./Library.scss"
 import { useEffect, useState } from 'react';
 import { message } from 'antd';
-import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
 import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
 import { useDispatch, useSelector } from 'react-redux';
 // import { socket } from '../../app/socket/socket';
@@ -34,6 +34,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
 
     const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [createEvent] = useCreateEventMutation();
+    const {data: targetName } = useGetEventByIdQuery(targetId);
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -236,7 +237,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 startDate: startDateNew,
                 endTime: endTimeNew,
                 endDate: endDateNew,
-                target: targetId,
+                target: targetName,
                 event_type: eventTypeNew,
                 helper: []
             })
