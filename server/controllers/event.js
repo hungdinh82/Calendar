@@ -216,17 +216,19 @@ const eventController = {
         }
     },
     
-
     deleteEvent: async (req, res) => {
         const eventId = req.params.id;
-        const sqlDeleteEvents = "DELETE FROM Events WHERE id = ?";
+        const sqlDeleteComments = "DELETE FROM Comments WHERE eventId = ?";
         const sqlDeleteHelpers = "DELETE FROM Helpers WHERE eventId = ?";
         const sqlDeleteNotifies = "DELETE FROM Notifies WHERE eventId = ?";
-
+        const sqlDeleteEvents = "DELETE FROM Events WHERE id = ?";
+        
         try {
+            await connect.query(sqlDeleteComments, [eventId]); // Xóa bản ghi từ bảng Comments
             await connect.query(sqlDeleteHelpers, [eventId]); // Xóa bản ghi từ bảng Helpers
-            const [result] = await connect.query(sqlDeleteEvents, [eventId]); // Xóa bản ghi từ bảng Events
             await connect.query(sqlDeleteNotifies, [eventId]); // Xóa bản ghi từ bảng Notifies
+            const [result] = await connect.query(sqlDeleteEvents, [eventId]); // Xóa bản ghi từ bảng Events
+    
             if (result.affectedRows === 0) {
                 res.status(404).json({ error: "Event not found" });
             } else {
@@ -237,7 +239,7 @@ const eventController = {
             res.status(500).json({ error: "Internal server error" });
         }
     }
-
+    
 };
 
 export default eventController;
