@@ -153,8 +153,8 @@ function WorkCard({ event, listEvents, isCreator }) {
                         </Tooltip>
                         {
                             helpers?.map((helper) => (
-                                <Tooltip title={helper.userName} placement="bottom">
-                                    <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
+                                <Tooltip title={helper.userName} key={helper.id} placement="bottom">
+                                    <Avatar size="small" key={helper.id} style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
                                 </Tooltip>
                             ))
                         }

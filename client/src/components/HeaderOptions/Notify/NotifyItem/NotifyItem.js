@@ -21,24 +21,6 @@ function NotifyItem({ notify }) {
     const sender = notify.fromMail;
     let targetName = notify?.target;
 
-    function updateArrayObjects(listEvents, id, calendarId, changes) {
-        return listEvents.map(obj => {
-            if (obj.id === id && obj.calendarId === calendarId) {
-                return { ...obj, ...changes }
-            }
-            return obj;
-        });
-    }
-
-    function updateArrayObjectsInformation(listInformation, id, changes) {
-        return listInformation.map(obj => {
-            if (obj.id === id) {
-                return { ...obj, ...changes }
-            }
-            return obj;
-        });
-    }
-
     const handleAccept = () => {
         updateNotification({ id: notify.id, data: { eventId: notify.eventId, currentUserId: JSON.parse(localStorage.getItem("currentUser")).id, isAccept: 1 } })
         setIsResolve(1);

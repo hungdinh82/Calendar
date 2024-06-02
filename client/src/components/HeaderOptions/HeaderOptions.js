@@ -16,7 +16,7 @@ const cx = classNames.bind(styles);
 
 
 function HeaderOptions({ calendar = false }) {
-    const [notifyLength, setNotifyLength] = useState();
+    const [notifyLength, setNotifyLength] = useState(0);
     const [searchOpen, setSearchOpen] = useState(false);
     const [notyOpen, setNotyOpen] = useState(false);
     const socket = useSelector((state) => state.socket.socket);
@@ -27,11 +27,16 @@ function HeaderOptions({ calendar = false }) {
     const { data: events } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const listEvents = events;
 
-
     useEffect(() => {
         getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(
             (response) => {
-                var reverseNoti = response.data.slice(); 
+                setNotifyLength(0);
+                response.data.map((message) => {
+                    if (message.isResolve == 0) {
+                        setNotifyLength(notifyLength => notifyLength + 1);
+                    }
+                })
+                var reverseNoti = response.data.slice();
                 reverseNoti.reverse();
                 setNotifications(reverseNoti);
             }
@@ -42,8 +47,13 @@ function HeaderOptions({ calendar = false }) {
         socket?.on("receive-notification", (notification) => {
             getAllNoti(JSON.parse(localStorage.getItem("currentUser")).mail).then(
                 (response) => {
-                    console.log(response.data);
-                    var reverseNoti = response.data.slice(); 
+                    setNotifyLength(0);
+                    response.data.map((message) => {
+                        if (message.isResolve == 0) {
+                            setNotifyLength(notifyLength => notifyLength + 1);
+                        }
+                    })
+                    var reverseNoti = response.data.slice();
                     reverseNoti.reverse();
                     setNotifications(reverseNoti);
                 }
@@ -53,7 +63,7 @@ function HeaderOptions({ calendar = false }) {
 
     return (
         <div className={cx('header-options', calendar ? "calendar" : "") + " header-options"}>
-            <Popover defaultOpen={notyOpen} content={<Notify notifications={notifications}  setOpen={setNotyOpen}></Notify>} trigger="click" placement="bottomRight" arrow={false}>
+            <Popover defaultOpen={notyOpen} content={<Notify notifications={notifications} setOpen={setNotyOpen}></Notify>} trigger="click" placement="bottomRight" arrow={false}>
                 <div className={cx('option-item')} onClick={() => { setNotyOpen(true); setSearchOpen(false) }} >
                     <Badge count={notifyLength} size="small">
                         <BellOutlined />

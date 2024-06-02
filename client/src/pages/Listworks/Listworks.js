@@ -42,6 +42,7 @@ function Listworks() {
                                             return <div key={event.id} className={cx(isShowSideBar ? 'col l-3' : 'col l-2-4')}>
                                                 <WorkCard
                                                     event={event}
+                                                    key={event.id}
                                                     // setListEvents={setListEvents}
                                                     listEvents={events}
                                                     isCreator={event.creatorId === JSON.parse(localStorage.getItem("currentUser")).id}
