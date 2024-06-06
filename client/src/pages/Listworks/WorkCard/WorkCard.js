@@ -25,6 +25,7 @@ function WorkCard({ event, listEvents, isCreator }) {
     const [deleteEvent] = useDeleteEventMutation();
     const [updateImportant] = useUpdateImportantMutation();
     const { data: helpers } = useGetAllHelperByEventIdQuery(event.id);
+    console.log(helpers);
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
     const { data: todos } = useGetAllTodoByTargetIdQuery(event.id);
     const userId = JSON.parse(localStorage.getItem("currentUser")).id;
@@ -163,8 +164,8 @@ function WorkCard({ event, listEvents, isCreator }) {
                         </Tooltip>
                         {
                             helpers?.map((helper) => (
-                                <Tooltip title={helper.userName} key={helper.id} placement="bottom">
-                                    <Avatar size="small" key={helper.id} style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
+                                <Tooltip title={helper?.userName} key={helper?.id} placement="bottom">
+                                    <Avatar size="small" key={helper?.id} style={{ backgroundColor: '#87d068' }} src={helper?.avatar} />
                                 </Tooltip>
                             ))
                         }

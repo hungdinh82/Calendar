@@ -59,8 +59,8 @@ function TaskBar({ callback, isCreatorTarget, event, protype, coloumnId, setList
                         <Avatar.Group maxCount={3} maxStyle={{ color: '#FFFFFF', backgroundColor: '#413E54' }} >
                             {
                                 helper?.map((helper) => (
-                                    <Tooltip title={helper.userName} placement="bottom">
-                                        <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
+                                    <Tooltip title={helper?.userName} placement="bottom">
+                                        <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper?.avatar} />
                                     </Tooltip>
                                 ))
                             }

@@ -100,8 +100,8 @@ function Task({ isCreatorTarget, useNumber = 1, columnId, event, setListEvents }
                             <Avatar.Group maxCount={3}>
                                 {
                                     helper?.map((helper) => (
-                                        <Tooltip title={helper.userName} placement="bottom">
-                                            <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper.avatar} />
+                                        <Tooltip title={helper?.userName} placement="bottom">
+                                            <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper?.avatar} />
                                         </Tooltip>
                                     ))
                                 }
