@@ -39,10 +39,10 @@ function DetailTask({ }) {
             return Number(event.id) === Number(searchParams.get("eventId"))
         })
         setEvent(eventArray[0])
-        setProcesstype(eventArray[0]?.raw?.status)
-        if (eventArray[0]?.raw?.target) {
+        setProcesstype(eventArray[0]?.status)
+        if (eventArray[0]?.target) {
             const targetArray = listEvents.filter((event) => {
-                return Number(event.id) === Number(eventArray[0].raw.target)
+                return Number(event.id) === Number(eventArray[0].target)
             })
             setTarget(targetArray[0])
         }
@@ -50,7 +50,7 @@ function DetailTask({ }) {
 
     const handleOnchangeSelect = (value) => {
         const events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        const newEvents = updateArrayObjects(events, event.id, event.calendarId, { raw: { ...event.raw, status: value } })
+        const newEvents = updateArrayObjects(events, event.id, event.calendarId, { raw: { ...event, status: value } })
         setProcesstype(value)
         localStorage.setItem("listEvents", JSON.stringify(newEvents));
     }
@@ -100,7 +100,7 @@ function DetailTask({ }) {
                                         <div className={cx('col l-7')}>
                                             <div className={cx('content-title')}>Description</div>
                                             <div className={cx('description')}>
-                                                <div className={cx('wrapper')} dangerouslySetInnerHTML={{ __html: event?.raw?.description }}>
+                                                <div className={cx('wrapper')} dangerouslySetInnerHTML={{ __html: event?.description }}>
                                                 </div>
                                             </div>
                                         </div>

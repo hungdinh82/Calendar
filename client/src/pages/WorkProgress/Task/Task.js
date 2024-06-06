@@ -66,20 +66,20 @@ function Task({ isCreatorTarget, useNumber = 1, columnId, event, setListEvents }
         }
     }
 
-    const getHelper = () => {
-        let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-        const listHelper = listAccounts.filter((account) => {
-            return event.raw?.helper?.includes(account.mail);
-        })
-        setHelper(listHelper)
-        const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        setIsPermission(Number(event?.raw?.creatorId) === Number(currentUserId) || event?.raw?.helper.includes(user[0].mail))
-    }
+    // const getHelper = () => {
+    //     let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+    //     const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
+    //     const listHelper = listAccounts.filter((account) => {
+    //         return event.raw?.helper?.includes(account.mail);
+    //     })
+    //     setHelper(listHelper)
+    //     const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+    //     setIsPermission(Number(event?.raw?.creatorId) === Number(currentUserId) || event?.raw?.helper.includes(user[0].mail))
+    // }
 
-    useEffect(() => {
-        getHelper();
-    }, [event])
+    // useEffect(() => {
+    //     getHelper();
+    // }, [event])
 
     return (
         <>

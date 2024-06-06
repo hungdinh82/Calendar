@@ -173,7 +173,7 @@ function Overview() {
                                                 <div className={cx('description-wrapper')}>
                                                     <div className={cx('content-title')}>Description</div>
                                                     <div className={cx('description')}>
-                                                        <div className={cx('wrapper')} dangerouslySetInnerHTML={{ __html: target?.raw?.description }}>
+                                                        <div className={cx('wrapper')} dangerouslySetInnerHTML={{ __html: target?.description }}>
                                                         </div>
                                                     </div>
                                                 </div>
