@@ -1,0 +1,16 @@
+.label {
+    font-weight: 500;
+    color: #5b5858;
+}
+
+.required {
+    color: red;
+    position: absolute;
+    top: -5px;
+    right: 0px;
+}
+
+.label_content {
+    position: relative;
+    width: fit-content;
+}

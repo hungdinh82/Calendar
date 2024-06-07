@@ -167,9 +167,11 @@ const eventController = {
     //     }
     // },
 
-    editEvent: async (req, res) => {
+    editEvent: async (req, res) =>  {
         const eventData = req.body;
         const eventId = req.params.id;
+        console.log(eventData);
+        console.log(eventId);
     
         // Định dạng lại ngày bắt đầu và kết thúc nếu cần
         const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
@@ -179,40 +181,46 @@ const eventController = {
         eventData.start = formattedStartDate;
         eventData.end = formattedEndDate;
     
-        // Cập nhật sự kiện trong bảng Events
-        const updateEventSql = "UPDATE Events SET eventName = ?, calendarId = ?, start = ?, end = ?, eventType = ?, description = ?, status = ?, creatorId = ?, target = ? WHERE id = ?";
-        const updateEventValues = [
-            eventData.eventName,
-            eventData.calendarId,
-            eventData.start,
-            eventData.end,
-            eventData.eventType,
-            eventData.description,
-            eventData.status,
-            eventData.creatorId,
-            eventData.target,
-            eventId
-        ];
-    
         try {
+            // Lấy dữ liệu hiện tại của sự kiện từ bảng Events
+            const [currentEvent] = await connect.query("SELECT * FROM Events WHERE id = ?", [eventId]);
+    
+            if (currentEvent.length === 0) {
+                return res.status(404).json({ error: "Không tìm thấy sự kiện" });
+            }
+    
+            const currentEventData = currentEvent[0];
+            console.log(currentEventData);
+    
+            // Kiểm tra giá trị nào đã thay đổi
+            const fieldsToUpdate = {};
+            const updateValues = [];
+    
+            for (const key in eventData) {
+                if (eventData[key] !== currentEventData[key]) {
+                    fieldsToUpdate[key] = eventData[key];
+                    updateValues.push(eventData[key]);
+                }
+            }
+    
+            // Nếu không có giá trị nào thay đổi, trả về thông báo không cần cập nhật
+            if (Object.keys(fieldsToUpdate).length === 0) {
+                return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
+            }
+    
+            // Tạo câu lệnh SQL để cập nhật các trường đã thay đổi
+            const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(", ");
+            updateValues.push(eventId);
+    
+            const updateEventSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
+    
             // Thực hiện câu lệnh SQL để cập nhật sự kiện trong bảng Events
-            await connect.query(updateEventSql, updateEventValues);
-    
-            // // Xóa các liên kết cũ giữa sự kiện và người dùng trong bảng Helpers
-            // const deleteHelperSql = "DELETE FROM Helpers WHERE eventId = ?";
-            // await connect.query(deleteHelperSql, [eventId]);
-    
-            // // Thêm lại các liên kết mới giữa sự kiện và người dùng trong bảng Helpers
-            // for (const helper of eventData.helper) {
-            //     const insertHelperSql = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
-            //     const insertHelperValues = [helper, eventId];
-            //     await connect.query(insertHelperSql, insertHelperValues);
-            // }
+            await connect.query(updateEventSql, updateValues);
     
             res.json({ success: true });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
         }
     },
     

@@ -1,0 +1,53 @@
+// ::-webkit-scrollbar {
+//     width: 5px;
+// }
+
+// ::-webkit-scrollbar-track {
+//     background: #f1f1f1;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//     background: #888;
+//     border-radius: 2px;
+// }
+
+// ::-webkit-scrollbar-thumb:hover {
+//     background: #555;
+// }
+
+.dialogCreateEvent_library .ant-input::placeholder {
+    color: rgb(116, 114, 114);
+}
+
+.dialogCreateEvent_library .ant-select .ant-select-selection-placeholder {
+    color: rgb(0 0 0 / 38%);
+}
+
+.dialogCreateEvent_library {
+    & .ant-modal-header {
+        margin-bottom: 10px;
+    }
+
+    & .ant-input {
+        line-height: 1.5;
+        border-radius: 4px;
+    }
+
+    & .jodit-react-container {
+        width: 100%;
+    }
+}
+
+.ant-modal-root .ant-modal-wrap {
+    top: -90px;
+}
+
+.dialogCreateEvent_library .ant-form-item {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.dialogCreateEvent_library .select_scroll .ant-select-selector {
+    overflow-y: scroll;
+    max-height: 50px;
+}

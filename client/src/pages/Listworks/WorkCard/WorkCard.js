@@ -5,7 +5,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Dropdown, Space, Tooltip, message } from "antd"
 import Swal from "sweetalert2";
-import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreateEvent";
+import DialogEditTarget from "../../../components/DialogEditTarget/DialogEditTarget";
 
 import styles from './WorkCard.module.scss';
 import './library.scss'
@@ -25,7 +25,7 @@ function WorkCard({ event, listEvents, isCreator }) {
     const [deleteEvent] = useDeleteEventMutation();
     const [updateImportant] = useUpdateImportantMutation();
     const { data: helpers } = useGetAllHelperByEventIdQuery(event.id);
-    console.log(helpers);
+    // console.log(helpers);
     const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
     const { data: todos } = useGetAllTodoByTargetIdQuery(event.id);
     const userId = JSON.parse(localStorage.getItem("currentUser")).id;
@@ -181,16 +181,15 @@ function WorkCard({ event, listEvents, isCreator }) {
             </div>
 
             {isOpen &&
-                <DialogCreateEvent
+                <DialogEditTarget
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
-                    start={event.start}
-                    end={event.end}
+                    // start={event.start}
+                    // end={event.end}
                     event={event}
                     type={"update"}
                     // setListEvents={setListEvents}
                     isTargetPage={true}
-                    targetId={event.id}
                 />
             }
         </div>
