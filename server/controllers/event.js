@@ -170,8 +170,8 @@ const eventController = {
     editEvent: async (req, res) => {
         const eventData = req.body;
         const eventId = req.params.id;
-        console.log(eventData);
-        console.log(eventId);
+        // console.log(eventData);
+        // console.log(eventId);
 
         // Định dạng lại ngày bắt đầu và kết thúc nếu cần
         const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
@@ -268,35 +268,27 @@ const eventController = {
                 const updateEventSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
                 await connect.query(updateEventSql, updateValues);
             }
-
-            // Lấy danh sách các helper mới từ eventData
-            let newHelpers = [];
-            try {
-                // Loại bỏ các khoảng trắng không cần thiết và thay đổi dấu nháy đơn thành dấu nháy kép
-                const helpersString = eventData.helper.replace(/'/g, '"').replace(/\s+/g, '');
-                newHelpers = JSON.parse(helpersString);
-            } catch (error) {
-                return res.status(400).json({ error: "Dữ liệu helper không hợp lệ" });
-            }
+            
             const currentHelperEmails = currentHelpers.map(helper => helper.mail);
 
             const sql2 = "SELECT mail FROM Accounts WHERE id = ?"
             const [result2] = await connect.query(sql2, eventData.creatorId);
 
-            for (const email of newHelpers) {       // Duyệt qua từng thằng helper mới xem đã tồn tại trong helper cũ chưa nếu chưa có thì thêm vào Noti
+            for (const email of eventData.helper) {       // Duyệt qua từng thằng helper mới xem đã tồn tại trong helper cũ chưa nếu chưa có thì thêm vào Noti
+                console.log(email);
                 if (!currentHelperEmails.includes(email)) {
                     // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
                     const [existingNotifies] = await connect.query(
                         "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
                         [email, eventId]
                     );
-                    // console.log(existingNotifies);
+                    console.log(email);
                     if (existingNotifies.length === 0) {
                         // Giả sử bạn có cách để lấy userId từ email
                         const [user] = await connect.query("SELECT id FROM Accounts WHERE mail = ?", [email]);
                         if (user.length > 0) {
                             // Thêm helper mới vào bảng Notifies
-                            const notifyText = `assigned you join target ${currentEventData.eventName}`;
+                            const notifyText = `assigned you join target ${eventData.eventName}`;
                             await connect.query(
                                 "INSERT INTO Notifies (toMail, fromMail, text, isResolve, eventId, isAccept) VALUES (?, ?, ?, ?, ?, ?)",
                                 [email, result2[0].mail, notifyText, 0, eventId, 0]
@@ -313,9 +305,11 @@ const eventController = {
             }
 
             const currentNotifiesEmails = currentNotifies.map(helper => helper.toMail);
+            console.log(currentNotifiesEmails);
+
             for (const email of currentNotifiesEmails) {       // Duyệt qua từng thằng helper cũ xem còn được tồn tại trong helper mới không. Nếu không còn tồn tại thì xoá nó đi trong cả Noti và Helper
                 // console.log(email);
-                if (!newHelpers.includes(email)) {
+                if (!eventData.helper.includes(email)) {
                     // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
                     const [existingNotifies] = await connect.query(
                         "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",

@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Overview from './pages/Overview/Overview';
 import LoginPage from './pages/Login/Login';
 import CalendarPage from './pages/Calendar/CalendarPage'
@@ -17,6 +17,7 @@ import { updateSocket, updateUserOnline } from './redux/socketSlice';
 function App() {
     const [user, setUser] = useState();
     const [isSignUp, setIsSignUp] = useState(false);
+    const navigate = useNavigate();
     const signUp = () => {
         const user = {
             userId: localStorage.getItem("userId"),
@@ -51,7 +52,7 @@ function App() {
             <Route path="/Details" element={<DetailsPage />} />
             <Route path="/Signup" element={<Signup />} />
             <Route path="/Listworks" element={<Listworks />} />
-            <Route path="/" element={<CalendarPage />} />
+            {/* <Route path="/" element={<CalendarPage />} /> */}
         </Routes>
     );
 }

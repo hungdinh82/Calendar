@@ -27,9 +27,11 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
     const [description, setDescription] = useState("");
-    // const [helperMoi, setHelperMoi] = useState([]);
     const socket = useSelector((state) => state.socket.socket);
     const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
+    const [helperMoi, setHelperMoi] = useState(helper?.map((helper) => (
+        helper.mail)));
+    // console.log(helperMoi);
     
     const [editTarget] = useEditTargetMutation();
 
@@ -41,10 +43,10 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
         setDescription(value);
     }
 
-    // const handleChangesetHelper = (value) => {
-    //     setHelperMoi(value);
-    //     console.log(helperMoi);
-    // }
+    const handleChangesetHelper = (value) => {
+        setHelperMoi(value);
+        // console.log(helperMoi);
+    }
 
     const handleChangeStartTime = (value) => {
         if (value) {
@@ -88,9 +90,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
             status,
             description,
             creatorId: currentUserId,
-            helper: helper?.map((helper) => (
-                helper.mail
-            )),
+            helper: helperMoi,
         }
 
         // console.log("Submitting new event:", newEvent);
@@ -144,7 +144,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
             // setEventType(event.eventType)
             // setTarget(event.target)
             setEventName(event.eventName)
-            // setHelperMoi(event.helper)
+            setHelperMoi(helperMoi)
             form.setFieldsValue({
                 event_name: event.eventName,
                 startTime: startTimeNew,
@@ -154,7 +154,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                 description: event.description,
                 event_type: event.eventType,
                 target: event.target,
-                helper: event.helper,
+                helper: helperMoi,
             })
 
         }
@@ -261,10 +261,14 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                             mode="tags"
                             style={{ width: '100%' }}
                             placeholder="Enter email user"
-                            value={helper?.map((helper) => (
-                                helper.mail
-                            ))}
-                            // onChange={handleChangesetHelper}
+                            // value={helper?.map((helper) => (
+                            //     helper.mail
+                            // ))}
+                            // value={helperMoi?.map((helperMoi) => (
+                            //     helperMoi.mail
+                            // ))}
+                            value={helperMoi}
+                            onChange={handleChangesetHelper}
                         />
                     </Form.Item>
                 </Form>
