@@ -45,7 +45,6 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
 
     const handleChangesetHelper = (value) => {
         setHelperMoi(value);
-        // console.log(helperMoi);
     }
 
     const handleChangeStartTime = (value) => {

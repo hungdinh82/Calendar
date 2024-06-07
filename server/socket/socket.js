@@ -29,7 +29,6 @@ const connectSocket = (server, port) => {
     // });
 
     socket.on("new-notification", (notification) => {
-      // console.log("new-notification", notification);
       onlineUsers.forEach((user) => {
         if (user.id === notification.receiverId) {
           socket
@@ -37,6 +36,7 @@ const connectSocket = (server, port) => {
             .emit("receive-notification", { ...notification });
         }
       });
+      console.log(onlineUsers);
     });
 
     socket.on("disconnect", () => {
