@@ -227,6 +227,8 @@ const eventController = {
     editTarget: async (req, res) => {
         const eventData = req.body;
         const eventId = req.params.id;
+        console.log(eventId);
+        console.log(eventData);
         // Định dạng lại ngày bắt đầu và kết thúc nếu cần
         const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
         const formattedEndDate = moment(eventData.end).format("YYYY-MM-DD HH:mm:ss");

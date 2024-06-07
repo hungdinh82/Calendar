@@ -12,7 +12,7 @@ const event = (app) => {
     router.get("/target/:targetId", eventController.getTodosByTarget);
     router.post("/", eventController.createEvent);
     router.put("/:id", eventController.editEvent);
-    router.put("/target/:id", eventController.editTarget);
+    router.put("/editTarget/:id", eventController.editTarget);
     router.delete("/:id", eventController.deleteEvent);
   };
 

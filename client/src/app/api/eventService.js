@@ -40,7 +40,7 @@ export const eventService = apiService.injectEndpoints({
         }),
         editTarget: builder.mutation({
             query: ({ id, data }) => ({
-                url: `api/event/target/${id}`,
+                url: `api/event/editTarget/${id}`,
                 method: 'PUT',
                 body: data,
             }),

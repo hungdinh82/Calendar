@@ -90,7 +90,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     }
 
     const handleCancel = () => {
-        setEventType("todo")
+        // setEventType("todo")
         form.resetFields();
         setIsOpen(false)
     }
@@ -241,8 +241,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 event_type: eventTypeNew,
                 helper: []
             })
-
-
         }
         else if (type === "update") {
             const startTimeNew = dayjs(new Date(event.start.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')

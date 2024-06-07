@@ -6,10 +6,11 @@ import { DatePicker, TimePicker, Input, Form } from 'antd';
 import dayjs from "dayjs"
 import JoditEditor from "jodit-react";
 import LabelForm from './LabelForm/LabelFrom';
+import Swal from "sweetalert2";
 import "./Library.scss"
 import { useEffect, useState } from 'react';
 import { message } from 'antd';
-import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
+import { useEditTargetMutation } from "../../app/api/eventService";
 import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
@@ -20,61 +21,54 @@ const cx = classNames.bind(styles)
 const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, targetId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
+    const [eventName, setEventName] = useState("");
     const [startTime, setStartTime] = useState();
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
     const [description, setDescription] = useState("");
+    // const [helperMoi, setHelperMoi] = useState([]);
+    const socket = useSelector((state) => state.socket.socket);
     const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
+    
+    const [editTarget] = useEditTargetMutation();
 
+    const handleChangeEventName = (e) => {
+        setEventName(e.target.value);
+    }
 
-    // const { data: targetNay } = useGetEventByIdQuery(event.id);
-    // console.log(targetNay);
-
-
-    // const handleChangeEventType = (value) => {
-    //     setEventType(value);
-    // }
-
-    // const handleChangeEventName = (e) => {
-    //     setEventName(e.target.value);
-    // }
-
-    // const handleTarget = (value) => {
-    //     setTarget(value);
-    // }
-
-    // const handleChangeDescription = (value) => {
-    //     setDescription(value);
-    // }
+    const handleChangeDescription = (value) => {
+        setDescription(value);
+    }
 
     // const handleChangesetHelper = (value) => {
-    //     setHelper(value);
+    //     setHelperMoi(value);
+    //     console.log(helperMoi);
     // }
 
-    // const handleChangeStartTime = (value) => {
-    //     if (value) {
-    //         setStartTime(value);
-    //     }
-    // }
+    const handleChangeStartTime = (value) => {
+        if (value) {
+            setStartTime(value);
+        }
+    }
 
-    // const handleChangeStartDate = (value) => {
-    //     if (value) {
-    //         setStartDate(value);
-    //     }
-    // }
+    const handleChangeStartDate = (value) => {
+        if (value) {
+            setStartDate(value);
+        }
+    }
 
-    // const handleChangeEndTime = (value) => {
-    //     if (value) {
-    //         setEndTime(value);
-    //     }
-    // }
+    const handleChangeEndTime = (value) => {
+        if (value) {
+            setEndTime(value);
+        }
+    }
 
-    // const handleChangeEndDate = (value) => {
-    //     if (value) {
-    //         setEndDate(value);
-    //     }
-    // }
+    const handleChangeEndDate = (value) => {
+        if (value) {
+            setEndDate(value);
+        }
+    }
 
 
     const handleOK = () => {
@@ -85,15 +79,49 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
         const start = startDate.format("YYYY-MM-DD") + " " + startTime.format("HH:mm:ss");
         const end = endDate.format("YYYY-MM-DD") + " " + endTime.format("HH:mm:ss");
         const status = event?.status || "Ready"
-        // const currentUserId = localStorage.getItem("currentUserId")
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-        const currentUserMail = JSON.parse(localStorage.getItem("currentUser")).mail
+
+        const newEvent = {
+            eventName,
+            start,
+            end,
+            status,
+            description,
+            creatorId: currentUserId,
+            helper: helper?.map((helper) => (
+                helper.mail
+            )),
+        }
+
+        // console.log("Submitting new event:", newEvent);
 
         if (type === "update") {
-            messageApi.open({
-                type: 'success',
-                content: 'Sửa thành công',
-            });
+            console.log("Updating event:", newEvent);
+            console.log("Event ID:", event.id);
+            editTarget({id: event.id, data: newEvent})
+                .then(function (response) {
+                    if (response.data.error !== undefined) {
+                        message.error(response.data.error.message);
+                    } else if (response.data.errors !== undefined) {
+                        message.error(response.data.errors[0].message);
+                    } else {
+                        socket?.emit("new-notification", {
+                        });
+                        message.success('Edit event successfully')
+                        Swal.fire(
+                            'Important!',
+                            'Your event has been updated',
+                            'success'
+                        )
+                    };
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            // messageApi.open({
+            //     type: 'success',
+            //     content: 'Sửa thành công',
+            // });
 
 
         }
@@ -108,17 +136,17 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
             const startDateNew = dayjs(new Date(event.start.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
             const endTimeNew = dayjs(new Date(event.end.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
             const endDateNew = dayjs(new Date(event.end.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
-            // setStartTime(startTimeNew)
-            // setStartDate(startDateNew)
-            // setEndTime(endTimeNew)
-            // setEndDate(endDateNew)
-            // setDescription(event.description)
+            setStartTime(startTimeNew)
+            setStartDate(startDateNew)
+            setEndTime(endTimeNew)
+            setEndDate(endDateNew)
+            setDescription(event.description)
             // setEventType(event.eventType)
             // setTarget(event.target)
-            // setEventName(event.title || event.eventName)
-            // setHelper(event.helper)
+            setEventName(event.eventName)
+            // setHelperMoi(event.helper)
             form.setFieldsValue({
-                event_name: event.title || event.eventName,
+                event_name: event.eventName,
                 startTime: startTimeNew,
                 startDate: startDateNew,
                 endTime: endTimeNew,
@@ -149,13 +177,13 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                     <LabelForm content={"Event name"} required={true} />
                     <div className={cx("content", "c-12")} >
                         <Form.Item name={"event_name"} rules={[{ required: true, message: 'Please enter your name' }]}>
-                            <Input placeholder='Enter your name...' 
-                            // onChange={handleChangeEventName} 
+                            <Input placeholder='Enter your name...'
+                                onChange={handleChangeEventName}
                             />
                         </Form.Item>
                     </div>
                     <div className={cx("input_layout")}>
-                        <LabelForm content={"Event type"}/>
+                        <LabelForm content={"Event type"} />
                         <div className={cx("content", "c-10")}>
                             <div className={cx("c-6")}>
                                 <Form.Item name={"event_type"}>
@@ -163,7 +191,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                                         value={event.eventType}
                                         style={{ width: "73%" }}
                                         disabled
-                                        // onChange={handleChangeEventType}
+                                    // onChange={handleChangeEventType}
                                     />
                                 </Form.Item>
                             </div>
@@ -177,7 +205,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                             <div className={cx("datePicker", "c-6")}>
                                 <Form.Item name={"startTime"} rules={[{ required: true, message: 'Please enter time start' }]}>
                                     <TimePicker
-                                        // onChange={handleChangeStartTime}
+                                        onChange={handleChangeStartTime}
 
                                     />
                                 </Form.Item>
@@ -186,7 +214,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                                 <Form.Item name={"startDate"} rules={[{ required: true, message: 'Please enter date start' }]}>
                                     <DatePicker
                                         format={"DD/MM/YYYY"}
-                                        // onChange={handleChangeStartDate}
+                                        onChange={handleChangeStartDate}
                                     />
                                 </Form.Item>
                             </div>
@@ -199,7 +227,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                             <div className={cx("datePicker", "c-6")}>
                                 <Form.Item name={"endTime"} rules={[{ required: true, message: 'Please enter time end' }]}>
                                     <TimePicker
-                                        // onChange={handleChangeEndTime}
+                                        onChange={handleChangeEndTime}
                                     />
                                 </Form.Item>
                             </div>
@@ -207,7 +235,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                                 <Form.Item name={"endDate"} rules={[{ required: true, message: 'Please enter date end' }]}>
                                     <DatePicker
                                         format={"DD/MM/YYYY"}
-                                        // onChange={handleChangeEndDate}
+                                        onChange={handleChangeEndDate}
                                     />
                                 </Form.Item>
                             </div>
@@ -223,7 +251,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                                     height: 200,
                                 }}
                                 value={event?.description}
-                                // onBlur={handleChangeDescription}
+                                onBlur={handleChangeDescription}
                             />
                         </div>
                     </Form.Item>
