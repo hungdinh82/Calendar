@@ -54,7 +54,7 @@ function NotifyItem({ notify, setNotifyLength }) {
         })
     };
 
-  
+
 
     useEffect(() => {
     }, [isResolve]);
@@ -69,9 +69,9 @@ function NotifyItem({ notify, setNotifyLength }) {
                     {notify.text}
                     <span className={cx("target")}> {targetName || ""} </span>
                 </p>
-                <p className={cx('task')} onClick={() => setIsOpen(true)}>{notify.eventName}</p>
-                {
-                    !isResolve &&
+                {/* <p className={cx('task')} onClick={() => setIsOpen(true)}>{notify.eventName}</p> */}
+                <p className={cx('task')} >{notify.eventName}</p>
+                {!isResolve ? (
                     <div className={cx("button-layout")}>
                         <span className="notify-accept">
                             <Button onClick={handleAccept}>Accept</Button>
@@ -80,15 +80,12 @@ function NotifyItem({ notify, setNotifyLength }) {
                             <Button onClick={handleReject}>Reject</Button>
                         </span>
                     </div>
-                }
-                {
-                    isResolve && isAccept &&
+                ) : isAccept ? (
                     <div className={cx("accepted-mess")}>Accepted!</div>
-                }
-                {
-                    isResolve && !isAccept &&
+                ) : (
                     <div className={cx("rejected-mess")}>Rejected!</div>
-                }
+                )}
+       
             </div>
             {isOpen &&
                 <DialogDetails

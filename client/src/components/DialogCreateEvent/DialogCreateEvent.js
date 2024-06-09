@@ -115,7 +115,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             const allHelpersExist = helper.every(h => helpersEmails.includes(h));
 
             if (!allHelpersExist) {
-                message.error('Some helpers are not allowed.');
+                message.error('Some helpers do not have permission.');
                 return;
             }
         }
@@ -210,7 +210,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 startDate: startDateNew,
                 endTime: endTimeNew,
                 endDate: endDateNew,
-                target: eventTarget?.eventName,
+                target: eventTarget?.eventName ,
                 event_type: eventTypeNew,
                 helper: []
             })
