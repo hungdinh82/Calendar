@@ -2,12 +2,6 @@ import { Modal, Avatar, Tooltip, Select } from "antd"
 import styles from "./DialogDetails.module.scss"
 import classNames from "classnames/bind"
 import { FolderOutlined, UserOutlined, EditOutlined } from "@ant-design/icons"
-import avatar from '../../imgs/img6.png'
-import avatar_hung from '../../imgs/avatar/hung.png';
-import avatar_linh from '../../imgs/avatar/linh.png';
-import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
-import avatar_quang from '../../imgs/avatar/quang.jpg'
-import avatar_hieu from '../../imgs/avatar/hieu.jpg'
 // import Detail from "../../pages/Overview/Detail/Detail"
 import Comment from "../Comment/Comment"
 import { useEffect, useState } from "react"
@@ -30,11 +24,11 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
-    // const [creator, setCreator] = useState();
-    const [creatorAvatar, setCreatorAvatar] = useState();
-    // const [helper, setHelper] = useState([]);
     const [isPermission, setIsPermission] = useState([]);
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
+    const [isCreator, setIsCreator] = useState(false)
+    setIsCreator(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id)
+    console.log(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
 
@@ -49,19 +43,6 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
         });
         setIsOpen(false)
     }
-
-    const getHelper = () => {
-        // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-        // const listHelper = listAccounts.filter((account) => {
-        //     return event.helper.includes(account.mail);
-        // })
-        // setHelper(listHelper)
-        // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        setIsPermission(Number(event.creatorId) === Number(currentUserId))
-        setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
-    }
-
 
     useEffect(() => {
         if (filterType === "In Progress") setColorSelect("In-progress")
@@ -89,52 +70,9 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                 })
                 setTarget(eventArray[0])
             }
-
-            // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            // const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
-            // setCreator(user[0])
-            // if (user[0].userName.includes("quang")) {
-            //     setCreatorAvatar(avatar_quang);
-            // }
-            // else if (user[0].userName.includes("hung")) {
-            //     setCreatorAvatar(avatar_hung)
-            // }
-            // else if (user[0].userName.includes("linh")) {
-            //     setCreatorAvatar(avatar_linh)
-            // }
-            // else if (user[0].userName.includes("nguyet")) {
-            //     setCreatorAvatar(avatar_nguyet)
-            // }
-            // else if (user[0].userName.includes("hieu")) {
-            //     setCreatorAvatar(avatar_hieu)
-            // }
-            // else setCreatorAvatar(avatar)
-            // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            // if (currentUser.userName?.includes("quang")) {
-            //     setCreatorAvatar(avatar_quang);
-            // }
-            // else if (currentUser.userName?.includes("hung")) {
-            //     setCreatorAvatar(avatar_hung);
-            // }
-            // else if (currentUser.userName?.includes("linh")) {
-            //     setCreatorAvatar(avatar_linh);
-            // }
-            // else if (currentUser.userName?.includes("nguyet")) {
-            //     setCreatorAvatar(avatar_nguyet);
-            // }
-            // else if (currentUser.userName?.includes("hieu")) {
-            //     setCreatorAvatar(avatar_hieu);
-            // }
-            // else {
-            //     setCreatorAvatar(avatar);
-            // }
         }
 
     }, [event])
-
-    useEffect(() => {
-        getHelper();
-    }, [event, target])
 
     return (
         <>
@@ -193,7 +131,9 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                             <div className={cx("detail-content")}>
                                 <div className={cx("row", "detail-layout")}>
                                     <div className={cx('edit-icon')} onClick={() => setIsOpenUpdate(true)}>
-                                        <EditOutlined style={{ "font-size": "2rem" }} />
+                                        <EditOutlined
+                                            style={{ "font-size": "2rem" }}
+                                        />
                                     </div>
                                     <div className={cx("detail-content-label", "c-5")}>
                                         <div >Creator:</div>
@@ -202,7 +142,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                                     <div className={cx("detail-content-value", "c-6")}>
                                         <div className={cx("detail-content-creator")}>
                                             <div className={cx("row")} style={{ alignItems: "center" }}>
-                                                <div className={cx('user-avatar')}><Avatar  src={creator?.avatar} /></div>
+                                                <div className={cx('user-avatar')}><Avatar src={creator?.avatar} /></div>
                                                 <div className={cx('user-name')}>{creator?.userName}</div>
                                             </div>
                                         </div>

@@ -307,7 +307,7 @@ const eventController = {
             const currentNotifiesEmails = currentNotifies.map(helper => helper.toMail);
             console.log(currentNotifiesEmails);
 
-            for (const email of currentNotifiesEmails) {       // Duyệt qua từng thằng helper cũ xem còn được tồn tại trong helper mới không. Nếu không còn tồn tại thì xoá nó đi trong cả Noti và Helper
+            for (const email of currentNotifiesEmails) {       // Duyệt qua từng thằng helper cũ xem còn được tồn tại trong helper mới không. Nếu không còn tồn tại thì xoá nó đi trong cả Noti và Helper và Comment
                 // console.log(email);
                 if (!eventData.helper.includes(email)) {
                     // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
@@ -325,6 +325,12 @@ const eventController = {
                     // Xoá helper cũ trong bảng Helpers
                     await connect.query(
                         "DELETE FROM Helpers WHERE userId = ? AND eventId = ?",
+                        [result2[0].id, eventId]
+                    );
+
+                    // Xoá helper cũ trong bảng Comments
+                    await connect.query(
+                        "DELETE FROM Comments WHERE userId = ? AND eventId = ?",
                         [result2[0].id, eventId]
                     );
                 }

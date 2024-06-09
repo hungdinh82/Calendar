@@ -186,6 +186,7 @@ function Overview() {
                                                     {/* {console.log(target)}   */}
                                                     <Detail event={target}
                                                     // setListEvents={setListEvents}
+                                                    isCreatorTarget={isCreatorTarget}
                                                     ></Detail>
                                                 </div>
 

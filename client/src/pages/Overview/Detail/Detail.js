@@ -15,11 +15,12 @@ import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreat
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 import { useGetEventByIdQuery } from "../../../app/api/eventService";
 import { useGetCreatorByIdQuery } from "../../../app/api/authService";
+import DialogEditTarget from "../../../components/DialogEditTarget/DialogEditTarget";
 
 
 const cx = classNames.bind(styles);
 
-function Detail({ event, setListEvents }) {
+function Detail({ event, setListEvents, isCreatorTarget }) {
     const [searchParams, setSearchParams] = useSearchParams()
     const [startTime, setStartTime] = useState();
     const [startDate, setStartDate] = useState();
@@ -44,25 +45,6 @@ function Detail({ event, setListEvents }) {
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            // if (currentUser.userName?.includes("quang")) {
-            //     setCreatorAvatar(avatar_quang);
-            // }
-            // else if (currentUser.userName?.includes("hung")) {
-            //     setCreatorAvatar(avatar_hung);
-            // }
-            // else if (currentUser.userName?.includes("linh")) {
-            //     setCreatorAvatar(avatar_linh);
-            // }
-            // else if (currentUser.userName?.includes("nguyet")) {
-            //     setCreatorAvatar(avatar_nguyet);
-            // }
-            // else if (currentUser.userName?.includes("hieu")) {
-            //     setCreatorAvatar(avatar_hieu);
-            // }
-            // else {
-            //     setCreatorAvatar(avatar);
-            // }
         }
     }, [event])
 
@@ -113,13 +95,13 @@ function Detail({ event, setListEvents }) {
                 {/* <DialogDetails isOpen={isOpenDetail} setIsOpenDetail={setIsOpenDetail} /> */}
             </div>
             {
-                isOpenUpdate &&
-                <DialogCreateEvent
+                isOpenUpdate &&  isCreatorTarget &&
+                <DialogEditTarget
                     isOpen={isOpenUpdate}
                     setIsOpen={setIsOpenUpdate}
-                    start={event.start}
-                    end={event.end}
-                    setListEvents={setListEvents}
+                    // start={event.start}
+                    // end={event.end}
+                    // setListEvents={setListEvents}
                     type={"update"}
                     event={event}
                 />
