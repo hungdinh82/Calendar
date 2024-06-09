@@ -129,7 +129,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                     if (response.data.error !== undefined) {
                         message.error(response.data.error.message);
                     } else if (response.data.errors !== undefined) {
-                        message.error(response.data.errors[0].message); 
+                        message.error(response.data.errors[0].message);
                     } else {
                         socket?.emit("new-notification", {
                             // toMail: helper,
@@ -187,7 +187,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
         const Events = eventsPush || [];
         const filterTarget = Events.filter((event) => event?.eventType === "target")
         const optionTarget = filterTarget.map((e) => {
-            console.log(eventTarget?.eventName);
+            // console.log(eventTarget?.eventName);
             return { value: e?.id, label: e?.eventName, disabled: eventTarget?.eventName !== e?.eventName }
         })
         setOptionTarget(optionTarget)
@@ -197,6 +197,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             const endTimeNew = dayjs(new Date(end).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
             const endDateNew = dayjs(new Date(end).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
             const eventTypeNew = isTargetPage ? "target" : "todo"
+            console.log(eventTypeNew);
             setStartTime(startTimeNew)
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
@@ -212,7 +213,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 startDate: startDateNew,
                 endTime: endTimeNew,
                 endDate: endDateNew,
-                target: eventTarget?.eventName ,
+                target: eventTarget?.eventName,
                 event_type: eventTypeNew,
                 helper: []
             })
@@ -263,22 +264,24 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                     <div className={cx("input_layout")}>
                         <LabelForm content={"Event type"} required={true} />
                         <div className={cx("content", "c-10")}>
-                            <div className={cx("c-6")}>
-                                <Form.Item name={"event_type"}>
-                                    <Select
-                                        options={[
-                                            { value: "target", label: "Target", disabled: eventTarget ? true : false },
-                                            { value: "todo", label: "To-do" }
-                                        ]}
-
-                                        value={eventType}
-                                        style={{ width: "73%" }}
-                                        onChange={handleChangeEventType}
-                                    />
-                                </Form.Item>
-                            </div>
                             {
-                                eventType === "todo" ?
+                                <div className={cx("c-6")}>
+                                    <Form.Item name={"event_type"}>
+                                        <Select
+                                            // options={[
+                                            //     { value: "target", label: "Target", disabled: eventTarget ? true : false },
+                                            //     { value: "todo", label: "To-do" }
+                                            // ]}
+
+                                            value={eventType}
+                                            style={{ width: "73%" }}
+                                            onChange={handleChangeEventType}
+                                        />
+                                    </Form.Item>
+                                </div>
+                            }
+                            {
+                                eventType === "todo" && eventTarget ?
                                     <div className={cx("c-6")}>
                                         <Form.Item name={"target"}>
                                             <Select
