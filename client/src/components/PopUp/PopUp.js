@@ -12,12 +12,6 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DialogDetails from "../DialogDetails/DialogDetails";
 
-import avatar from '../../imgs/img6.png'
-import avatar_hung from '../../imgs/avatar/hung.png';
-import avatar_linh from '../../imgs/avatar/linh.png';
-import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
-import avatar_quang from '../../imgs/avatar/quang.jpg'
-import avatar_hieu from '../../imgs/avatar/hieu.jpg'
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../app/api/authService";
 

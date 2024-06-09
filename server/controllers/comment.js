@@ -15,7 +15,7 @@ const commentController = {
     },
     getCommentByEventId: async (req, res) => {
         const eventId = req.params.eventId;
-        const sql = "SELECT * FROM Comments WHERE eventId = ?";
+        const sql = "SELECT * FROM Comments,Accounts WHERE eventId = ? AND Comments.userId = Accounts.id";
         
         try {
             // Execute the SQL query

@@ -13,7 +13,6 @@ const cx = classNames.bind(styles);
 
 function Comment({ event }) {
     const [searchParams] = useSearchParams();
-    const [listAccounts, setListAccounts] = useState(JSON.parse(localStorage.getItem("listAccounts")));
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef();
     const eventId = event ? event.id : searchParams.get("eventId");
@@ -58,12 +57,7 @@ function Comment({ event }) {
 
                 {eventComments?.length > 0 && <div className={cx('list-comment')}>
                     {eventComments?.map((item, index) => {
-                        var user = {};
-                        for (var x of listAccounts) {
-                            if (Number(x.id) === Number(item.userId))
-                                user = x;
-                        }
-                        return <CommentItem key={index} userName={user.userName} userAvatar={user.avatar} comment={item.comment}></CommentItem>
+                        return <CommentItem key={index} userName={item?.userName} userAvatar={item?.avatar} comment={item?.comment}></CommentItem>
                     })}
                 </div>}
             </div>
