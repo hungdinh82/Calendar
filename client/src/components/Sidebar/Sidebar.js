@@ -90,6 +90,7 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                     >
                         ADD EVENT
                     </Button>
+                    {isOpen &&                  
                     <DialogCreateEvent
                         isOpen={isOpen}
                         setIsOpen={setIsOpen}
@@ -99,7 +100,7 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                         setListEvents={setListEvents}
                         isTargetPage={isTargetPage}
                         targetId={targetId}
-                    />
+                    />}
                 </div>
 
                 <div className={cx('nav')}>

@@ -16,6 +16,7 @@ import { useGetCreatorByIdQuery } from "../../app/api/authService";
 const cx = classNames.bind(styles)
 
 const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
+    // console.log("DialogDetails");
     const navigate = useNavigate();
     const [filterType, setFilterType] = useState(event.status);
     const [colorSelect, setColorSelect] = useState()
@@ -186,7 +187,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
                 </Modal>
             </div>
             {
-                isOpenUpdate &&
+                isOpenUpdate && 
                 <DialogCreateEvent
                     isOpen={isOpenUpdate}
                     setIsOpen={setIsOpenUpdate}

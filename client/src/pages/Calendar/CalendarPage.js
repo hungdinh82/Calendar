@@ -386,7 +386,7 @@ function CalendarPage() {
                 // const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
                 if (conditionFilter) {
                     let targetName = "";
-                    
+
                     // if (Number(event.target)) {
                     //     console.log(event.eventId);
                     //     console.log(event.target);

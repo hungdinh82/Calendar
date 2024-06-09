@@ -36,7 +36,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const [createEvent] = useCreateEventMutation();
     const { data: eventTarget } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const { data: helpersCuaTargetNay } = useGetAllHelperByEventIdQuery(Number(searchParams.get("eventId")));
-    const eventIdFromParams = Number(searchParams.get("eventId"));
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -197,7 +196,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             const endTimeNew = dayjs(new Date(end).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
             const endDateNew = dayjs(new Date(end).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
             const eventTypeNew = isTargetPage ? "target" : "todo"
-            console.log(eventTypeNew);
             setStartTime(startTimeNew)
             setStartDate(startDateNew)
             setEndTime(endTimeNew)

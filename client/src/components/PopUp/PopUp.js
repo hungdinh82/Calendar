@@ -21,7 +21,6 @@ const cx = classNames.bind(styles);
 
 
 function PopUp({ event, callBack, setListEvents }) {
-
     const [isOpenCreate, setIsOpenCreate] = useState(false);
     const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
     const start = typeof (event.start) === "string" ? event.start : event.start.d.d;
