@@ -108,6 +108,19 @@ const eventController = {
             // add default important
             const sql4 = "INSERT INTO Importants (eventId, userId) VALUES (?, ?)";
             await connect.query(sql4, [result.insertId, eventData.creatorId]);
+
+            if (eventData.eventType === "todo" && eventData.target) {
+                eventData.helper.forEach(async helper => {
+                    const sql5 = "DELETE FROM Notifies WHERE toMail = ? AND eventId = ?";
+                    await connect.query(sql5, [helper, result.insertId]);
+
+                    const sql6 = "SELECT id FROM Accounts WHERE mail = ?"
+                    const [result6] = await connect.query(sql6, helper);
+
+                    const sql7 = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
+                    await connect.query(sql7, [result6[0].id, result.insertId]);
+                })
+            }
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Internal server error" });

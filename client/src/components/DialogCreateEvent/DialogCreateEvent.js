@@ -128,7 +128,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                     if (response.data.error !== undefined) {
                         message.error(response.data.error.message);
                     } else if (response.data.errors !== undefined) {
-                        message.error(response.data.errors[0].message);
+                        message.error(response.data.errors[0].message); 
                     } else {
                         socket?.emit("new-notification", {
                             // toMail: helper,
