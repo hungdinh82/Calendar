@@ -7,7 +7,7 @@ import DialogCreateEvent from "../DialogCreateEvent/DialogCreateEvent";
 
 import styles from './Sidebar.module.scss';
 import Logo from '../../imgs/logo.png';
-import avatar from '../../imgs/img6.png';
+import avatar from '../../imgs/facebook.png';
 import avatar_hung from '../../imgs/avatar/hung.png';
 import avatar_linh from '../../imgs/avatar/linh.png';
 import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
@@ -26,27 +26,14 @@ const colors = ["#F4CD80", "#F48080", "#80D9F4", "#C180F4"]
 function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage, targetId, listEvents }) {
     const [visitable, setVisitable] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
-    // const [importantTarget, setimportantTarget] = useState([]);
     const [isOpenImportant, setIsOpenImportant] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState();
-    // const [currentUser, setCurrentUser] = useState();
+
     const navigate = useNavigate();
 
     const currentUser = JSON.parse(localStorage.getItem("currentUser"))
     
     const { data: eventImportant } = useGetImportantsByUserIdQuery(currentUser.id);
-    // setimportantTarget(eventImportant)
-    const importantTarget = eventImportant;
-    // console.log(importantTarget)
-    // useEffect(() => {
-    //     // const filterimportantTarget = listEvents?.filter((e) => e.raw.eventType === "target" && e.raw.isImportant)
-    //     // setimportantTarget(filterimportantTarget)
-    // }, [listEvents])
-
-    // useEffect(() => {
-    // console.log(currentUser.userName)
-
-
 
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -85,9 +72,6 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                         <div className={cx('user-avatar')}>
                             <div className={cx('avatar')}>
                                 <img src={currentAvatar} alt="" />
-                            </div>
-                            <div className={cx('edit-logo')}>
-                                <EditOutlined />
                             </div>
                         </div>
                         <div className={cx('user-info')}>
