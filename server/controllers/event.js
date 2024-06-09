@@ -190,7 +190,7 @@ const eventController = {
             }
 
             const currentEventData = currentEvent[0];
-            console.log(currentEventData);
+            // console.log(currentEventData);
 
             // Kiểm tra giá trị nào đã thay đổi
             const fieldsToUpdate = {};
@@ -268,7 +268,7 @@ const eventController = {
                 const updateEventSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
                 await connect.query(updateEventSql, updateValues);
             }
-            
+
             const currentHelperEmails = currentHelpers.map(helper => helper.mail);
 
             const sql2 = "SELECT mail FROM Accounts WHERE id = ?"

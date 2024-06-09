@@ -164,44 +164,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             // localStorage.setItem("listInformations", JSON.stringify(listInformation));
 
         }
-        else if (type === "update") {
-            messageApi.open({
-                type: 'success',
-                content: 'Sửa thành công',
-            });
-            const eventUpdate = {
-                ...newEvent,
-                raw: {
-                    ...newEvent,
-                    creatorId: event.creatorId,
-                    helper: event.helper || []
-                }
-            }
-
-            const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
-            let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-            helper.map((helper) => {
-                if (!event.helper.includes(helper)) {
-                    const createInformation = {
-                        toMail: helper,
-                        fromMail: user[0].mail,
-                        text: eventType === "todo" ? "assigned you a task on target" : "assigned you join target",
-                        isResolve: false,
-                        event: eventUpdate,
-                        id: Date.now()
-                    }
-                    listInformation.push(createInformation)
-                }
-            })
-            localStorage.setItem("listInformations", JSON.stringify(listInformation));
-
-            Events = updateArrayObjects(Events, event.id, event.calendarId, eventUpdate)
-
-
-        }
-        // setListEvents(Events)
-        localStorage.setItem("listEvents", JSON.stringify(Events));
         setIsOpen(false)
         form.resetFields();
         setEventType("todo")

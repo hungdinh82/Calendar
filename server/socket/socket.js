@@ -36,7 +36,7 @@ const connectSocket = (server, port) => {
             .emit("receive-notification", { ...notification });
         }
       });
-      console.log(onlineUsers);
+      // console.log(onlineUsers);
     });
 
     socket.on("disconnect", () => {

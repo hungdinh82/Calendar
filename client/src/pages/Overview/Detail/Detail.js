@@ -14,6 +14,7 @@ import avatar_hieu from '../../../imgs/avatar/hieu.jpg'
 import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreateEvent";
 import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
 import { useGetEventByIdQuery } from "../../../app/api/eventService";
+import { useGetCreatorByIdQuery } from "../../../app/api/authService";
 
 
 const cx = classNames.bind(styles);
@@ -24,9 +25,9 @@ function Detail({ event, setListEvents }) {
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
-    const [creator, setCreator] = useState();
-    const [creatorAvatar, setCreatorAvatar] = useState();
+
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
+    const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
     const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const { data: helpers } = useGetAllHelperByEventIdQuery(target?.id);
 
@@ -43,44 +44,25 @@ function Detail({ event, setListEvents }) {
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            // const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
-            // setCreator(user[0])
-            // if (user[0].userName.includes("quang")) {
+            // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            // if (currentUser.userName?.includes("quang")) {
             //     setCreatorAvatar(avatar_quang);
             // }
-            // else if (user[0].userName.includes("hung")) {
-            //     setCreatorAvatar(avatar_hung)
+            // else if (currentUser.userName?.includes("hung")) {
+            //     setCreatorAvatar(avatar_hung);
             // }
-            // else if (user[0].userName.includes("linh")) {
-            //     setCreatorAvatar(avatar_linh)
+            // else if (currentUser.userName?.includes("linh")) {
+            //     setCreatorAvatar(avatar_linh);
             // }
-            // else if (user[0].userName.includes("nguyet")) {
-            //     setCreatorAvatar(avatar_nguyet)
+            // else if (currentUser.userName?.includes("nguyet")) {
+            //     setCreatorAvatar(avatar_nguyet);
             // }
-            // else if (user[0].userName.includes("hieu")) {
-            //     setCreatorAvatar(avatar_hieu)
+            // else if (currentUser.userName?.includes("hieu")) {
+            //     setCreatorAvatar(avatar_hieu);
             // }
-            // else setCreatorAvatar(avatar)
-            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            if (currentUser.userName?.includes("quang")) {
-                setCreatorAvatar(avatar_quang);
-            }
-            else if (currentUser.userName?.includes("hung")) {
-                setCreatorAvatar(avatar_hung);
-            }
-            else if (currentUser.userName?.includes("linh")) {
-                setCreatorAvatar(avatar_linh);
-            }
-            else if (currentUser.userName?.includes("nguyet")) {
-                setCreatorAvatar(avatar_nguyet);
-            }
-            else if (currentUser.userName?.includes("hieu")) {
-                setCreatorAvatar(avatar_hieu);
-            }
-            else {
-                setCreatorAvatar(avatar);
-            }
+            // else {
+            //     setCreatorAvatar(avatar);
+            // }
         }
     }, [event])
 
@@ -95,7 +77,7 @@ function Detail({ event, setListEvents }) {
                         </div>
                         <div className={cx('header-content')}>
                             <div className={cx('user')}>
-                                <div className={cx('user-avatar')}><Avatar src={creatorAvatar} /></div>
+                                <div className={cx('user-avatar')}><Avatar src={creator?.avatar} /></div>
                                 <div className={cx('user-name')}>{creator?.userName}</div>
                             </div>
                             <Avatar.Group size="small" maxCount={4} maxStyle={{ color: '#FFFFFF', backgroundColor: '#413E54' }}>

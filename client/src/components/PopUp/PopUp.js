@@ -18,6 +18,9 @@ import avatar_linh from '../../imgs/avatar/linh.png';
 import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
 import avatar_quang from '../../imgs/avatar/quang.jpg'
 import avatar_hieu from '../../imgs/avatar/hieu.jpg'
+import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+import { useGetCreatorByIdQuery } from "../../app/api/authService";
+
 
 const cx = classNames.bind(styles);
 
@@ -35,18 +38,16 @@ function PopUp({ event, callBack, setListEvents }) {
     const endDateNew = new Date(end).toLocaleDateString("en-GB", options)
     const [isOpenDetail, setIsOpenDetail] = useState(false);
 
-    let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-    const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
     const [target, setTarget] = useState()
     const [startTime, setStartTime] = useState();
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
-    const [isPermission, setIsPermission] = useState([]);
-    const [creator, setCreator] = useState();
-    const [creatorAvatar, setCreatorAvatar] = useState();
+
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
-    const [helper, setHelper] = useState([]);
+
+    const { data: helpers } = useGetAllHelperByEventIdQuery(event?.id);
+    const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
 
     const handleEventDetail = () => {
         setIsOpenDetail(true);
@@ -54,18 +55,6 @@ function PopUp({ event, callBack, setListEvents }) {
 
     function removeObjectFromArray(listEvents, id, calendarid) {
         return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
-    }
-
-    const getHelper = () => {
-        let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-        const listHelper = listAccounts.filter((account) => {
-            return event.helper?.includes(account.mail);
-        })
-        setHelper(listHelper)
-        const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        setIsPermission(Number(event.creatorId) === Number(currentUserId) || event.helper.includes(user[0].mail))
-        setIsCreatorTarget(Number(target?.creatorId) === Number(currentUserId))
     }
 
     const onClickDelete = () => {
@@ -95,13 +84,13 @@ function PopUp({ event, callBack, setListEvents }) {
         if (callBack[1]) callBack[1](prev => !prev);
     }
 
-    let totalComments = 0;
-    let listComments = localStorage.getItem("listComments") ? JSON.parse(localStorage.getItem("listComments")) : [];
-    listComments.forEach(element => {
-        if (element.eventId == event.id) {
-            totalComments++;
-        }
-    });
+    // let totalComments = 0;
+    // let listComments = localStorage.getItem("listComments") ? JSON.parse(localStorage.getItem("listComments")) : [];
+    // listComments.forEach(element => {
+    //     if (element.eventId == event.id) {
+    //         totalComments++;
+    //     }
+    // });
 
     useEffect(() => {
         if (event) {
@@ -116,60 +105,16 @@ function PopUp({ event, callBack, setListEvents }) {
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            if (event.target) {
-                const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-                const eventArray = Events.filter((e) => {
-                    return Number(e.id) === Number(event.target)
-                })
-                setTarget(eventArray[0])
-            }
-
-            // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            // const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
-            // setCreator(user[0])
-            // if (user[0].userName.includes("quang")) {
-            //     setCreatorAvatar(avatar_quang);
+            // if (event.target) {
+            //     const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+            //     const eventArray = Events.filter((e) => {
+            //         return Number(e.id) === Number(event.target)
+            //     })
+            //     setTarget(eventArray[0])
             // }
-            // else if (user[0].userName.includes("hung")) {
-            //     setCreatorAvatar(avatar_hung)
-            // }
-            // else if (user[0].userName.includes("linh")) {
-            //     setCreatorAvatar(avatar_linh)
-            // }
-            // else if (user[0].userName.includes("nguyet")) {
-            //     setCreatorAvatar(avatar_nguyet)
-            // }
-            // else if (user[0].userName.includes("hieu")) {
-            //     setCreatorAvatar(avatar_hieu)
-            // }
-            // else setCreatorAvatar(avatar)
-            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            if (currentUser.userName?.includes("quang")) {
-                setCreatorAvatar(avatar_quang);
-            }
-            else if (currentUser.userName?.includes("hung")) {
-                setCreatorAvatar(avatar_hung);
-            }
-            else if (currentUser.userName?.includes("linh")) {
-                setCreatorAvatar(avatar_linh);
-            }
-            else if (currentUser.userName?.includes("nguyet")) {
-                setCreatorAvatar(avatar_nguyet);
-            }
-            else if (currentUser.userName?.includes("hieu")) {
-                setCreatorAvatar(avatar_hieu);
-            }
-            else {
-                setCreatorAvatar(avatar);
-            }
-
         }
 
     }, [event])
-
-    useEffect(() => {
-        getHelper();
-    }, [event, target])
 
     return (
         <>
@@ -193,8 +138,8 @@ function PopUp({ event, callBack, setListEvents }) {
                                 <img className={cx("icon_folder_popup")} src={icon_folder_popup} alt="folder" />
                                 <span className={cx("title_folder")}>{target?.eventName}</span>
                                 <div className={cx("avatar_layout")}>
-                                    <img className={cx("avatar_status")} src={user[0].avatar} alt="avatar" />
-                                    <span className={cx("title_avatar")}>&nbsp;{user[0].userName}</span>
+                                    <img className={cx("avatar_status")} src={creator?.avatar} alt="avatar" />
+                                    <span className={cx("title_avatar")}>&nbsp;{creator?.userName}</span>
                                 </div>
                             </div>
 
@@ -204,7 +149,7 @@ function PopUp({ event, callBack, setListEvents }) {
                                     <div className={cx("detail-content-contributors", "detail-row-2")}>
                                         <Avatar.Group size="small" maxCount={4} maxStyle={{ color: '#FFFFFF', backgroundColor: '#413E54' }}>
                                             {
-                                                helper?.map((helper) => (
+                                                helpers?.map((helper) => (
                                                     <Tooltip title={helper?.userName} placement="bottom">
                                                         <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper?.avatar} />
                                                     </Tooltip>
@@ -215,7 +160,7 @@ function PopUp({ event, callBack, setListEvents }) {
                                 </div>
                                 <div className={cx("comment_layout")} >
                                     <img className={cx("icon_comment")} src={icon_comment} alt="comment" />
-                                    <span className={cx("comment_total")} >&nbsp; {totalComments} Comment</span>
+                                    {/* <span className={cx("comment_total")} >&nbsp; {totalComments} Comment</span> */}
                                 </div>
                             </div>
                         </div>

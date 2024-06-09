@@ -24,14 +24,14 @@ function WorkCard({ event, listEvents, isCreator }) {
 
     const [deleteEvent] = useDeleteEventMutation();
     const [updateImportant] = useUpdateImportantMutation();
-    const { data: helpers } = useGetAllHelperByEventIdQuery(event.id);
+    const { data: helpers } = useGetAllHelperByEventIdQuery(event?.id);
     // console.log(helpers);
-    const { data: creator } = useGetCreatorByIdQuery(event.creatorId);
-    const { data: todos } = useGetAllTodoByTargetIdQuery(event.id);
+    const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
+    const { data: todos } = useGetAllTodoByTargetIdQuery(event?.id);
     const userId = JSON.parse(localStorage.getItem("currentUser")).id;
     // console.log(event.id);
     // console.log(userId);
-    const { data } = useGetImportantByEventIdUserIdQuery({ eventId: event.id, userId });
+    const { data } = useGetImportantByEventIdUserIdQuery({ eventId: event?.id, userId });
     const isImportant = data ? data.isImportant : null;
     // console.log(isImportant);
     // const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 

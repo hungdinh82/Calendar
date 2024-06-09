@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom"
 import "./library.scss"
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useEditEventMutation } from "../../app/api/eventService";
+import { useGetCreatorByIdQuery } from "../../app/api/authService";
 
 
 const cx = classNames.bind(styles)
@@ -29,14 +30,15 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
     const [endDate, setEndDate] = useState();
-    const [creator, setCreator] = useState();
+    // const [creator, setCreator] = useState();
     const [creatorAvatar, setCreatorAvatar] = useState();
     // const [helper, setHelper] = useState([]);
     const [isPermission, setIsPermission] = useState([]);
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
+    const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
 
-    const { data: helper } = useGetAllHelperByEventIdQuery(event.id);
+    const { data: helper } = useGetAllHelperByEventIdQuery(event?.id);
     const [editEvent] = useEditEventMutation();
 
     const handleOnOk = () => {
@@ -107,25 +109,25 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
             //     setCreatorAvatar(avatar_hieu)
             // }
             // else setCreatorAvatar(avatar)
-            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            if (currentUser.userName?.includes("quang")) {
-                setCreatorAvatar(avatar_quang);
-            }
-            else if (currentUser.userName?.includes("hung")) {
-                setCreatorAvatar(avatar_hung);
-            }
-            else if (currentUser.userName?.includes("linh")) {
-                setCreatorAvatar(avatar_linh);
-            }
-            else if (currentUser.userName?.includes("nguyet")) {
-                setCreatorAvatar(avatar_nguyet);
-            }
-            else if (currentUser.userName?.includes("hieu")) {
-                setCreatorAvatar(avatar_hieu);
-            }
-            else {
-                setCreatorAvatar(avatar);
-            }
+            // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            // if (currentUser.userName?.includes("quang")) {
+            //     setCreatorAvatar(avatar_quang);
+            // }
+            // else if (currentUser.userName?.includes("hung")) {
+            //     setCreatorAvatar(avatar_hung);
+            // }
+            // else if (currentUser.userName?.includes("linh")) {
+            //     setCreatorAvatar(avatar_linh);
+            // }
+            // else if (currentUser.userName?.includes("nguyet")) {
+            //     setCreatorAvatar(avatar_nguyet);
+            // }
+            // else if (currentUser.userName?.includes("hieu")) {
+            //     setCreatorAvatar(avatar_hieu);
+            // }
+            // else {
+            //     setCreatorAvatar(avatar);
+            // }
         }
 
     }, [event])
@@ -200,7 +202,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                                     <div className={cx("detail-content-value", "c-6")}>
                                         <div className={cx("detail-content-creator")}>
                                             <div className={cx("row")} style={{ alignItems: "center" }}>
-                                                <div className={cx('user-avatar')}><Avatar src={creatorAvatar} /></div>
+                                                <div className={cx('user-avatar')}><Avatar  src={creator?.avatar} /></div>
                                                 <div className={cx('user-name')}>{creator?.userName}</div>
                                             </div>
                                         </div>
