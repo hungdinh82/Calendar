@@ -12,11 +12,11 @@ import { message } from 'antd';
 import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
 import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
 import { useDispatch, useSelector } from 'react-redux';
-// import { socket } from '../../app/socket/socket';
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles)
-
 const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTargetPage, targetId }) => {
+    const [searchParams, setSearchParams] = useSearchParams()
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const [eventType, setEventType] = useState()
@@ -31,10 +31,9 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const [helper, setHelper] = useState([]);
     const [optionTarget, setOptionTarget] = useState([])
     const socket = useSelector((state) => state.socket.socket);
-
     const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [createEvent] = useCreateEventMutation();
-    const {data: targetName } = useGetEventByIdQuery(targetId);
+    const { data: eventTarget } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -44,68 +43,54 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             return obj;
         });
     }
-
     const handleChangeEventType = (value) => {
         setEventType(value);
     }
-
     const handleChangeEventName = (e) => {
         setEventName(e.target.value);
     }
-
     const handleTarget = (value) => {
         setTarget(value);
     }
-
     const handleChangeDescription = (value) => {
         setDescription(value);
     }
-
     const handleChangesetHelper = (value) => {
         setHelper(value);
     }
-
     const handleChangeStartTime = (value) => {
         if (value) {
             setStartTime(value);
         }
     }
-
     const handleChangeStartDate = (value) => {
         if (value) {
             setStartDate(value);
         }
     }
-
     const handleChangeEndTime = (value) => {
         if (value) {
             setEndTime(value);
         }
     }
-
     const handleChangeEndDate = (value) => {
         if (value) {
             setEndDate(value);
         }
     }
-
     const handleCancel = () => {
-        // setEventType("todo")
+        setEventType("todo")
         form.resetFields();
         setIsOpen(false)
     }
-
     const handleOK = () => {
         form.submit();
     }
-
     const handleSubmit = (values) => {
         const start = startDate.format("YYYY-MM-DD") + " " + startTime.format("HH:mm:ss");
         const end = endDate.format("YYYY-MM-DD") + " " + endTime.format("HH:mm:ss");
         const status = event?.status || "Ready"
-        // const currentUserId = localStorage.getItem("currentUserId")
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
-        const currentUserMail = JSON.parse(localStorage.getItem("currentUser")).mail
 
         const newEvent = {
             eventName,
@@ -119,10 +104,9 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             target,
             helper,
         }
-        // let Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+
         let Events = eventsPush ? eventsPush : [];
         if (type === "create") {
-            // Events.push(newEvent);
             createEvent(newEvent)
                 .then(function (response) {
                     if (response.data.error !== undefined) {
@@ -131,6 +115,12 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                         message.error(response.data.errors[0].message);
                     } else {
                         socket?.emit("new-notification", {
+                            // toMail: helper,
+                            // fromMail: currentUserMail,
+                            // text: `assigned you join target ${newEvent.eventName}`,
+                            // isResolve: 0,
+                            // // eventId: result.insertId,
+                            // isAccept: 0
                         });
                         message.success('Created event successfully')
                     };
@@ -138,44 +128,49 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 .catch(function (error) {
                     console.log(error);
                 });
-            // messageApi.open({
-            //     type: 'success',
-            //     content: 'Tạo thành công',
-            // });
-
-            // const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
-            // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-            // const user = JSON.parse(localStorage.getItem("currentUser")).mail
-
-            // helper.map((helper) => {
-            //     const createInformation = {
-            //         toMail: helper,
-            //         fromMail: user,
-            //         text: eventType === "todo" ? "assigned you a task on target" : "assigned you join target",
-            //         isResolve: false,
-            //         eventId: newEvent,
-            //         // id: Date.now()
-            //     }
-            //     // console.log(createInformation);
-            //     // listInformation.push(createInformation)
-            // })
-            // console.log(helper);
-            // localStorage.setItem("listInformations", JSON.stringify(listInformation));
-
+        }
+        else if (type === "update") {
+            messageApi.open({
+                type: 'success',
+                content: 'Sửa thành công',
+            });
+            const eventUpdate = {
+                ...newEvent,
+                raw: {
+                    ...newEvent.raw,
+                    creatorId: event?.creatorId,
+                    helper: event?.helper || []
+                }
+            }
+            const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
+            let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
+            const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+            helper.map((helper) => {
+                if (!event?.helper.includes(helper)) {
+                    const createInformation = {
+                        toMail: helper,
+                        fromMail: user[0].mail,
+                        text: eventType === "todo" ? "assigned you a task on target" : "assigned you join target",
+                        isResolve: false,
+                        event: eventUpdate,
+                        id: Date.now()
+                    }
+                    listInformation.push(createInformation)
+                }
+            })
+            localStorage.setItem("listInformations", JSON.stringify(listInformation));
+            Events = updateArrayObjects(Events, event?.id, event?.calendarId, eventUpdate)
         }
         setIsOpen(false)
         form.resetFields();
         setEventType("todo")
     }
-
     const updateValueFields = () => {
         const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
-        // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
         const Events = eventsPush || [];
-        const filterTarget = Events.filter((event) => event.eventType === "target")
+        const filterTarget = Events.filter((event) => event?.eventType === "target")
         const optionTarget = filterTarget.map((event) => {
-            return { value: event.id, label: event.eventName }
+            return { value: event?.id, label: event?.eventName }
         })
         setOptionTarget(optionTarget)
         if (type === "create") {
@@ -199,44 +194,42 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 startDate: startDateNew,
                 endTime: endTimeNew,
                 endDate: endDateNew,
-                target: targetName,
+                target: eventTarget?.eventName,
                 event_type: eventTypeNew,
                 helper: []
             })
         }
         else if (type === "update") {
-            const startTimeNew = dayjs(new Date(event.start.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
-            const startDateNew = dayjs(new Date(event.start.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
-            const endTimeNew = dayjs(new Date(event.end.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
-            const endDateNew = dayjs(new Date(event.end.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
+            // console.log("event?.eventName", eventTarget?.eventName);
+            const startTimeNew = dayjs(new Date(event?.start.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
+            const startDateNew = dayjs(new Date(event?.start.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
+            const endTimeNew = dayjs(new Date(event?.end.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
+            const endDateNew = dayjs(new Date(event?.end.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
             setStartTime(startTimeNew)
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            setDescription(event.description)
-            setEventType(event.eventType)
-            setTarget(event.target)
-            setEventName(event.title || event.eventName)
-            setHelper(event.helper)
+            setDescription(event?.description)
+            setEventType(event?.eventType)
+            setTarget(event?.target)
+            setEventName(event?.eventName)
+            setHelper(event?.helper)
             form.setFieldsValue({
-                event_name: event.title || event.eventName,
+                event_name: event?.eventName,
                 startTime: startTimeNew,
                 startDate: startDateNew,
                 endTime: endTimeNew,
                 endDate: endDateNew,
-                description: event.description,
-                event_type: event.eventType,
-                target: event.target,
-                helper: event.helper,
+                description: event?.description,
+                event_type: event?.eventType,
+                target: event?.target,
+                helper: event?.helper,
             })
-
         }
     }
-
     useEffect(() => {
         updateValueFields();
     }, [isOpen])
-
     return (
         <div onClick={(e) => e.stopPropagation()}>
             {contextHolder}
@@ -281,8 +274,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                             }
                         </div>
                     </div>
-
-
                     <div className={cx("input_layout")}>
                         <LabelForm content={"Start"} required={true} />
                         <div className={cx("content", "c-10")}>
@@ -290,7 +281,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                                 <Form.Item name={"startTime"} rules={[{ required: true, message: 'Please enter time start' }]}>
                                     <TimePicker
                                         onChange={handleChangeStartTime}
-
                                     />
                                 </Form.Item>
                             </div>
@@ -304,7 +294,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                             </div>
                         </div>
                     </div>
-
                     <div className={cx("input_layout")}>
                         <LabelForm content={"End"} required={true} />
                         <div className={cx("content", "c-10")}>
@@ -325,7 +314,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                             </div>
                         </div>
                     </div>
-
                     <Form.Item name={"description"}>
                         <LabelForm content={"Description"} />
                         <div className={cx("c-12")} >
@@ -354,5 +342,4 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
         </div>
     )
 }
-
 export default DialogCreateEvent
