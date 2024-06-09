@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { message } from 'antd';
 import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
 import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
+import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams, useNavigate } from "react-router-dom";
 
@@ -34,6 +35,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [createEvent] = useCreateEventMutation();
     const { data: eventTarget } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
+    const { data: helpersCuaTargetNay } = useGetAllHelperByEventIdQuery(Number(searchParams.get("eventId")));
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -105,8 +107,22 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             helper,
         }
 
+        if (eventType === "todo") {
+            // Get helper emails from helpersCuaTargetNay
+            const helpersEmails = helpersCuaTargetNay ? helpersCuaTargetNay.map(helper => helper.mail) : [];
+
+            // Check if all helpers in the new event are in helpersCuaTargetNay
+            const allHelpersExist = helper.every(h => helpersEmails.includes(h));
+
+            if (!allHelpersExist) {
+                message.error('Some helpers are not allowed.');
+                return;
+            }
+        }
+
         let Events = eventsPush ? eventsPush : [];
         if (type === "create") {
+
             createEvent(newEvent)
                 .then(function (response) {
                     if (response.data.error !== undefined) {
