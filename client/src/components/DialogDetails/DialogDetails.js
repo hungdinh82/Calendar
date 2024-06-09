@@ -15,7 +15,7 @@ import { useGetCreatorByIdQuery } from "../../app/api/authService";
 
 const cx = classNames.bind(styles)
 
-const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) => {
+const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
     const navigate = useNavigate();
     const [filterType, setFilterType] = useState(event.status);
     const [colorSelect, setColorSelect] = useState()
@@ -26,9 +26,9 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
     const [endDate, setEndDate] = useState();
     const [isPermission, setIsPermission] = useState([]);
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
-    const [isCreator, setIsCreator] = useState(false)
-    setIsCreator(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id)
-    console.log(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id);
+    // const [isCreator, setIsCreator] = useState(false)
+    // setIsCreator(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id)
+    // console.log(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
 
@@ -63,13 +63,13 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            if (event.target) {
-                const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-                const eventArray = Events.filter((e) => {
-                    return Number(e.id) === Number(event.target)
-                })
-                setTarget(eventArray[0])
-            }
+            // if (event.target) {
+            //     const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
+            //     const eventArray = Events.filter((e) => {
+            //         return Number(e.id) === Number(event.target)
+            //     })
+            //     setTarget(eventArray[0])
+            // }
         }
 
     }, [event])
@@ -192,7 +192,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, setListEvents, isOnlyView }) 
                     setIsOpen={setIsOpenUpdate}
                     start={event.start}
                     end={event.end}
-                    setListEvents={setListEvents}
+                    // setListEvents={setListEvents}
                     type={"update"}
                     event={event}
                 />

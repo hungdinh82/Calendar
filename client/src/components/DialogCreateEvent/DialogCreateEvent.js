@@ -36,6 +36,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const [createEvent] = useCreateEventMutation();
     const { data: eventTarget } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const { data: helpersCuaTargetNay } = useGetAllHelperByEventIdQuery(Number(searchParams.get("eventId")));
+    const eventIdFromParams = Number(searchParams.get("eventId"));
 
     function updateArrayObjects(listEvents, id, calendarId, changes) {
         return listEvents.map(obj => {
@@ -185,8 +186,9 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
         const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
         const Events = eventsPush || [];
         const filterTarget = Events.filter((event) => event?.eventType === "target")
-        const optionTarget = filterTarget.map((event) => {
-            return { value: event?.id, label: event?.eventName }
+        const optionTarget = filterTarget.map((e) => {
+            console.log(eventTarget?.eventName);
+            return { value: e?.id, label: e?.eventName, disabled: eventTarget?.eventName !== e?.eventName }
         })
         setOptionTarget(optionTarget)
         if (type === "create") {
@@ -246,6 +248,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     useEffect(() => {
         updateValueFields();
     }, [isOpen])
+
     return (
         <div onClick={(e) => e.stopPropagation()}>
             {contextHolder}
@@ -264,9 +267,10 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                                 <Form.Item name={"event_type"}>
                                     <Select
                                         options={[
-                                            { value: "target", label: "Target" },
+                                            { value: "target", label: "Target", disabled: eventTarget ? true : false },
                                             { value: "todo", label: "To-do" }
                                         ]}
+
                                         value={eventType}
                                         style={{ width: "73%" }}
                                         onChange={handleChangeEventType}
