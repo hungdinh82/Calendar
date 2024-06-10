@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { Modal, Avatar, Tooltip, Select } from "antd"
+import { Modal, Avatar, Tooltip, Select, message } from "antd"
 import icon_folder_popup from '../../imgs/icon_folder.png';
 import icon_comment from '../../imgs/icon_comment.png';
 import Contributors from '../../imgs/avatar/Participants.png';
@@ -14,7 +14,7 @@ import DialogDetails from "../DialogDetails/DialogDetails";
 
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../app/api/authService";
-
+import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation } from "../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -39,8 +39,9 @@ function PopUp({ event, callBack, setListEvents }) {
 
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
 
-    const { data: helpers } = useGetAllHelperByEventIdQuery(event?.id);
+    const { data: helpers } = useGetAllHelperByEventIdQuery(event?.eventId);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
+    const [deleteEvent] = useDeleteEventMutation();
 
     const handleEventDetail = () => {
         setIsOpenDetail(true);
@@ -51,10 +52,9 @@ function PopUp({ event, callBack, setListEvents }) {
     }
 
     const onClickDelete = () => {
-
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Bạn thực sự muốn xóa?',
+            text: "Nếu bạn xóa thì tất cả việc làm trong workspace này sẽ bị xóa",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -62,10 +62,15 @@ function PopUp({ event, callBack, setListEvents }) {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
-                const listEventsNew = removeObjectFromArray(listEventsStorage, event.id, event.calendarId)
-                localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
-                setListEvents(listEventsNew)
+
+                deleteEvent(event?.eventId).then(
+                    (response) => {
+                        if (response.data.error !== undefined) {
+                            message.error(response.data.error.message);
+                        } else message.success('Deleted successfully');
+                        console.log(response);
+                    },
+                );
                 Swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
@@ -73,8 +78,6 @@ function PopUp({ event, callBack, setListEvents }) {
                 )
             }
         })
-        callBack[0](prev => !prev);
-        if (callBack[1]) callBack[1](prev => !prev);
     }
 
     // let totalComments = 0;
