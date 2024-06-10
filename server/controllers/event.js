@@ -368,45 +368,132 @@ const eventController = {
     },
 
     editToDo: async (req, res) => {
-        const toDoData = req.body;
-        const toDoId = req.params.id;
-        // console.log(toDoId);
-        // console.log(toDoData);
+        const eventData = req.body;
+        const eventId = req.params.id;
+        // console.log(eventId);
+        // console.log(eventData);
+        // Định dạng lại ngày bắt đầu và kết thúc nếu cần
+        const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
+        const formattedEndDate = moment(eventData.end).format("YYYY-MM-DD HH:mm:ss");
+
+        // Cập nhật giá trị mới vào eventData
+        eventData.start = formattedStartDate;
+        eventData.end = formattedEndDate;
 
         try {
-            const [currentToDo] = await connect.query("SELECT * FROM Events WHERE id = ?", [toDoId]);
-            const [currentHelpers] = await connect.query("SELECT * FROM Helpers,Accounts WHERE Helpers.userId = Accounts.id AND eventId = ?", [toDoId]);
-            if (currentToDo.length === 0) {
-                return res.status(404).json({ error: "Không tìm thấy to-do" });
+            // Lấy dữ liệu hiện tại của sự kiện từ bảng Events
+            const [currentEvent] = await connect.query("SELECT * FROM Events WHERE id = ?", [eventId]);
+            const [currentHelpers] = await connect.query("SELECT * FROM Helpers,Accounts WHERE Helpers.userId = Accounts.id AND eventId = ?", [eventId]);
+            const [currentNotifies] = await connect.query("SELECT * FROM Notifies WHERE eventId = ?", [eventId]); //chỉ cần check ở bảng Noti không cần check ở bảng helper vì nếu đã là helper thì isAccept = 1
+
+            // console.log(currentHelpers);
+
+            if (currentEvent.length === 0) {
+                return res.status(404).json({ error: "Không tìm thấy sự kiện" });
             }
 
-            const currentToDoData = currentToDo[0];
+            const currentEventData = currentEvent[0];
 
             // Kiểm tra giá trị nào đã thay đổi
             const fieldsToUpdate = {};
             const updateValues = [];
 
-            for (const key in toDoData) {
-                if (toDoData[key] !== currentToDoData[key]) {
-                    fieldsToUpdate[key] = toDoData[key];
-                    updateValues.push(toDoData[key]);
+            for (const key in eventData) {
+                if (key !== 'helper' && eventData[key] !== currentEventData[key]) {
+                    fieldsToUpdate[key] = eventData[key];
+                    updateValues.push(eventData[key]);
                 }
             }
 
-            // Nếu có thay đổi, cập nhật bảng Todos
+            // Nếu có thay đổi, cập nhật bảng Events
             if (Object.keys(fieldsToUpdate).length > 0) {
                 const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(", ");
-                updateValues.push(toDoId);
+                updateValues.push(eventId);
 
-                const updateToDoSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
-                await connect.query(updateToDoSql, updateValues);
+                const updateEventSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
+                await connect.query(updateEventSql, updateValues);
             }
+
+            const currentHelperEmails = currentHelpers.map(helper => helper.mail);
+            // console.log(currentHelperEmails);
+
+
+            const sql2 = "SELECT mail FROM Accounts WHERE id = ?"
+            const [result2] = await connect.query(sql2, eventData.creatorId);
+
+            for (const email of eventData.helper) {       // Duyệt qua từng thằng helper mới xem đã tồn tại trong helper cũ chưa nếu chưa có thì thêm vào Noti
+                // console.log(email);
+                if (!currentHelperEmails.includes(email)) {
+                    // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
+                    const [existingNotifies] = await connect.query(
+                        "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
+                        [email, eventId]
+                    );
+                    // console.log(email);
+                    if (existingNotifies.length === 0) {
+                        // Giả sử bạn có cách để lấy userId từ email
+                        const [user] = await connect.query("SELECT id FROM Accounts WHERE mail = ?", [email]);
+                        if (user.length > 0) {
+                            // Thêm helper mới vào bảng Notifies
+                            const notifyText = `assigned you join target ${eventData.eventName}`;
+                            await connect.query(
+                                "INSERT INTO Notifies (toMail, fromMail, text, isResolve, eventId, isAccept) VALUES (?, ?, ?, ?, ?, ?)",
+                                [email, result2[0].mail, notifyText, 0, eventId, 0]
+                            );
+                        }
+                    }
+                } else {
+                    // const [existingNotifies] = await connect.query(
+                    //     "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
+                    //     [email, eventId]
+                    // );
+                    // console.log(existingNotifies);
+                }
+            }
+
+            // const currentHelperEmails = currentHelpers.map(helper => helper.toMail);
+            // console.log(currentHelperEmails);
+
+            for (const email of currentHelperEmails) {       // Duyệt qua từng thằng helper cũ xem còn được tồn tại trong helper mới không. Nếu không còn tồn tại thì xoá nó đi trong cả Noti và Helper và Comment
+                // console.log(email);
+                if (!eventData.helper.includes(email)) {
+                    // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
+                    const [existingNotifies] = await connect.query(
+                        "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
+                        [email, eventId]
+                    );
+                    // Xoá helper cũ trong bảng Notifies
+                    await connect.query(
+                        "DELETE FROM Notifies WHERE toMail = ? AND eventId = ?",
+                        [email, eventId]
+                    );
+                    const sql2 = "SELECT id FROM Accounts WHERE mail = ?"
+                    const [result2] = await connect.query(sql2, email);
+                    // Xoá helper cũ trong bảng Helpers
+                    await connect.query(
+                        "DELETE FROM Helpers WHERE userId = ? AND eventId = ?",
+                        [result2[0].id, eventId]
+                    );
+
+                    // Xoá helper cũ trong bảng Comments
+                    await connect.query(
+                        "DELETE FROM Comments WHERE userId = ? AND eventId = ?",
+                        [result2[0].id, eventId]
+                    );
+                }
+            }
+
+            // Cập nhật tất cả các thông báo của eventId với text mới
+            const newNotifyText = `assigned you join target ${eventData.eventName}`;
+            await connect.query(
+                "UPDATE Notifies SET text = ? WHERE eventId = ?",
+                [newNotifyText, eventId]
+            );
 
             // Nếu không có giá trị nào thay đổi, trả về thông báo không cần cập nhật
             if (Object.keys(fieldsToUpdate).length === 0) {
                 return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
             }
-
             res.json({ success: true });
         } catch (error) {
             console.error(error);

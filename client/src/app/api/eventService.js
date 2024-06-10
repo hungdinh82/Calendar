@@ -65,4 +65,4 @@ export const eventService = apiService.injectEndpoints({
 
 });
 
-export const { useGetAllEventsByCurrentUserQuery, useGetAllEventsTargetsByCurrentUserQuery, useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useGetTodosByTargetQuery, useCreateEventMutation, useEditEventMutation, useEditTargetMutation, useDeleteEventMutation } = eventService;
+export const { useGetAllEventsByCurrentUserQuery, useGetAllEventsTargetsByCurrentUserQuery, useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useGetTodosByTargetQuery, useCreateEventMutation, useEditEventMutation, useEditTargetMutation, useEditToDoMutation, useDeleteEventMutation } = eventService;

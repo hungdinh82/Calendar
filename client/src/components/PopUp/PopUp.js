@@ -7,7 +7,8 @@ import icon_more from "../../imgs/Vector.png"
 import image_60 from '../../imgs/avatar/Image-60.png';
 import styles from './PopUp.module.scss';
 import icon_next from "../../imgs/icon_next.png"
-import DialogCreateEvent from "../DialogCreateEvent/DialogCreateEvent";
+// import DialogCreateEvent from "../DialogCreateEvent/DialogCreateEvent";
+import DialogEditTodo from "../DialogEditTodo/DialogEditTodo";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DialogDetails from "../DialogDetails/DialogDetails";
@@ -187,7 +188,7 @@ function PopUp({ event, callBack, setListEvents }) {
                         </div>
                         {
                             isOpenCreate &&
-                            <DialogCreateEvent
+                            <DialogEditTodo
                                 isOpen={isOpenCreate}
                                 setIsOpen={setIsOpenCreate}
                                 start={event.start}
