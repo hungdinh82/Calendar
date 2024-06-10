@@ -424,24 +424,12 @@ const eventController = {
             for (const email of eventData.helper) {       // Duyệt qua từng thằng helper mới xem đã tồn tại trong helper cũ chưa nếu chưa có thì thêm vào Noti
                 // console.log(email);
                 if (!currentHelperEmails.includes(email)) {
-                    // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
-                    const [existingNotifies] = await connect.query(
-                        "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
-                        [email, eventId]
-                    );
-                    // console.log(email);
-                    if (existingNotifies.length === 0) {
-                        // Giả sử bạn có cách để lấy userId từ email
-                        const [user] = await connect.query("SELECT id FROM Accounts WHERE mail = ?", [email]);
-                        if (user.length > 0) {
-                            // Thêm helper mới vào bảng Notifies
-                            const notifyText = `assigned you join target ${eventData.eventName}`;
-                            await connect.query(
-                                "INSERT INTO Notifies (toMail, fromMail, text, isResolve, eventId, isAccept) VALUES (?, ?, ?, ?, ?, ?)",
-                                [email, result2[0].mail, notifyText, 0, eventId, 0]
-                            );
-                        }
-                    }
+                    const sql6 = "SELECT id FROM Accounts WHERE mail = ?"
+                    const [result6] = await connect.query(sql6, email);
+
+                    const sql7 = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
+                    await connect.query(sql7, [result6[0].id, eventId]);
+
                 } else {
                     // const [existingNotifies] = await connect.query(
                     //     "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
