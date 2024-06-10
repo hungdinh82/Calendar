@@ -240,8 +240,8 @@ const eventController = {
     editTarget: async (req, res) => {
         const eventData = req.body;
         const eventId = req.params.id;
-        console.log(eventId);
-        console.log(eventData);
+        // console.log(eventId);
+        // console.log(eventData);
         // Định dạng lại ngày bắt đầu và kết thúc nếu cần
         const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
         const formattedEndDate = moment(eventData.end).format("YYYY-MM-DD HH:mm:ss");
@@ -288,14 +288,14 @@ const eventController = {
             const [result2] = await connect.query(sql2, eventData.creatorId);
 
             for (const email of eventData.helper) {       // Duyệt qua từng thằng helper mới xem đã tồn tại trong helper cũ chưa nếu chưa có thì thêm vào Noti
-                console.log(email);
+                // console.log(email);
                 if (!currentHelperEmails.includes(email)) {
                     // Kiểm tra xem helper có tồn tại trong bảng Notifies hay không
                     const [existingNotifies] = await connect.query(
                         "SELECT * FROM Notifies WHERE toMail = ? AND eventId = ?",
                         [email, eventId]
                     );
-                    console.log(email);
+                    // console.log(email);
                     if (existingNotifies.length === 0) {
                         // Giả sử bạn có cách để lấy userId từ email
                         const [user] = await connect.query("SELECT id FROM Accounts WHERE mail = ?", [email]);
@@ -318,7 +318,7 @@ const eventController = {
             }
 
             const currentNotifiesEmails = currentNotifies.map(helper => helper.toMail);
-            console.log(currentNotifiesEmails);
+            // console.log(currentNotifiesEmails);
 
             for (const email of currentNotifiesEmails) {       // Duyệt qua từng thằng helper cũ xem còn được tồn tại trong helper mới không. Nếu không còn tồn tại thì xoá nó đi trong cả Noti và Helper và Comment
                 // console.log(email);
@@ -360,6 +360,53 @@ const eventController = {
             if (Object.keys(fieldsToUpdate).length === 0) {
                 return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
             }
+            res.json({ success: true });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+        }
+    },
+
+    editToDo: async (req, res) => {
+        const toDoData = req.body;
+        const toDoId = req.params.id;
+        // console.log(toDoId);
+        // console.log(toDoData);
+
+        try {
+            const [currentToDo] = await connect.query("SELECT * FROM Events WHERE id = ?", [toDoId]);
+            const [currentHelpers] = await connect.query("SELECT * FROM Helpers,Accounts WHERE Helpers.userId = Accounts.id AND eventId = ?", [toDoId]);
+            if (currentToDo.length === 0) {
+                return res.status(404).json({ error: "Không tìm thấy to-do" });
+            }
+
+            const currentToDoData = currentToDo[0];
+
+            // Kiểm tra giá trị nào đã thay đổi
+            const fieldsToUpdate = {};
+            const updateValues = [];
+
+            for (const key in toDoData) {
+                if (toDoData[key] !== currentToDoData[key]) {
+                    fieldsToUpdate[key] = toDoData[key];
+                    updateValues.push(toDoData[key]);
+                }
+            }
+
+            // Nếu có thay đổi, cập nhật bảng Todos
+            if (Object.keys(fieldsToUpdate).length > 0) {
+                const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(", ");
+                updateValues.push(toDoId);
+
+                const updateToDoSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
+                await connect.query(updateToDoSql, updateValues);
+            }
+
+            // Nếu không có giá trị nào thay đổi, trả về thông báo không cần cập nhật
+            if (Object.keys(fieldsToUpdate).length === 0) {
+                return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
+            }
+
             res.json({ success: true });
         } catch (error) {
             console.error(error);

@@ -46,6 +46,14 @@ export const eventService = apiService.injectEndpoints({
             }),
             invalidatesTags: ['event'],
         }),
+        editToDo: builder.mutation({
+            query: ({ id, data }) => ({
+                url: `api/event/editTodo/${id}`,
+                method: 'PUT',
+                body: data,
+            }),
+            invalidatesTags: ['event'],
+        }),
         deleteEvent: builder.mutation({
             query: (id) => ({
                 url: `api/event/${id}`,
