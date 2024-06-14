@@ -53,6 +53,7 @@ function CalendarPage() {
     const [currentDate, setCurrentDate] = useState()
     const [listEvents, setListEvents] = useState([]);
     const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    // console.log(eventsPush);
     const [filter, setFilter] = useState({
         ready: true,
         inProgress: true,
@@ -229,6 +230,7 @@ function CalendarPage() {
             return '<span class="calendar-week-dayName-name">' + dayName.label + '</span>'
         },
         popupDetailTitle: function (event) {
+            // console.log(event?.creatorId);
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
             const user = listAccounts.filter((account) => Number(event.creatorId) === Number(account.id))
             totalComments = 0;
@@ -239,6 +241,8 @@ function CalendarPage() {
                 }
             });
             setEventDetail(event)
+            // <img class="${cx("avatar_status")}" src="${user[0].avatar}" alt="avatar" />
+            //         <span class = "${cx("title_avatar")}">&nbsp;${user[0].userName}</span>
             return `
             <div class="${cx("event_layout")}">
             <div class="${cx("circle_status_event")}" style="background-color: ${event.borderColor}"></div>
@@ -250,8 +254,7 @@ function CalendarPage() {
                 <img class="${cx("icon_folder_popup")}" src="${icon_folder_popup}" alt="folder" />
                 <span class = "${cx("title_folder")}">${event.targetName || ""}</span>
                 <div class = "${cx("avatar_layout")}">
-                    <img class="${cx("avatar_status")}" src="${user[0].avatar}" alt="avatar" />
-                    <span class = "${cx("title_avatar")}">&nbsp;${user[0].userName}</span>
+                    
                 </div>
             </div>
 

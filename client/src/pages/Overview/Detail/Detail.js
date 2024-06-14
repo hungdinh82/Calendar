@@ -30,9 +30,7 @@ function Detail({ event, setListEvents, isCreatorTarget }) {
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
     // console.log(Number(searchParams.get("eventId")));
-    // const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
-    // console.log(event?.eventId);
-    const { data: target } = useGetEventByIdQuery(event?.eventId);
+    const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
     const { data: helpers } = useGetAllHelperByEventIdQuery(target?.id);
 
     useEffect(() => {

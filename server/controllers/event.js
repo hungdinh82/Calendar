@@ -2,15 +2,25 @@ import { connect } from "../db.js";
 import moment from 'moment';
 
 const eventController = {
-    getAllEventsByCurrentUser: async (req, res) => {
+    getAllEventsByCurrentUser: async (req, res) => { // tất cả todo bao gồm trường hợp todo do mình tự tạo không có target
         try {
             const currentUserId = req.params.id;
             const userSql = "SELECT Events.id AS eventId, Events.eventName, Events.calendarId, Events.start , Events.end, Events.eventType, Events.description, Events.status,  Events.creatorId, Events.target FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ? UNION SELECT Events.id AS eventId, Events.eventName, Events.calendarId, Events.start , Events.end, Events.eventType, Events.description, Events.status,  Events.creatorId, Events.target FROM Helpers,Events WHERE Events.creatorId = ?";
             //  FROM Helpers, Events WHERE Helpers.eventId = Events.id AND Helpers.userId = ? UNION SELECT * FROM Helpers,Events WHERE creatorId = ?";
             // SELECT Notifies.id AS id, Notifies.toMail, Notifies.fromMail, Notifies.text, Notifies.isResolve, Notifies.isAccept, Notifies.eventId AS notifyEventId, Events.id AS eventId, Events.eventName, Events.calendarId, Events.start, Events.end, Events.eventType, Events.description, Events.status, Events.creatorId, Events.target FROM Notifies JOIN Events ON Notifies.eventId = Events.id WHERE toMail = ?; ";
             const [result] = await connect.query(userSql, [currentUserId, currentUserId]);
-            // console.log(result);
+
+            // const userSql2 = "SELECT userId FROM Helpers WHERE eventId = ?";
+            // console.log(result[0].eventId);
+            // const [result2] = await connect.query(userSql2, [result[0].eventId]);
+            // console.log(result2);
+            // // Merge the two result sets
+            // const resultMerge = [...result, ...result2];
+
             res.json(result);
+            
+            // console.log(result);
+            // res.json(result);
 
         } catch (error) {
             console.error(error);

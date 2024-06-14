@@ -36,17 +36,17 @@ const CellMonth = ({ day, dayOfTheWeek, isToday, isCurrentMonth, listEvents, set
             // const user = listAccounts.filter((account) => Number(currentUser) === Number(account.id))
             const condition = new Date(startEvent).getDate() === new Date(day).getDate() && new Date(startEvent).getMonth() === new Date(day).getMonth()
             const conditionFilter = (filter.done && event.status === "Done") || (filter.ready && event.status === "Ready") || (filter.inProgress && event.status === "In Progress")
-            const conditionUser = event.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) )
+            const conditionUser = event.eventType === "todo" 
             // const checkMe = event.helper.length === 0;
             const checkMe = !event.helper || event.helper.length === 0;
             const checkMeCondition = (filter.onlyMe && checkMe) || (filter.coWork && !checkMe);
-            if (condition && conditionFilter && conditionUser && checkMeCondition) {
+            if (condition && conditionFilter && conditionUser && checkMeCondition) {  // check 1 nếu mà todo không có target thì lấy todo có người tạo là current user 2) nếu to do có target thì lấy todo có helper là mình tức là mình được phân công cho todo này và lấy  cả todo do mình tạo ra
                 eventsNew.push(event)
             }
         })
         setEvents(eventsNew)
     }
-
+ 
     useEffect(() => checkMore(), [listEvents, day, filter]);
 
 
@@ -58,6 +58,7 @@ const CellMonth = ({ day, dayOfTheWeek, isToday, isCurrentMonth, listEvents, set
                     <div className={isToday ? cx("today") : cx("day")} ref={dayHTML}>{new Date(day).getDate()}</div>
                     <div className={cx("listEvents")} style={isToday ? { paddingTop: "25px" } : null}>
                         {events?.map((event, index) => {
+                            console.log(event);
                             const startEvent = typeof (event.start) === "string" ? event.start : event.start.d.d;
                             const condition = new Date(startEvent).getDate() === new Date(day).getDate() && new Date(startEvent).getMonth() === new Date(day).getMonth()
                             if (condition && index < 2) return <EventCard setListEvents={setListEvents} event={event} key={index} />
