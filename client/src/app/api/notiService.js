@@ -27,7 +27,6 @@ export const notiService = apiService.injectEndpoints({
             invalidatesTags: ['notifications'],
         }),
     }),
-    
 });
 
 export const { useGetAllNotificationsByToMailMutation, useUpdateNotificationMutation, useDeleteNotificationMutation } = notiService;

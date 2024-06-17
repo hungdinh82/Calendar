@@ -48,7 +48,7 @@ function CalendarEvent() {
 
         Events?.map((event) => {
             // kiểm tra xem event này có helper là currentUser không
-            console.log(event);
+            // console.log(event);
 
             if (event?.eventType === "todo" && (Number(event.creatorId) === Number(currentUser.id) || event.helper.includes(currentUser.id))) {
                 let backgroundColor = null;

@@ -17,7 +17,9 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const cx = classNames.bind(styles)
-const DialogEditTodo = ({ isOpen, setIsOpen, start, end, type, event, isTargetPage, targetId }) => {
+const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, event, isTargetPage, targetId }) => {
+    // console.log(eventIdCurrent);
+
     const [searchParams, setSearchParams] = useSearchParams()
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
@@ -41,6 +43,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, start, end, type, event, isTargetPa
     const { data: helper } = useGetAllHelperByEventIdQuery(event?.eventId);
     const [helperMoi, setHelperMoi] = useState(helper?.map((helper) => (
         helper.mail)));
+
 
     const handleChangeEventType = (value) => {
         setEventType(value);
@@ -103,13 +106,13 @@ const DialogEditTodo = ({ isOpen, setIsOpen, start, end, type, event, isTargetPa
 
         if (eventType === "todo") {
             // console.log(event.target);
-            if ( !event.target && helperMoi) {
+            if (!event.target && helperMoi) {
                 message.error('Nếu Todo bạn không thuộc Target nào thì không thể chọn helper');
                 return;
             }
             // Get helper emails from helpersCuaTargetNay
             const helpersEmails = helpersCuaTargetNay ? helpersCuaTargetNay.map(helper => helper.mail) : [];
-        
+
             // Check if all helpers in the new event are in helpersCuaTargetNay
             const allHelpersExist = helperMoi.every(h => helpersEmails.includes(h));
             // console.log(allHelpersExist);
@@ -123,7 +126,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, start, end, type, event, isTargetPa
         if (type === "update") {
             // console.log("Updating event:", newEvent);
             // console.log("Event ID:", event?.eventId);
-            editToDo({id: event?.eventId, data: newEvent})
+            editToDo({ id: event?.eventId, data: newEvent })
                 .then(function (response) {
                     if (response.data.error !== undefined) {
                         message.error(response.data.error.message);

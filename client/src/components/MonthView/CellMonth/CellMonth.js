@@ -58,7 +58,7 @@ const CellMonth = ({ day, dayOfTheWeek, isToday, isCurrentMonth, listEvents, set
                     <div className={isToday ? cx("today") : cx("day")} ref={dayHTML}>{new Date(day).getDate()}</div>
                     <div className={cx("listEvents")} style={isToday ? { paddingTop: "25px" } : null}>
                         {events?.map((event, index) => {
-                            console.log(event);
+                            // console.log(event);
                             const startEvent = typeof (event.start) === "string" ? event.start : event.start.d.d;
                             const condition = new Date(startEvent).getDate() === new Date(day).getDate() && new Date(startEvent).getMonth() === new Date(day).getMonth()
                             if (condition && index < 2) return <EventCard setListEvents={setListEvents} event={event} key={index} />

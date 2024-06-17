@@ -6,8 +6,12 @@ export const helperService = apiService.injectEndpoints({
             query: (eventId) => `api/helper/${eventId}`,
             providesTags: ['helper'],
         }),
+        getAllHelperAndCreatorByTodoId: builder.mutation({
+            query: (id) => `api/helper/creator/${id}`,
+            method: 'GET',
+            providesTags: ['helper'],
+        }),
     }),
-
 });
 
-export const { useGetAllHelperByEventIdQuery} = helperService;
+export const { useGetAllHelperByEventIdQuery, useGetAllHelperAndCreatorByTodoIdMutation } = helperService;
