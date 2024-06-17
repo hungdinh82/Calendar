@@ -14,6 +14,7 @@ const event = (app) => {
     router.put("/:id", eventController.editEvent);
     router.put("/editTarget/:id", eventController.editTarget);
     router.put("/editTodo/:id", eventController.editToDo); 
+    router.put("/editTimeTodo/:id", eventController.editTimeTodo); 
     router.delete("/:id", eventController.deleteEvent);
   };
 

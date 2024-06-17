@@ -1,4 +1,4 @@
-import { Radio } from "antd";
+import { Radio, message } from "antd";
 import { useEffect, useRef, useState } from "react";
 import styles from './CalendarPage.module.scss';
 import classNames from 'classnames/bind';
@@ -28,7 +28,7 @@ import Contributors from '../../imgs/avatar/Participants.png';
 import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
-import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useGetAllEventsByCurrentUserQuery, useEditTimeTodoMutation } from "../../app/api/eventService";
 // import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 
 
@@ -51,9 +51,9 @@ function CalendarPage() {
     const [rangeTimeText, setRangeTimeText] = useState()
     const [rangeTime, setRangeTime] = useState({})
     const [currentDate, setCurrentDate] = useState()
-    const [listEvents, setListEvents] = useState([]);
-    const { data: eventsPush, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
-    // console.log(eventsPush);
+    // const [listEvents, setListEvents] = useState([]);
+    const { data: listEvents, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    const [editTimeTodo] = useEditTimeTodoMutation();
     const [filter, setFilter] = useState({
         ready: true,
         inProgress: true,
@@ -114,8 +114,31 @@ function CalendarPage() {
         calendar.updateEvent(event.id, event.calendarId, changes)
         const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
         const listEventsNew = updateArrayObjects(listEventsStorage, event.id, event.calendarId, changes)
-        setListEvents(listEventsNew)
+        // setListEvents(listEventsNew)
         localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
+
+        let newEvent = event?.raw;
+        if (changes.end) {
+            newEvent.end = changes.end.d.d;
+        }
+        else
+            if (changes.start) {
+                newEvent.start = changes.start.d.d;
+            }
+
+        editTimeTodo({ id: event?.raw?.eventId, data: newEvent })
+            .then(function (response) {
+                if (response.data.error !== undefined) {
+                    message.error(response.data.error.message);
+                } else if (response.data.errors !== undefined) {
+                    message.error(response.data.errors[0].message);
+                } else {
+                    message.success('Edit todo successfully')
+                };
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
     const handleCalendarActions = calendar => {
         calendar.on('selectDateTime', eventObj => {
@@ -153,7 +176,7 @@ function CalendarPage() {
                     const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
                     const listEventsNew = removeObjectFromArray(listEventsStorage, eventObj.id, eventObj.calendarId)
                     localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
-                    setListEvents(listEventsNew)
+                    // setListEvents(listEventsNew)
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -201,10 +224,6 @@ function CalendarPage() {
                     <img class="${cx("icon_folder")}" src="${icon_folder_popup}" alt="folder" />
                     ${event.targetName}
                 </div>
-                <div class = "${cx("avatar_layout_event")}">
-                    <img class="${cx("circle_status")}" src="${avatar_hung}" alt="avatar" />
-                    <img class="${cx("circle_status")}" src="${avatar_linh}" alt="avatar" />
-                </div>
                 <div class = "${cx("SummaryText")}"></div>
             </div>
             `
@@ -215,10 +234,6 @@ function CalendarPage() {
                 <div class = "${cx("TimeEvent")}" style="background-color: ${event.borderColor}"> ${formatTime(end)}</div>
             </div>
             <span class = "${cx("TitleEvent")}">${title}</span>
-            <div class = "${cx("avatar_layout")}">
-                <img class="${cx("circle_status")}" src="${avatar_hung}" alt="avatar" />
-                <img class="${cx("circle_status")}" src="${avatar_linh}" alt="avatar" />
-            </div>
             <div class = "${cx("SummaryText")}"></div>
         </div>
         `
@@ -249,24 +264,6 @@ function CalendarPage() {
             <div class="${cx("detailTitle_layout")}">
                 <div class="${cx("detailTitle")}">${event.title}</div>
                 <img class="${cx("icon_more")}" src="${icon_more}" />
-            </div>
-            <div class="${cx("target_layout")}">
-                <img class="${cx("icon_folder_popup")}" src="${icon_folder_popup}" alt="folder" />
-                <span class = "${cx("title_folder")}">${event.targetName || ""}</span>
-                <div class = "${cx("avatar_layout")}">
-                    
-                </div>
-            </div>
-
-            <div class="${cx("layout_2")}">
-                <div class = "${cx("contributors_layout")}">
-                    <span class = "${cx("title_contributors")}">Contributors</span>
-                    <img class="${cx("contributors_status")}" src="${Contributors}" alt="contributors" />
-                </div>
-                <div class = "${cx("comment_layout")}">
-                    <img class="${cx("icon_comment")}" src="${icon_comment}" alt="comment" />
-                    <span class = "${cx("comment_total")}">${totalComments} Comments</span>
-                </div>
             </div>
             </div>
             `
@@ -356,15 +353,15 @@ function CalendarPage() {
 
     const fetchData = (calendar) => {
         // const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-        const Events = eventsPush ? eventsPush : [];
+        // const Events = eventsPush ? eventsPush : [];
         // console.log(Events)
-        setListEvents(Events)
+        // setListEvents(Events)
         calendar.clear();
         const currentUser = JSON.parse(localStorage.getItem("currentUser"))
         // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
 
         // const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
-        Events?.map((event) => {
+        listEvents?.map((event) => {
             // kiểm tra xem event này có helper là currentUser không
             // const { data: helpers } = useGetAllHelperByEventIdQuery(event.eventId);
             // console.log(helpers)
@@ -460,7 +457,7 @@ function CalendarPage() {
                 <Sidebar
                     show={setIsShowSidebar}
                     isCalendar={true}
-                    setListEvents={setListEvents}
+                    // setListEvents={setListEvents}
                     listEvents={listEvents}
                 />
                 <HeaderOptions calendar></HeaderOptions>
@@ -473,7 +470,7 @@ function CalendarPage() {
                                 <div className={cx("plus_icon_layout")}>
                                     <div class={cx("icon-plus", "orange", "w25", "icon-plus-library")}></div>
                                 </div>
-                                <ButtonCreateEvent setListEvents={setListEvents} />
+                                <ButtonCreateEvent/>
                             </div>
                             <div className={cx("filter_layout")}>
                                 <div className={cx("label")}>Status</div>
@@ -570,7 +567,7 @@ function CalendarPage() {
                     setIsOpen={setIsOpenCreate}
                     start={startTimes}
                     end={endTimes}
-                    setListEvents={setListEvents}
+                    // setListEvents={setListEvents}
                     type={showEventModal}
                     event={modalEvent}
                 />
@@ -581,7 +578,7 @@ function CalendarPage() {
                     isOpen={isOpenDetail}
                     setIsOpen={setIsOpenDetail}
                     event={eventDetail}
-                    setListEvents={setListEvents}
+                    // setListEvents={setListEvents}
                 />
             }
         </div >

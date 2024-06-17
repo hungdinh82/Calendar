@@ -499,6 +499,33 @@ const eventController = {
         }
     },
 
+    editTimeTodo: async (req, res) => {
+        const { start, end } = req.body;
+        const todoId = req.params.id;
+    
+        // Định dạng lại ngày bắt đầu và kết thúc nếu cần
+        const formattedStartDate = moment(start).format("YYYY-MM-DD HH:mm:ss");
+        const formattedEndDate = moment(end).format("YYYY-MM-DD HH:mm:ss");
+    
+        try {
+            // Kiểm tra xem todo có tồn tại không
+            const [currentTodo] = await connect.query("SELECT * FROM Events WHERE id = ?", [todoId]);
+    
+            if (currentTodo.length === 0) {
+                return res.status(404).json({ error: "Không tìm thấy todo" });
+            }
+    
+            // Cập nhật thời gian mới cho todo
+            const updateTodoSql = "UPDATE Events SET start = ?, end = ? WHERE id = ?";
+            await connect.query(updateTodoSql, [formattedStartDate, formattedEndDate, todoId]);
+    
+            res.json({ success: true });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+        }
+    },
+
     deleteEvent: async (req, res) => {
         const eventId = req.params.id;
         const sqlDeleteComments = "DELETE FROM Comments WHERE eventId = ?";
