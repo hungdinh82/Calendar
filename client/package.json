@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
+    "@ant-design/icons": "^5.3.7",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.18",
     "@reduxjs/toolkit": "^1.9.7",

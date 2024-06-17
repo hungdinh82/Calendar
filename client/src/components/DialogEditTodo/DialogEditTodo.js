@@ -105,11 +105,12 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
             helper: helperMoi,
         }
 
-        console.log(helperMoi);
+        // console.log(helperMoi);
+        // console.log(!event.target);
         if (eventType === "todo") {
             // console.log(event.target);
-            if (!event.target && helperMoi) {
-                message.error('Nếu Todo bạn không thuộc Target nào thì không thể chọn contributors');
+            if (!event.target && helperMoi.length !== 0) {
+                message.error('Nếu Todo bạn không thuộc Target nào thì không thể thêm contributors');
                 return;
             }
             // Get helper emails from helpersCuaTargetNay
@@ -120,7 +121,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
             // console.log(allHelpersExist);
 
             if (!allHelpersExist) {
-                message.error('Some contributors do not have permission.');
+                message.error('Người dùng này chưa được thêm vào mục tiêu lớn.');
                 return;
             }
         }
