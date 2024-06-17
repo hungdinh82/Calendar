@@ -15,7 +15,7 @@ import DialogDetails from "../DialogDetails/DialogDetails";
 
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useGetCreatorByIdQuery } from "../../app/api/authService";
-import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation } from "../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation, useGetEventByIdQuery } from "../../app/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +32,7 @@ function PopUp({ event, callBack, setListEvents }) {
     const endDateNew = new Date(end).toLocaleDateString("en-GB", options)
     const [isOpenDetail, setIsOpenDetail] = useState(false);
 
-    const [target, setTarget] = useState()
+    // const [target, setTarget] = useState()
     const [startTime, setStartTime] = useState();
     const [startDate, setStartDate] = useState();
     const [endTime, setEndTime] = useState();
@@ -42,6 +42,10 @@ function PopUp({ event, callBack, setListEvents }) {
 
     const { data: helpers } = useGetAllHelperByEventIdQuery(event?.eventId);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
+
+    const { data: eventTarget } = useGetEventByIdQuery(event?.target);
+    const { data: eventCurrent } = useGetEventByIdQuery(event?.eventId);
+
     const [deleteEvent] = useDeleteEventMutation();
 
     const handleEventDetail = () => {
@@ -133,7 +137,7 @@ function PopUp({ event, callBack, setListEvents }) {
                             </div>
                             <div className={cx("target_layout")}>
                                 <img className={cx("icon_folder_popup")} src={icon_folder_popup} alt="folder" />
-                                <span className={cx("title_folder")}>{target?.eventName}</span>
+                                <span className={cx("title_folder")}>{eventTarget?.eventName}</span>
                                 <div className={cx("avatar_layout")}>
                                     <img className={cx("avatar_status")} src={creator?.avatar} alt="avatar" />
                                     <span className={cx("title_avatar")}>&nbsp;{creator?.userName}</span>
