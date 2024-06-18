@@ -12,14 +12,15 @@ import { message } from 'antd';
 import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
-const cx = classNames.bind(styles)
+const cx = classNames.bind(styles);
+
 const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTargetPage, targetId }) => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams();
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
-    const [eventType, setEventType] = useState()
+    const [eventType, setEventType] = useState();
     const [eventName, setEventName] = useState("");
     const [target, setTarget] = useState([]);
     const [startTime, setStartTime] = useState();
@@ -29,7 +30,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     const [description, setDescription] = useState("");
     const [viewer, setViewer] = useState([]);
     const [helper, setHelper] = useState([]);
-    const [optionTarget, setOptionTarget] = useState([])
+    const [optionTarget, setOptionTarget] = useState([]);
     const socket = useSelector((state) => state.socket.socket);
     const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [createEvent] = useCreateEventMutation();
@@ -44,62 +45,72 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             return obj;
         });
     }
+
     const handleChangeEventType = (value) => {
         setEventType(value);
     }
+
     const handleChangeEventName = (e) => {
         setEventName(e.target.value);
     }
+
     const handleTarget = (value) => {
         setTarget(value);
     }
+
     const handleChangeDescription = (value) => {
         setDescription(value);
     }
+
     const handleChangesetHelper = (value) => {
         setHelper(value);
     }
+
     const handleChangeStartTime = (value) => {
         if (value) {
             setStartTime(value);
         }
     }
+
     const handleChangeStartDate = (value) => {
         if (value) {
             setStartDate(value);
         }
     }
+
     const handleChangeEndTime = (value) => {
         if (value) {
-            if (startDate && startTime && startDate.isSame(endDate, 'day') && value.isBefore(startTime)) {
-                message.error("End time cannot be earlier than start time");
-                return;
-            }
             setEndTime(value);
         }
     }
+
     const handleChangeEndDate = (value) => {
         if (value) {
-            if (startDate && startTime && value.isSame(startDate, 'day') && endTime.isBefore(startTime)) {
-                message.error("End date cannot be earlier than start date");
-                return;
-            }
             setEndDate(value);
         }
     }
+
     const handleCancel = () => {
-        setEventType("todo")
+        setEventType("todo");
         form.resetFields();
-        setIsOpen(false)
+        setIsOpen(false);
     }
+
     const handleOK = () => {
         form.submit();
     }
+
     const handleSubmit = (values) => {
         const start = startDate.format("YYYY-MM-DD") + " " + startTime.format("HH:mm:ss");
         const end = endDate.format("YYYY-MM-DD") + " " + endTime.format("HH:mm:ss");
-        const status = event?.status || "Ready"
-        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
+
+        if (dayjs(end).isBefore(dayjs(start))) {
+            message.error('End time cannot be earlier than start time.');
+            return;
+        }
+
+        const status = event?.status || "Ready";
+        const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id;
 
         const newEvent = {
             eventName,
@@ -129,7 +140,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
 
         let Events = eventsPush ? eventsPush : [];
         if (type === "create") {
-
             createEvent(newEvent)
                 .then(function (response) {
                     if (response.data.error !== undefined) {
@@ -145,14 +155,13 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                             // // eventId: result.insertId,
                             // isAccept: 0
                         });
-                        message.success('Created event successfully')
+                        message.success('Created event successfully');
                     };
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-        }
-        else if (type === "update") {
+        } else if (type === "update") {
             messageApi.open({
                 type: 'success',
                 content: 'Sửa thành công',
@@ -167,7 +176,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             }
             const listInformation = localStorage.getItem("listInformations")[0] ? JSON.parse(localStorage.getItem("listInformations")) : [];
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id))
+            const user = listAccounts.filter((account) => Number(currentUserId) === Number(account.id));
             helper.map((helper) => {
                 if (!event?.helper.includes(helper)) {
                     const createInformation = {
@@ -178,39 +187,40 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                         event: eventUpdate,
                         id: Date.now()
                     }
-                    listInformation.push(createInformation)
+                    listInformation.push(createInformation);
                 }
-            })
+            });
             localStorage.setItem("listInformations", JSON.stringify(listInformation));
-            Events = updateArrayObjects(Events, event?.id, event?.calendarId, eventUpdate)
+            Events = updateArrayObjects(Events, event?.id, event?.calendarId, eventUpdate);
         }
-        setIsOpen(false)
+        setIsOpen(false);
         form.resetFields();
-        setEventType("todo")
+        setEventType("todo");
     }
+
     const updateValueFields = () => {
         const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
         const Events = eventsPush || [];
-        const filterTarget = Events.filter((event) => event?.eventType === "target")
+        const filterTarget = Events.filter((event) => event?.eventType === "target");
         const optionTarget = filterTarget.map((e) => {
             return { value: e?.id, label: e?.eventName, disabled: eventTarget?.eventName !== e?.eventName }
-        })
-        setOptionTarget(optionTarget)
+        });
+        setOptionTarget(optionTarget);
         if (type === "create") {
-            const startTimeNew = dayjs(new Date(start).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
-            const startDateNew = dayjs(new Date(start).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
-            const endTimeNew = dayjs(new Date(end).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
-            const endDateNew = dayjs(new Date(end).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
-            const eventTypeNew = isTargetPage ? "target" : "todo"
-            setStartTime(startTimeNew)
-            setStartDate(startDateNew)
-            setEndTime(endTimeNew)
-            setEndDate(endDateNew)
-            setDescription("")
-            setEventName("")
-            setTarget(targetId)
-            setEventType(eventTypeNew)
-            setHelper([])
+            const startTimeNew = dayjs(new Date(start).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss');
+            const startDateNew = dayjs(new Date(start).toLocaleDateString("en-GB", options), 'DD/MM/YYYY');
+            const endTimeNew = dayjs(new Date(end).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss');
+            const endDateNew = dayjs(new Date(end).toLocaleDateString("en-GB", options), 'DD/MM/YYYY');
+            const eventTypeNew = isTargetPage ? "target" : "todo";
+            setStartTime(startTimeNew);
+            setStartDate(startDateNew);
+            setEndTime(endTimeNew);
+            setEndDate(endDateNew);
+            setDescription("");
+            setEventName("");
+            setTarget(targetId);
+            setEventType(eventTypeNew);
+            setHelper([]);
             form.setFieldsValue({
                 event_name: "",
                 startTime: startTimeNew,
@@ -220,22 +230,21 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 target: eventTarget?.eventName,
                 event_type: eventTypeNew,
                 helper: []
-            })
-        }
-        else if (type === "update") {
-            const startTimeNew = dayjs(new Date(event?.start.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
-            const startDateNew = dayjs(new Date(event?.start.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
-            const endTimeNew = dayjs(new Date(event?.end.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
-            const endDateNew = dayjs(new Date(event?.end.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
-            setStartTime(startTimeNew)
-            setStartDate(startDateNew)
-            setEndTime(endTimeNew)
-            setEndDate(endDateNew)
-            setDescription(event?.description)
-            setEventType(event?.eventType)
-            setTarget(event?.target)
-            setEventName(event?.eventName)
-            setHelper(event?.helper)
+            });
+        } else if (type === "update") {
+            const startTimeNew = dayjs(new Date(event?.start.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss');
+            const startDateNew = dayjs(new Date(event?.start.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY');
+            const endTimeNew = dayjs(new Date(event?.end.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss');
+            const endDateNew = dayjs(new Date(event?.end.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY');
+            setStartTime(startTimeNew);
+            setStartDate(startDateNew);
+            setEndTime(endTimeNew);
+            setEndDate(endDateNew);
+            setDescription(event?.description);
+            setEventType(event?.eventType);
+            setTarget(event?.target);
+            setEventName(event?.eventName);
+            setHelper(event?.helper);
             form.setFieldsValue({
                 event_name: event?.eventName,
                 startTime: startTimeNew,
@@ -246,12 +255,13 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 event_type: event?.eventType,
                 target: event?.target,
                 helper: event?.helper,
-            })
+            });
         }
     }
+
     useEffect(() => {
         updateValueFields();
-    }, [isOpen])
+    }, [isOpen]);
 
     return (
         <div onClick={(e) => e.stopPropagation()}>
@@ -259,7 +269,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             <Modal open={isOpen} title={type === "create" ? "CREATE EVENT" : "UPDATE EVENT"} wrapClassName='dialogCreateEvent_library' onOk={handleOK} onCancel={handleCancel}>
                 <Form form={form} onFinish={handleSubmit}>
                     <LabelForm content={"Event name"} required={true} />
-                    <div className={cx("content", "c-12")} >
+                    <div className={cx("content", "c-12")}>
                         <Form.Item name={"event_name"} rules={[{ required: true, message: 'Please enter your name' }]}>
                             <Input placeholder='Enter your name...' onChange={handleChangeEventName} />
                         </Form.Item>
@@ -267,31 +277,28 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                     <div className={cx("input_layout")}>
                         <LabelForm content={"Event type"} required={true} />
                         <div className={cx("content", "c-10")}>
-                            {
+                            <div className={cx("c-6")}>
+                                <Form.Item name={"event_type"}>
+                                    <Select
+                                        value={eventType}
+                                        style={{ width: "73%" }}
+                                        onChange={handleChangeEventType}
+                                    />
+                                </Form.Item>
+                            </div>
+                            {eventType === "todo" && eventTarget ?
                                 <div className={cx("c-6")}>
-                                    <Form.Item name={"event_type"}>
+                                    <Form.Item name={"target"}>
                                         <Select
-                                            value={eventType}
-                                            style={{ width: "73%" }}
-                                            onChange={handleChangeEventType}
+                                            placeholder={"Select target"}
+                                            style={{ width: "80%" }}
+                                            value={target}
+                                            onChange={handleTarget}
+                                            options={optionTarget}
                                         />
                                     </Form.Item>
                                 </div>
-                            }
-                            {
-                                eventType === "todo" && eventTarget ?
-                                    <div className={cx("c-6")}>
-                                        <Form.Item name={"target"}>
-                                            <Select
-                                                placeholder={"Select target"}
-                                                style={{ width: "80%" }}
-                                                value={target}
-                                                onChange={handleTarget}
-                                                options={optionTarget}
-                                            />
-                                        </Form.Item>
-                                    </div>
-                                    : null
+                                : null
                             }
                         </div>
                     </div>
@@ -319,37 +326,27 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                         <LabelForm content={"End"} required={true} />
                         <div className={cx("content", "c-10")}>
                             <div className={cx("datePicker", "c-6")}>
-                                <Form.Item name={"endTime"} rules={[
-                                    { required: true, message: 'Please enter time end' },
-                                    () => ({
-                                        validator(_, value) {
-                                            if (!value || (startDate && startTime && endDate && value.isSameOrAfter(startTime))) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error('End time cannot be earlier than start time'));
-                                        },
-                                    }),
-                                ]}>
+                                <Form.Item name={"endTime"} rules={[{ required: true, message: 'Please enter time end' }]}>
                                     <TimePicker
                                         onChange={handleChangeEndTime}
+                                        disabledTime={() => {
+                                            if (!startTime) return {};
+                                            return {
+                                                disabledHours: () => [...Array(startTime.hour()).keys()],
+                                                disabledMinutes: () => startTime.hour() === endTime?.hour() ? [...Array(startTime.minute() + 1).keys()] : []
+                                            };
+                                        }}
                                     />
                                 </Form.Item>
                             </div>
                             <div className={cx("timePicker", "c-6")}>
-                                <Form.Item name={"endDate"} rules={[
-                                    { required: true, message: 'Please enter date end' },
-                                    () => ({
-                                        validator(_, value) {
-                                            if (!value || (startDate && endDate && value.isSameOrAfter(startDate))) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error('End date cannot be earlier than start date'));
-                                        },
-                                    }),
-                                ]}>
+                                <Form.Item name={"endDate"} rules={[{ required: true, message: 'Please enter date end' }]}>
                                     <DatePicker
                                         format={"DD/MM/YYYY"}
                                         onChange={handleChangeEndDate}
+                                        disabledDate={current => {
+                                            return startDate && current && current.isBefore(startDate, 'day');
+                                        }}
                                     />
                                 </Form.Item>
                             </div>
@@ -357,7 +354,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                     </div>
                     <Form.Item name={"description"}>
                         <LabelForm content={"Description"} />
-                        <div className={cx("c-12")} >
+                        <div className={cx("c-12")}>
                             <JoditEditor
                                 config={{
                                     readonly: false,
@@ -381,6 +378,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 </Form>
             </Modal>
         </div>
-    )
+    );
 }
-export default DialogCreateEvent
+export default DialogCreateEvent;
