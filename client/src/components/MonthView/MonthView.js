@@ -18,8 +18,8 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
     const countStart = -indexDayOfWeekStart;
     const countEnd = Math.round((Date.parse(dateRangeEnd) - Date.parse(dateRangeStart)) / 86400000);
 
-    const { data: eventsPush } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
-    const listEvents =  eventsPush ? eventsPush : [];
+    const { data: listEvents } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
+    // const listEvents =  eventsPush ? eventsPush : [];
 
     const addDays = (date, index) => {
         var dat = new Date(date)

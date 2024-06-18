@@ -40,7 +40,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
     const { data: eventTarget } = useGetEventByIdQuery(event.target);
     const { data: helpersCuaTargetNay } = useGetAllHelperByEventIdQuery(event.target);
     const [editToDo] = useEditToDoMutation();
-    const { data: helper } = useGetAllHelperByEventIdQuery(event?.eventId);
+    const { data: helper } = useGetAllHelperByEventIdQuery(event?.eventId || event?.id);
     const [helperMoi, setHelperMoi] = useState(helper?.map((helper) => (
         helper.mail)));
 
@@ -136,7 +136,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
         if (type === "update") {
             // console.log("Updating event:", newEvent);
             // console.log("Event ID:", event?.eventId);
-            editToDo({ id: event?.eventId, data: newEvent })
+            editToDo({ id: event?.eventId || event?.id, data: newEvent })
                 .then(function (response) {
                     if (response.data.error !== undefined) {
                         message.error(response.data.error.message);
@@ -164,8 +164,8 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
     }
     const updateValueFields = () => {
         const options = { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", year: "numeric" };
-        const Events = eventsPush || [];
-        const filterTarget = Events.filter((event) => event?.eventType === "target")
+        // const Events = eventsPush || [];
+        const filterTarget = eventsPush.filter((event) => event?.eventType === "target")
         const optionTarget = filterTarget.map((e) => {
             // console.log(eventTarget?.eventName);
             return { value: e?.id, label: e?.eventName, disabled: eventTarget?.eventName !== e?.eventName }
@@ -210,7 +210,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
             setEndDate(endDateNew)
             setDescription(event?.description)
             setEventType(event?.eventType)
-            setTarget(event?.target)
+            setTarget(eventTarget?.eventName)
             setEventName(event?.eventName)
             setHelperMoi(helperMoi)
             form.setFieldsValue({
@@ -221,7 +221,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
                 endDate: endDateNew,
                 description: event?.description,
                 event_type: event?.eventType,
-                target: event?.target,
+                target: eventTarget?.eventName,
                 helper: helperMoi,
             })
         }
@@ -233,7 +233,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
     return (
         <div onClick={(e) => e.stopPropagation()}>
             {contextHolder}
-            <Modal open={isOpen} title={type === "create" ? "CREATE EVENT" : "UPDATE EVENT"} wrapClassName='dialogEditTodo_library' onOk={handleOK} onCancel={handleCancel}>
+            <Modal open={isOpen} title={type === "create" ? "CREATE EVENT" : "EDIT TODO"} wrapClassName='dialogEditTodo_library' onOk={handleOK} onCancel={handleCancel}>
                 <Form form={form} onFinish={handleSubmit}>
                     <LabelForm content={"Event name"} required={true} />
                     <div className={cx("content", "c-12")} >
@@ -267,7 +267,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
                                             <Select
                                                 placeholder={"Select target"}
                                                 style={{ width: "80%" }}
-                                                value={target}
+                                                value={eventTarget?.eventName}
                                                 onChange={handleTarget}
                                                 options={optionTarget}
                                             />

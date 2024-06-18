@@ -2,21 +2,19 @@ import { Modal, Avatar, Tooltip, Select } from "antd"
 import styles from "./DialogDetails.module.scss"
 import classNames from "classnames/bind"
 import { FolderOutlined, UserOutlined, EditOutlined } from "@ant-design/icons"
-// import Detail from "../../pages/Overview/Detail/Detail"
 import Comment from "../Comment/Comment"
 import { useEffect, useState } from "react"
 import DialogCreateEvent from "../DialogCreateEvent/DialogCreateEvent"
 import { useNavigate } from "react-router-dom"
 import "./library.scss"
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
-import { useEditEventMutation } from "../../app/api/eventService";
+import { useEditEventMutation, useGetEventByIdQuery } from "../../app/api/eventService";
 import { useGetCreatorByIdQuery } from "../../app/api/authService";
-
+import DialogEditTodo from "../DialogEditTodo/DialogEditTodo"
 
 const cx = classNames.bind(styles)
 
 const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
-    // console.log("DialogDetails");
     const navigate = useNavigate();
     const [filterType, setFilterType] = useState(event.status);
     const [colorSelect, setColorSelect] = useState()
@@ -27,23 +25,33 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
     const [endDate, setEndDate] = useState();
     const [isPermission, setIsPermission] = useState([]);
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
-    // const [isCreator, setIsCreator] = useState(false)
-    // setIsCreator(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id)
-    // console.log(event?.creatorId === JSON.parse(localStorage.getItem("currentUser")).id);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
-
     const { data: helper } = useGetAllHelperByEventIdQuery(event?.id);
+    const { data: eventTarget } = useGetEventByIdQuery(event?.target);
     const [editEvent] = useEditEventMutation();
 
     const handleOnOk = () => {
-        editEvent({
-            id: event.eventId, data: {
-                ...event, status: filterType
-            }
-        });
+        // editEvent({
+        //     id: event.eventId, data: {
+        //         ...event, status: filterType
+        //     }
+        // });
         setIsOpen(false)
     }
+
+    const handleChangeSelect = (value) => {
+        if (value !== filterType) {
+            editEvent({
+                id: event.id,
+                data: {
+                    ...event,
+                    status: value,
+                },
+            });
+            setFilterType(value);
+        }
+    };
 
     useEffect(() => {
         if (filterType === "In Progress") setColorSelect("In-progress")
@@ -64,15 +72,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
             setStartDate(startDateNew)
             setEndTime(endTimeNew)
             setEndDate(endDateNew)
-            // if (event.target) {
-            //     const Events = localStorage.getItem("listEvents")[0] ? JSON.parse(localStorage.getItem("listEvents")) : [];
-            //     const eventArray = Events.filter((e) => {
-            //         return Number(e.id) === Number(event.target)
-            //     })
-            //     setTarget(eventArray[0])
-            // }
         }
-
     }, [event])
 
     return (
@@ -81,7 +81,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
                 <Modal
                     width={"1000px"}
                     open={isOpen}
-                    title={<div style={{ fontSize: "26px" }}>{event.title || event.eventName}</div>}
+                    title={<div style={{ fontSize: "26px" }}>{event.title || event?.eventName}</div>}
                     onCancel={() => { setIsOpen(false) }}
                     wrapClassName={"DialogDetails"}
                     onOk={handleOnOk}
@@ -90,11 +90,11 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
                     {
                         event.target &&
                         <div className={cx('sub-header')} onClick={() => {
-                            navigate(`/overview?eventId=${target.id}`)
+                            navigate(`/overview?eventId=${eventTarget?.id}`)
                             setIsOpen(false)
                         }}>
                             <FolderOutlined style={{ fontSize: 18 }} />
-                            <span>{target?.eventName}</span>
+                            <span>{eventTarget?.eventName}</span>
                         </div>
                     }
                     <div>
@@ -108,7 +108,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
                             }}
                             disabled={!isPermission && !isCreatorTarget}
                             className={colorSelect}
-                            onChange={(value) => setFilterType(value)}
+                            onChange={handleChangeSelect}
                             options={[
                                 {
                                     options: [
@@ -188,12 +188,11 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
             </div>
             {
                 isOpenUpdate && 
-                <DialogCreateEvent
+                <DialogEditTodo
                     isOpen={isOpenUpdate}
                     setIsOpen={setIsOpenUpdate}
                     start={event.start}
                     end={event.end}
-                    // setListEvents={setListEvents}
                     type={"update"}
                     event={event}
                 />

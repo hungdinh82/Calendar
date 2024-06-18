@@ -394,6 +394,7 @@ const eventController = {
             // Lấy dữ liệu hiện tại của sự kiện từ bảng Events
             const [currentEvent] = await connect.query("SELECT * FROM Events WHERE id = ?", [eventId]);
             const [currentHelpers] = await connect.query("SELECT * FROM Helpers,Accounts WHERE Helpers.userId = Accounts.id AND eventId = ?", [eventId]);
+            // console.log(currentHelpers);
             const [currentNotifies] = await connect.query("SELECT * FROM Notifies WHERE eventId = ?", [eventId]); //chỉ cần check ở bảng Noti không cần check ở bảng helper vì nếu đã là helper thì isAccept = 1
 
             // console.log(currentHelpers);
@@ -415,6 +416,7 @@ const eventController = {
                 }
             }
 
+            // console.log(Object.keys(fieldsToUpdate).length);
             // Nếu có thay đổi, cập nhật bảng Events
             if (Object.keys(fieldsToUpdate).length > 0) {
                 const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(", ");
@@ -422,6 +424,7 @@ const eventController = {
 
                 const updateEventSql = `UPDATE Events SET ${setClause} WHERE id = ?`;
                 await connect.query(updateEventSql, updateValues);
+                // console.log(updateEventSql);
             }
 
             const currentHelperEmails = currentHelpers.map(helper => helper.mail);

@@ -266,7 +266,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     return (
         <div onClick={(e) => e.stopPropagation()}>
             {contextHolder}
-            <Modal open={isOpen} title={type === "create" ? "CREATE EVENT" : "UPDATE EVENT"} wrapClassName='dialogCreateEvent_library' onOk={handleOK} onCancel={handleCancel}>
+            <Modal open={isOpen} title={type === "create" ? "CREATE EVENT" : "EDIT TODO"} wrapClassName='dialogCreateEvent_library' onOk={handleOK} onCancel={handleCancel}>
                 <Form form={form} onFinish={handleSubmit}>
                     <LabelForm content={"Event name"} required={true} />
                     <div className={cx("content", "c-12")}>
