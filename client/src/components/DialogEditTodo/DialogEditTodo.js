@@ -92,6 +92,13 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
     const handleSubmit = (values) => {
         const start = startDate.format("YYYY-MM-DD") + " " + startTime.format("HH:mm:ss");
         const end = endDate.format("YYYY-MM-DD") + " " + endTime.format("HH:mm:ss");
+
+        // Check if end is earlier than start
+        if (dayjs(end).isBefore(dayjs(start))) {
+            message.error('End time cannot be earlier than start time');
+            return;
+        }
+
         const status = event?.status || "Ready"
         const currentUserId = JSON.parse(localStorage.getItem("currentUser")).id
 

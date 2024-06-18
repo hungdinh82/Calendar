@@ -10,10 +10,9 @@ import "./Library.scss"
 import { useEffect, useState } from 'react';
 import { message } from 'antd';
 import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
-import { useGetAllNotificationsByToMailQuery } from "../../app/api/notiService";
 import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const cx = classNames.bind(styles)
 const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTargetPage, targetId }) => {
@@ -72,11 +71,19 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
     }
     const handleChangeEndTime = (value) => {
         if (value) {
+            if (startDate && startTime && startDate.isSame(endDate, 'day') && value.isBefore(startTime)) {
+                message.error("End time cannot be earlier than start time");
+                return;
+            }
             setEndTime(value);
         }
     }
     const handleChangeEndDate = (value) => {
         if (value) {
+            if (startDate && startTime && value.isSame(startDate, 'day') && endTime.isBefore(startTime)) {
+                message.error("End date cannot be earlier than start date");
+                return;
+            }
             setEndDate(value);
         }
     }
@@ -186,7 +193,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
         const Events = eventsPush || [];
         const filterTarget = Events.filter((event) => event?.eventType === "target")
         const optionTarget = filterTarget.map((e) => {
-            // console.log(eventTarget?.eventName);
             return { value: e?.id, label: e?.eventName, disabled: eventTarget?.eventName !== e?.eventName }
         })
         setOptionTarget(optionTarget)
@@ -217,7 +223,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
             })
         }
         else if (type === "update") {
-            // console.log("event?.eventName", eventTarget?.eventName);
             const startTimeNew = dayjs(new Date(event?.start.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
             const startDateNew = dayjs(new Date(event?.start.toString()).toLocaleDateString("en-GB", options), 'DD/MM/YYYY')
             const endTimeNew = dayjs(new Date(event?.end.toString()).toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }), 'HH:mm:ss')
@@ -266,11 +271,6 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                                 <div className={cx("c-6")}>
                                     <Form.Item name={"event_type"}>
                                         <Select
-                                            // options={[
-                                            //     { value: "target", label: "Target", disabled: eventTarget ? true : false },
-                                            //     { value: "todo", label: "To-do" }
-                                            // ]}
-
                                             value={eventType}
                                             style={{ width: "73%" }}
                                             onChange={handleChangeEventType}
@@ -319,14 +319,34 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                         <LabelForm content={"End"} required={true} />
                         <div className={cx("content", "c-10")}>
                             <div className={cx("datePicker", "c-6")}>
-                                <Form.Item name={"endTime"} rules={[{ required: true, message: 'Please enter time end' }]}>
+                                <Form.Item name={"endTime"} rules={[
+                                    { required: true, message: 'Please enter time end' },
+                                    () => ({
+                                        validator(_, value) {
+                                            if (!value || (startDate && startTime && endDate && value.isSameOrAfter(startTime))) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('End time cannot be earlier than start time'));
+                                        },
+                                    }),
+                                ]}>
                                     <TimePicker
                                         onChange={handleChangeEndTime}
                                     />
                                 </Form.Item>
                             </div>
                             <div className={cx("timePicker", "c-6")}>
-                                <Form.Item name={"endDate"} rules={[{ required: true, message: 'Please enter date end' }]}>
+                                <Form.Item name={"endDate"} rules={[
+                                    { required: true, message: 'Please enter date end' },
+                                    () => ({
+                                        validator(_, value) {
+                                            if (!value || (startDate && endDate && value.isSameOrAfter(startDate))) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('End date cannot be earlier than start date'));
+                                        },
+                                    }),
+                                ]}>
                                     <DatePicker
                                         format={"DD/MM/YYYY"}
                                         onChange={handleChangeEndDate}
