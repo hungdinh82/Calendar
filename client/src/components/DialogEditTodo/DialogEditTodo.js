@@ -18,8 +18,6 @@ import Swal from "sweetalert2";
 
 const cx = classNames.bind(styles)
 const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, event, isTargetPage, targetId }) => {
-    // console.log(eventIdCurrent);
-
     const [searchParams, setSearchParams] = useSearchParams()
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
@@ -42,7 +40,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
     const [editToDo] = useEditToDoMutation();
     const { data: helper } = useGetAllHelperByEventIdQuery(event?.eventId || event?.id);
     const [helperMoi, setHelperMoi] = useState(helper?.map((helper) => (
-        helper.mail)));
+        helper.mail)) || []);
 
 
     const handleChangeEventType = (value) => {
@@ -59,7 +57,6 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
     }
     const handleChangesetHelper = (value) => {
         setHelperMoi(value);
-        console.log(helperMoi);
     }
     const handleChangeStartTime = (value) => {
         if (value) {
@@ -112,7 +109,6 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
             helper: helperMoi,
         }
 
-        // console.log(helperMoi);
         // console.log(!event.target);
         if (eventType === "todo") {
             // console.log(event.target);
@@ -212,7 +208,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
             setEventType(event?.eventType)
             setTarget(eventTarget?.eventName)
             setEventName(event?.eventName)
-            setHelperMoi(helperMoi)
+            setHelperMoi(helperMoi || [])
             form.setFieldsValue({
                 event_name: event?.eventName,
                 startTime: startTimeNew,
@@ -222,10 +218,16 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
                 description: event?.description,
                 event_type: event?.eventType,
                 target: eventTarget?.eventName,
-                helper: helperMoi,
+                helper: helperMoi || [],
             })
         }
     }
+    useEffect(() => {
+        if (helper) {
+            setHelperMoi(helper.map(h => h.mail));
+        }
+    }, [helper]);
+
     useEffect(() => {
         updateValueFields();
     }, [isOpen])

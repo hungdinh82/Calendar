@@ -9,7 +9,7 @@ import "./library.scss"
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import ButtonCreateEvent from "../../components/ButtonCreateEvent/ButtonCreateEvent";
 import CustomCalendarAntd from "../../components/CustomCalendarAntd/CustomCalendarAntd";
-import DialogCreateEvent from "../../components/DialogCreateEvent/DialogCreateEvent";
+import DialogEditTodo from "../../components/DialogEditTodo/DialogEditTodo";
 import avatar_hung from '../../imgs/avatar/hung.png';
 import avatar_linh from '../../imgs/avatar/linh.png';
 import icon_folder from '../../imgs/icon_folder.jpeg';
@@ -28,8 +28,7 @@ import Contributors from '../../imgs/avatar/Participants.png';
 import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
-import { useGetAllEventsByCurrentUserQuery, useEditTimeTodoMutation } from "../../app/api/eventService";
-// import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+import { useGetAllEventsByCurrentUserQuery, useEditTimeTodoMutation, useEditToDoMutation, useDeleteEventMutation } from "../../app/api/eventService";
 
 
 const dateFormat = 'YYYY-MM-DD'
@@ -54,6 +53,8 @@ function CalendarPage() {
     // const [listEvents, setListEvents] = useState([]);
     const { data: listEvents, isError, isLoading } = useGetAllEventsByCurrentUserQuery(JSON.parse(localStorage.getItem("currentUser")).id);
     const [editTimeTodo] = useEditTimeTodoMutation();
+    const [deleteEvent] = useDeleteEventMutation();
+
     const [filter, setFilter] = useState({
         ready: true,
         inProgress: true,
@@ -152,39 +153,54 @@ function CalendarPage() {
         calendar.on('beforeCreateEvent', eventObj => { })
         calendar.on('beforeUpdateEvent', eventObj => {
             const { event, changes } = eventObj
+            // console.log(event);
             if (Object.keys(changes).length) {
                 dragDropOrResizeEventHandling(calendar, eventObj)
             } else {
-                setModalEvent(event)
+                setModalEvent(event?.raw)
                 setShowEventModal("update")
                 setIsOpenCreate(true);
                 setIsEdit(true)
             }
         })
         calendar.on('beforeDeleteEvent', eventObj => {
+            // console.log(eventObj);  // Ghi log toàn bộ eventObj để xem cấu trúc của nó
+            const event = eventObj?.raw;  // Đảm bảo bạn truy cập đúng thuộc tính event
+            // console.log(event);  // Ghi log toàn bộ eventObj để xem cấu trúc của nó
+        
+
+            if (!event) {
+                console.error('Event is undefined');
+                return;
+            }
+        
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn có chắc chắn?',
+                text: "Bạn sẽ không thể hoàn tác hành động này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Vâng, xóa nó!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     calendar.deleteEvent(eventObj.id, eventObj.calendarId);
-                    const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
-                    const listEventsNew = removeObjectFromArray(listEventsStorage, eventObj.id, eventObj.calendarId)
-                    localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
-                    // setListEvents(listEventsNew)
+                    deleteEvent(event?.eventId).then(
+                        (response) => {
+                            if (response.data.error !== undefined) {
+                                message.error(response.data.error.message);
+                            } else message.success('Deleted successfully');
+                        },
+                    );
                     Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
+                        'Đã xóa!',
+                        'Tập tin của bạn đã bị xóa.',
                         'success'
-                    )
+                    );
                 }
-            })
-        })
+            });
+        });
+        
         calendar.on('afterRenderEvent', eventObj => { })
 
         calendar.on('clickEvent', eventObj => {
@@ -562,7 +578,7 @@ function CalendarPage() {
             </div >
             {
                 showEventModal &&
-                <DialogCreateEvent
+                <DialogEditTodo
                     isOpen={isOpenCreate}
                     setIsOpen={setIsOpenCreate}
                     start={startTimes}
