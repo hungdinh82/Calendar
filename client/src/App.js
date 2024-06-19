@@ -1,7 +1,7 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Overview from './pages/Overview/Overview';
 import LoginPage from './pages/Login/Login';
-import CalendarPage from './pages/Calendar/CalendarPage'
+import CalendarPage from './pages/Calendar/CalendarPage';
 import DetailsPage from './pages/Details/Details';
 import Signup from './pages/Signup/Signup';
 import WorkProgressPage from './pages/WorkProgress/WorkProgress';
@@ -11,30 +11,34 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import { useEffect, useState } from 'react';
 import Accounts from './fileData/Account';
 import Events from './fileData/Event';
-import Notify from './fileData/Notify'
+import Notify from './fileData/Notify';
 import { io } from "socket.io-client";
 import { useDispatch } from 'react-redux';
 import { updateSocket, updateUserOnline } from './redux/socketSlice';
+import PrivateRoute from '../src/components/PrivateRoute/PrivateRoute';
 
 function App() {
     const [user, setUser] = useState();
     const [isSignUp, setIsSignUp] = useState(false);
     const navigate = useNavigate();
+
     const signUp = () => {
         const user = {
             userId: localStorage.getItem("userId"),
             userName: localStorage.getItem("userName"),
             avatar: localStorage.getItem("avatar"),
-        }
+        };
         setUser(user);
-    }
+    };
+
     useEffect(() => {
         signUp();
     }, [isSignUp]);
 
     const dispatch = useDispatch();
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const portSocket = "http://localhost:4000"
+    const portSocket = "http://localhost:4000";
+
     useEffect(() => {
         const socket = io(portSocket);
         dispatch(updateSocket(socket));
@@ -43,7 +47,7 @@ function App() {
             dispatch(updateUserOnline(currentUser));
         }
     }, []);
-    
+
     return (
         <Routes>
             <Route path="/" element={<CalendarPage />} />
@@ -55,8 +59,14 @@ function App() {
             <Route path="/Signup" element={<Signup />} />
             <Route path="/Listworks" element={<Listworks />} />
             <Route path="/LoginAdmin" element={<LoginAdmin />} />
-            <Route path="/AdminDashboard" element={<AdminDashboard />} />
-            {/* <Route path="/" element={<CalendarPage />} /> */}
+            <Route
+                path="/AdminDashboard"
+                element={
+                    <PrivateRoute>
+                        <AdminDashboard />
+                    </PrivateRoute>
+                }
+            />
         </Routes>
     );
 }
