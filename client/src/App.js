@@ -6,6 +6,8 @@ import DetailsPage from './pages/Details/Details';
 import Signup from './pages/Signup/Signup';
 import WorkProgressPage from './pages/WorkProgress/WorkProgress';
 import Listworks from './pages/Listworks/Listworks';
+import LoginAdmin from './pages/LoginAdmin/LoginAdmin';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import { useEffect, useState } from 'react';
 import Accounts from './fileData/Account';
 import Events from './fileData/Event';
@@ -52,6 +54,8 @@ function App() {
             <Route path="/Details" element={<DetailsPage />} />
             <Route path="/Signup" element={<Signup />} />
             <Route path="/Listworks" element={<Listworks />} />
+            <Route path="/LoginAdmin" element={<LoginAdmin />} />
+            <Route path="/AdminDashboard" element={<AdminDashboard />} />
             {/* <Route path="/" element={<CalendarPage />} /> */}
         </Routes>
     );

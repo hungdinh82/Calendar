@@ -32,7 +32,7 @@ function Login() {
         // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
         signIn({ mail, password})
         .then((res) => {
-            if (res.data) {
+            if (res.data && !res.data.isAdmin) {
                 localStorage.setItem("currentUser", JSON.stringify(res.data));
                 Swal.fire({
                     icon: "success",

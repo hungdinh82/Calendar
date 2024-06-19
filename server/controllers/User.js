@@ -4,9 +4,10 @@ const userController = {
   signIn: async (req, res) => {
     const { mail, password } = req.body;
     var sql =
-      "SELECT id, userName, mail, avatar FROM Accounts WHERE mail = ? AND password = ?";
+      "SELECT id, userName, mail, avatar, isAdmin FROM Accounts WHERE mail = ? AND password = ?";
     try {
       const [result] = await connect.query(sql, [mail, password]);
+      // console.log(result);
       if (result[0] != null) {
         res.json({
           login: true,
@@ -14,6 +15,7 @@ const userController = {
           userName: result[0].userName,
           mail: result[0].mail,
           avatar: result[0].avatar,
+          isAdmin: result[0].isAdmin,
         })
       } else res.json({ login: false })
     }

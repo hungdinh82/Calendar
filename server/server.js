@@ -9,6 +9,7 @@ import event from "./routers/event.js";
 import noti from "./routers/noti.js";
 import important from "./routers/important.js";
 import helper from "./routers/helper.js";
+import admin from "./routers/admin.js";
 import session from "express-session";
 import path from "path";
 import connectSocket  from './socket/socket.js';
@@ -33,6 +34,7 @@ event(app);
 noti(app);
 important(app);
 helper(app);
+admin(app);
 
 const server = app.listen(port, () => {
   console.log("Server started on port 4000");
