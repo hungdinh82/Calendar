@@ -106,9 +106,6 @@ function CalendarPage() {
         setIsOpenDetail(true);
     }
 
-    function removeObjectFromArray(listEvents, id, calendarid) {
-        return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
-    }
 
     const dragDropOrResizeEventHandling = (calendar, objEvent) => {
         const { event, changes } = objEvent
@@ -271,7 +268,7 @@ function CalendarPage() {
                     totalComments++;
                 }
             });
-            setEventDetail(event)
+            setEventDetail(event?.raw)
             // <img class="${cx("avatar_status")}" src="${user[0].avatar}" alt="avatar" />
             //         <span class = "${cx("title_avatar")}">&nbsp;${user[0].userName}</span>
             return `

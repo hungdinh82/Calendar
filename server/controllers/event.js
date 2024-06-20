@@ -18,7 +18,7 @@ const eventController = {
             // const resultMerge = [...result, ...result2];
 
             res.json(result);
-            
+
             // console.log(result);
             // res.json(result);
 
@@ -136,65 +136,21 @@ const eventController = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
-    // editEvent: async (req, res) => {
-    //     const eventData = req.body;
-    //     const eventId = req.params.id; // Lấy ID của sự kiện cần cập nhật từ URL
-    //     // Định dạng lại startDate và endDate
-    //     const formattedStartDate = moment(eventData.startDate).format("YYYY-MM-DD HH:mm:ss");
-    //     const formattedEndDate = moment(eventData.endDate).format("YYYY-MM-DD HH:mm:ss");
-
-    //     // Cập nhật giá trị mới vào eventData
-    //     eventData.start = formattedStartDate;
-    //     eventData.end = formattedEndDate;
-
-    //     console.log(eventData);
-
-    //     // Cập nhật sự kiện trong bảng Events
-    //     const updateEventSql = "UPDATE Events SET eventName = ?, calendarId = ?, start = ?, end = ?, eventType = ?, description = ?, status = ?, creatorId = ?, target = ? WHERE id = ?";
-    //     const updateEventValues = [
-    //         eventData.eventName,
-    //         eventData.calendarId,
-    //         eventData.start,
-    //         eventData.end,
-    //         eventData.eventType,
-    //         eventData.description,
-    //         eventData.status,
-    //         eventData.creatorId,
-    //         eventData.target,
-    //         eventId // Sử dụng ID của sự kiện để xác định sự kiện cần cập nhật
-    //     ];
-
-    //     // Cập nhật sự kiện trong bảng Events
-    //     try {
-    //         await connect.query(updateEventSql, updateEventValues);
-
-    //         // Xóa các liên kết cũ giữa sự kiện và người dùng trong bảng Helpers
-    //         const deleteHelperSql = "DELETE FROM Helpers WHERE eventId = ?";
-    //         await connect.query(deleteHelperSql, [eventId]);
-
-    //         // Thêm lại các liên kết mới giữa sự kiện và người dùng trong bảng Helpers
-    //         const eventMailString = eventData.helper.split(',');
-    //         const insertHelperSql = "INSERT INTO Helpers (userId, eventId) VALUES (?, ?)";
-    //         for (let i = 0; i < eventMailString.length; i++) {
-    //             const insertHelperValues = [
-    //                 eventMailString[i],
-    //                 eventId
-    //             ];
-    //             await connect.query(insertHelperSql, insertHelperValues);
-    //         }
-
-    //         res.json({ success: true });
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).json({ error: "Internal server error" });
-    //     }
-    // },
 
     editEvent: async (req, res) => {
         const eventData = req.body;
         const eventId = req.params.id;
         // console.log(eventData);
         // console.log(eventId);
+
+        // Đổi tên eventId thành id
+        if (eventData.eventId) {
+            eventData.id = eventData.eventId;
+            delete eventData.eventId;
+        }
+
+        // Xóa trường targetName
+        delete eventData.targetName;
 
         // Định dạng lại ngày bắt đầu và kết thúc nếu cần
         const formattedStartDate = moment(eventData.start).format("YYYY-MM-DD HH:mm:ss");
@@ -505,23 +461,23 @@ const eventController = {
     editTimeTodo: async (req, res) => {
         const { start, end } = req.body;
         const todoId = req.params.id;
-    
+
         // Định dạng lại ngày bắt đầu và kết thúc nếu cần
         const formattedStartDate = moment(start).format("YYYY-MM-DD HH:mm:ss");
         const formattedEndDate = moment(end).format("YYYY-MM-DD HH:mm:ss");
-    
+
         try {
             // Kiểm tra xem todo có tồn tại không
             const [currentTodo] = await connect.query("SELECT * FROM Events WHERE id = ?", [todoId]);
-    
+
             if (currentTodo.length === 0) {
                 return res.status(404).json({ error: "Không tìm thấy todo" });
             }
-    
+
             // Cập nhật thời gian mới cho todo
             const updateTodoSql = "UPDATE Events SET start = ?, end = ? WHERE id = ?";
             await connect.query(updateTodoSql, [formattedStartDate, formattedEndDate, todoId]);
-    
+
             res.json({ success: true });
         } catch (error) {
             console.error(error);

@@ -15,7 +15,8 @@ function Comment({ event }) {
     const [searchParams] = useSearchParams();
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef();
-    const eventId = event ? event.id : searchParams.get("eventId");
+    // const eventId = event ? event.id : searchParams.get("eventId");
+    const eventId = event?.id || event?.eventId || searchParams.get("eventId");
     const currentUser = JSON.parse(localStorage.getItem("currentUser"))
 
     const [addComment] = useAddCommentMutation();

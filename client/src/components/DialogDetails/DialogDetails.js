@@ -27,7 +27,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
     const [isCreatorTarget, setIsCreatorTarget] = useState(false)
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const { data: creator } = useGetCreatorByIdQuery(event?.creatorId);
-    const { data: helper } = useGetAllHelperByEventIdQuery(event?.id);
+    const { data: helper } = useGetAllHelperByEventIdQuery(event?.id || event?.eventId);
     const { data: eventTarget } = useGetEventByIdQuery(event?.target);
     const [editEvent] = useEditEventMutation();
 
@@ -43,7 +43,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
     const handleChangeSelect = (value) => {
         if (value !== filterType) {
             editEvent({
-                id: event.id,
+                id: event?.id || event?.eventId,
                 data: {
                     ...event,
                     status: value,
