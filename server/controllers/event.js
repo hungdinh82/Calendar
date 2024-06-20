@@ -301,6 +301,7 @@ const eventController = {
                     );
                     const sql2 = "SELECT id FROM Accounts WHERE mail = ?"
                     const [result2] = await connect.query(sql2, email);
+                    // console.log(result2);
                     // Xoá helper cũ trong bảng Helpers
                     await connect.query(
                         "DELETE FROM Helpers WHERE userId = ? AND eventId = ?",
@@ -312,6 +313,35 @@ const eventController = {
                         "DELETE FROM Comments WHERE userId = ? AND eventId = ?",
                         [result2[0].id, eventId]
                     );
+
+                    // Lấy danh sách các sự kiện con của sự kiện đích
+                    const [childEvents] = await connect.query(
+                        "SELECT id FROM Events WHERE target = ?",
+                        [eventId]
+                    );
+
+                    // Duyệt qua từng sự kiện con và xóa helper
+                    for (const childEvent of childEvents) {
+                        const childEventId = childEvent.id;
+
+                        // Xoá helper cũ trong bảng Notifies của sự kiện con
+                        // await connect.query(
+                        //     "DELETE FROM Notifies WHERE toMail = ? AND eventId = ?",
+                        //     [email, childEventId]
+                        // );
+
+                        // Xoá helper cũ trong bảng Helpers của sự kiện con
+                        await connect.query(
+                            "DELETE FROM Helpers WHERE userId = ? AND eventId = ?",
+                            [result2[0].id, childEventId]
+                        );
+
+                        // Xoá helper cũ trong bảng Comments của sự kiện con
+                        await connect.query(
+                            "DELETE FROM Comments WHERE userId = ? AND eventId = ?",
+                            [result2[0].id, childEventId]
+                        );
+                    }
                 }
             }
 
