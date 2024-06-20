@@ -29,7 +29,7 @@ function LoginAdmin() {
         e.preventDefault();
         signIn({ mail, password })
         .then((res) => {
-            if (res.data && res.data.isAdmin) {
+            if (res.data.login && res.data.isAdmin) {
                 localStorage.setItem("currentUser", JSON.stringify(res.data));
                 Swal.fire({
                     icon: "success",

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import classNames from 'classnames/bind';
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import styles from './AdminDashboard.module.scss';
 import { useGetAccountsQuery, useDeleteAccountMutation, useAddAccountMutation, useUpdateAccountMutation } from '../../app/api/adminService';
 
@@ -14,6 +15,7 @@ function AdminDashboard() {
     
     const [isEditing, setIsEditing] = useState(false);
     const [currentAccount, setCurrentAccount] = useState({ id: '', mail: '', userName: '', isAdmin: false });
+    const navigate = useNavigate();
 
     const handleDelete = async (id) => {
         await deleteAccount(id);
@@ -52,6 +54,11 @@ function AdminDashboard() {
         });
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("currentUser");
+        navigate("/LoginAdmin");
+    };
+
     useEffect(() => {
         document.title = "Admin Dashboard";
     }, []);
@@ -60,6 +67,7 @@ function AdminDashboard() {
         <div className={cx('admin-dashboard')}>
             <h1 className={cx('header')}>Admin Dashboard</h1>
             <button className={cx('add-btn')} onClick={handleAdd}>Thêm tài khoản mới</button>
+            <button className={cx('logout-btn')} onClick={handleLogout}>Logout</button>
             <table className={cx('accounts-table')}>
                 <thead>
                     <tr>

@@ -16,6 +16,7 @@ import { io } from "socket.io-client";
 import { useDispatch } from 'react-redux';
 import { updateSocket, updateUserOnline } from './redux/socketSlice';
 import PrivateRoute from '../src/components/PrivateRoute/PrivateRoute';
+import UserPrivateRoute from './components/PrivateRoute/UserPrivateRoute';
 
 function App() {
     const [user, setUser] = useState();
@@ -50,14 +51,14 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/" element={<CalendarPage />} />
-            <Route path="/Overview" element={<Overview />} />
+            <Route path="/" element={<UserPrivateRoute><CalendarPage /></UserPrivateRoute>} />
+            <Route path="/Overview" element={<UserPrivateRoute><Overview /></UserPrivateRoute>} />
             <Route path="/Login" element={<LoginPage />} />
-            <Route path="/Calendar" element={<CalendarPage />} />
-            <Route path="/WorkProgress" element={<WorkProgressPage />} />
-            <Route path="/Details" element={<DetailsPage />} />
+            <Route path="/Calendar" element={<UserPrivateRoute><CalendarPage /></UserPrivateRoute>} />
+            <Route path="/WorkProgress" element={<UserPrivateRoute><WorkProgressPage /></UserPrivateRoute>} />
+            <Route path="/Details" element={<UserPrivateRoute><DetailsPage /></UserPrivateRoute>} />
             <Route path="/Signup" element={<Signup />} />
-            <Route path="/Listworks" element={<Listworks />} />
+            <Route path="/Listworks" element={<UserPrivateRoute><Listworks /></UserPrivateRoute>} />
             <Route path="/LoginAdmin" element={<LoginAdmin />} />
             <Route
                 path="/AdminDashboard"

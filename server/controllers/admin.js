@@ -33,13 +33,13 @@ const adminController = {
 
   updateAccount: async (req, res) => {
     const { id } = req.params;
-    const { mail, password, userName, avatar, isAdmin } = req.body;
-    const sql = "UPDATE Accounts SET mail = ?, password = ?, userName = ?, avatar = ?, isAdmin = ? WHERE id = ?";
+    const { mail, userName,  isAdmin } = req.body;
+    const sql = "UPDATE Accounts SET mail = ?,  userName = ?, isAdmin = ? WHERE id = ?";
     
     try {
-      const [result] = await connect.query(sql, [mail, password, userName, avatar, isAdmin, id]);
+      const [result] = await connect.query(sql, [mail, userName, isAdmin, id]);
       if (result.affectedRows > 0) {
-        res.json({ id, mail, userName, avatar, isAdmin });
+        res.json({ id, mail, userName, isAdmin });
       } else {
         res.status(404).json({ error: "Account not found" });
       }
