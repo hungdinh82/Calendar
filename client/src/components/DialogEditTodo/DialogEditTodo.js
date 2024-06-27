@@ -143,7 +143,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
                         });
                         message.success('Edit event successfully')
                         Swal.fire(
-                            'Important!',
+                            'Edit event successfully!',
                             'Your event has been updated',
                             'success'
                         )
@@ -151,6 +151,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
                 })
                 .catch(function (error) {
                     console.log(error);
+                    message.error('An error occurred while creating the event. Please try again.');
                 });
         }
 

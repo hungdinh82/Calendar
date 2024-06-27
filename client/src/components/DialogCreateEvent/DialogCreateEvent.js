@@ -160,6 +160,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                 })
                 .catch(function (error) {
                     console.log(error);
+                    message.error('An error occurred while creating the event. Please try again.');
                 });
         } else if (type === "update") {
             messageApi.open({

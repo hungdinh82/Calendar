@@ -104,7 +104,7 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                         socket?.emit("new-notification", {});
                         message.success('Edit event successfully');
                         Swal.fire(
-                            'Important!',
+                            'Edit event successfully!',
                             'Your event has been updated',
                             'success'
                         );

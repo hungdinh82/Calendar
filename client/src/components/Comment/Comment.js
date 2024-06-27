@@ -45,6 +45,7 @@ function Comment({ event }) {
                 })
                 .catch(function (error) {
                     console.log(error);
+                    message.error('An error occurred while creating the event. Please try again.');
                 });
         }
     }
