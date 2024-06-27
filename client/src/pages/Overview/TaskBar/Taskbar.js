@@ -6,8 +6,8 @@ import DialogDetails from "../../../components/DialogDetails/DialogDetails";
 
 import styles from './TaskBar.module.scss';
 import './library.scss'
-import { useGetAllHelperByEventIdQuery, useGetAllHelperAndCreatorByTodoIdMutation } from "../../../app/api/helperService";
-import { useEditEventMutation } from "../../../app/api/eventService";
+import { useGetAllHelperByEventIdQuery, useGetAllHelperAndCreatorByTodoIdMutation } from "../../../Services/api/helperService";
+import { useEditEventMutation } from "../../../Services/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -90,7 +90,7 @@ function TaskBar({ callback, isCreatorTarget, event, protype, coloumnId, setList
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
                     event={event}
-                    // setListEvents={setListEvents}
+                // setListEvents={setListEvents}
                 />
             )}
         </>

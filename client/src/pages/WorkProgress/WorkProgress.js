@@ -1,14 +1,14 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {  message } from 'antd';
+import { message } from 'antd';
 
 import styles from './WorkProgress.module.scss';
 import Sidebar from "../../components/Sidebar/Sidebar";
 import trashIcon from '../../imgs/trash-2-outline.png'
 import Task from "./Task/Task";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
-import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useEditEventMutation, useDeleteEventMutation } from "../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery, useEditEventMutation, useDeleteEventMutation } from "../../Services/api/eventService";
 
 const cx = classNames.bind(styles);
 

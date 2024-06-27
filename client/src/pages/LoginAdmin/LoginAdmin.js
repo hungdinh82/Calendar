@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import adminLogo from '../../imgs/adminLogo.png'
 import styles from './LoginAdmin.module.scss';
 import '../Signup/library.scss'
-import { useSignInMutation } from '../../app/api/authService';
+import { useSignInMutation } from '../../Services/api/authService';
 
 const cx = classNames.bind(styles);
 
@@ -28,25 +28,25 @@ function LoginAdmin() {
     const handleClickSubmit = (e) => {
         e.preventDefault();
         signIn({ mail, password })
-        .then((res) => {
-            if (res.data.login && res.data.isAdmin) {
-                localStorage.setItem("currentUser", JSON.stringify(res.data));
-                Swal.fire({
-                    icon: "success",
-                    title: "Success",
-                    text: "Đăng nhập thành công",
-                    confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
-                })
-                navigate("/AdminDashboard");
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Sai tài khoản hoặc mật khẩu",
-                    confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
-                })
-            }
-        }) 
+            .then((res) => {
+                if (res.data.login && res.data.isAdmin) {
+                    localStorage.setItem("currentUser", JSON.stringify(res.data));
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Đăng nhập thành công",
+                        confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
+                    })
+                    navigate("/AdminDashboard");
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Sai tài khoản hoặc mật khẩu",
+                        confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
+                    })
+                }
+            })
     };
 
     useEffect(() => {

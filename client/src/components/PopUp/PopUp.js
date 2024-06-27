@@ -13,9 +13,9 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DialogDetails from "../DialogDetails/DialogDetails";
 
-import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
-import { useGetCreatorByIdQuery } from "../../app/api/authService";
-import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation, useGetEventByIdQuery } from "../../app/api/eventService";
+import { useGetAllHelperByEventIdQuery } from "../../Services/api/helperService";
+import { useGetCreatorByIdQuery } from "../../Services/api/authService";
+import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation, useGetEventByIdQuery } from "../../Services/api/eventService";
 
 const cx = classNames.bind(styles);
 

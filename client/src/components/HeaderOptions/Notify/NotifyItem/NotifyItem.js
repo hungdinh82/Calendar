@@ -7,7 +7,7 @@ import "./Library.scss"
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DialogDetails from "../../../DialogDetails/DialogDetails";
-import { useUpdateNotificationMutation } from "../../../../app/api/notiService";
+import { useUpdateNotificationMutation } from "../../../../Services/api/notiService";
 
 
 const cx = classNames.bind(styles);
@@ -85,7 +85,7 @@ function NotifyItem({ notify, setNotifyLength }) {
                 ) : (
                     <div className={cx("rejected-mess")}>Rejected!</div>
                 )}
-       
+
             </div>
             {isOpen &&
                 <DialogDetails

@@ -13,7 +13,7 @@ import avatar_linh from '../../imgs/avatar/linh.png';
 import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
 import avatar_quang from '../../imgs/avatar/quang.jpg'
 import avatar_hieu from '../../imgs/avatar/hieu.jpg'
-import { useGetImportantsByUserIdQuery } from "../../app/api/importantService";
+import { useGetImportantsByUserIdQuery } from "../../Services/api/importantService";
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +32,7 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
     const navigate = useNavigate();
 
     const currentUser = JSON.parse(localStorage.getItem("currentUser"))
-    
+
     const { data: eventImportant } = useGetImportantsByUserIdQuery(currentUser.id);
 
     useEffect(() => {
@@ -56,7 +56,7 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
             setCurrentAvatar(avatar);
         }
     }, []);
-    
+
     return (
         currentUser &&
         <div style={{ position: "relative" }}>
@@ -90,17 +90,17 @@ function Sidebar({ show = emtpyFunction, isCalendar, setListEvents, isTargetPage
                     >
                         ADD EVENT
                     </Button>
-                    {isOpen &&                  
-                    <DialogCreateEvent
-                        isOpen={isOpen}
-                        setIsOpen={setIsOpen}
-                        start={Date.now()}
-                        end={Date.now() + 1800000}
-                        type={"create"}
-                        setListEvents={setListEvents}
-                        isTargetPage={isTargetPage}
-                        targetId={targetId}
-                    />}
+                    {isOpen &&
+                        <DialogCreateEvent
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                            start={Date.now()}
+                            end={Date.now() + 1800000}
+                            type={"create"}
+                            setListEvents={setListEvents}
+                            isTargetPage={isTargetPage}
+                            targetId={targetId}
+                        />}
                 </div>
 
                 <div className={cx('nav')}>

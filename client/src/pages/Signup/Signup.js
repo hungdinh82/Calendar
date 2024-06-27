@@ -15,7 +15,7 @@ import avatar_linh from '../../imgs/avatar/linh.png';
 import avatar_nguyet from '../../imgs/avatar/nguyet.jpg'
 import avatar_quang from '../../imgs/avatar/quang.jpg'
 import avatar_hieu from '../../imgs/avatar/hieu.jpg'
-import { useSignUpMutation } from '../../app/api/authService';
+import { useSignUpMutation } from '../../Services/api/authService';
 
 
 const cx = classNames.bind(styles);
@@ -54,7 +54,7 @@ const Signup = () => {
                 return;
             }
             let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-            
+
             let currentAvatar = "";
             if (userName.includes("quang")) {
                 currentAvatar = avatar_quang;
@@ -82,28 +82,28 @@ const Signup = () => {
             // })
             // localStorage.setItem("listAccounts", JSON.stringify(listAccounts));
             signUp({ mail, password, userName })
-            .then((res) => {
-                if (res.data) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: "Đăng ký thành công",
-                        confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
-                    }).then((result) => {
-                        if (result.isConfirmed) setSuccess(true);
-                    });
-                    navigate('/Login')
-                }
-                else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Đăng ký thất bại",
-                        confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
-                    })
-                }
-            
-            })
+                .then((res) => {
+                    if (res.data) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: "Đăng ký thành công",
+                            confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
+                        }).then((result) => {
+                            if (result.isConfirmed) setSuccess(true);
+                        });
+                        navigate('/Login')
+                    }
+                    else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Đăng ký thất bại",
+                            confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
+                        })
+                    }
+
+                })
             // Swal.fire({
             //     icon: "success",
             //     title: "Success",

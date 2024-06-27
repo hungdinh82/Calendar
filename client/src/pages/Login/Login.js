@@ -9,7 +9,7 @@ import logoFacebook from '../../imgs/face.png'
 import logo from '../../imgs/logo1.png'
 import styles from './Login.module.scss';
 import '../Signup/library.scss'
-import { useSignInMutation } from '../../app/api/authService';
+import { useSignInMutation } from '../../Services/api/authService';
 
 const cx = classNames.bind(styles);
 
@@ -30,27 +30,27 @@ function Login() {
     const handleClickSubmit = (e) => {
         e.preventDefault();
         // let listAccounts = localStorage.getItem("listAccounts")[0] ? JSON.parse(localStorage.getItem("listAccounts")) : [];
-        signIn({ mail, password})
-        .then((res) => {
-            if (res.data.login === true && !res.data.isAdmin) {
-                localStorage.setItem("currentUser", JSON.stringify(res.data));
-                Swal.fire({
-                    icon: "success",
-                    title: "Success",
-                    text: "Đăng nhập thành công",
-                    confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
-                })
-                navigate("/");
-            }
-            else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Sai tài khoản hoặc mật khẩu",
-                    confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
-                })
-            }
-        }) 
+        signIn({ mail, password })
+            .then((res) => {
+                if (res.data.login === true && !res.data.isAdmin) {
+                    localStorage.setItem("currentUser", JSON.stringify(res.data));
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Đăng nhập thành công",
+                        confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
+                    })
+                    navigate("/");
+                }
+                else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Sai tài khoản hoặc mật khẩu",
+                        confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
+                    })
+                }
+            })
         // const user = listAccounts.filter((account) => mail === account.mail && password === account.password)
         // if (user && user[0]) {
         //     localStorage.setItem("currentUserId", user[0].id);

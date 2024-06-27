@@ -2,12 +2,12 @@ import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import styles from './Notify.module.scss';
 import NotifyItem from "./NotifyItem/NotifyItem";
-import { useGetAllNotificationsByToMailMutation } from "../../../app/api/notiService";
+import { useGetAllNotificationsByToMailMutation } from "../../../Services/api/notiService";
 import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function Notify({notifications, setNotifyLength}) {
+function Notify({ notifications, setNotifyLength }) {
     // const socket = useSelector((state) => state.socket.socket);
 
     return (

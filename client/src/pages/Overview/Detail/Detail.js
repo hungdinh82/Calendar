@@ -12,9 +12,9 @@ import avatar_nguyet from '../../../imgs/avatar/nguyet.jpg'
 import avatar_quang from '../../../imgs/avatar/quang.jpg'
 import avatar_hieu from '../../../imgs/avatar/hieu.jpg'
 import DialogCreateEvent from "../../../components/DialogCreateEvent/DialogCreateEvent";
-import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
-import { useGetEventByIdQuery } from "../../../app/api/eventService";
-import { useGetCreatorByIdQuery } from "../../../app/api/authService";
+import { useGetAllHelperByEventIdQuery } from "../../../Services/api/helperService";
+import { useGetEventByIdQuery } from "../../../Services/api/eventService";
+import { useGetCreatorByIdQuery } from "../../../Services/api/authService";
 import DialogEditTarget from "../../../components/DialogEditTarget/DialogEditTarget";
 
 
@@ -96,7 +96,7 @@ function Detail({ event, setListEvents, isCreatorTarget }) {
                 {/* <DialogDetails isOpen={isOpenDetail} setIsOpenDetail={setIsOpenDetail} /> */}
             </div>
             {
-                isOpenUpdate &&  isCreatorTarget &&
+                isOpenUpdate && isCreatorTarget &&
                 <DialogEditTarget
                     isOpen={isOpenUpdate}
                     setIsOpen={setIsOpenUpdate}

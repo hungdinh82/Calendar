@@ -9,8 +9,8 @@ import LabelForm from './LabelForm/LabelFrom';
 import "./Library.scss"
 import { useEffect, useState } from 'react';
 import { message } from 'antd';
-import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../app/api/eventService";
-import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+import { useCreateEventMutation, useGetAllEventsByCurrentUserQuery, useGetEventByIdQuery } from "../../Services/api/eventService";
+import { useGetAllHelperByEventIdQuery } from "../../Services/api/helperService";
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams, useNavigate } from "react-router-dom";
 

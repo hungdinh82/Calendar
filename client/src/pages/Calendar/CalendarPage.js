@@ -28,7 +28,7 @@ import Contributors from '../../imgs/avatar/Participants.png';
 import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
-import { useGetAllEventsByCurrentUserQuery, useEditTimeTodoMutation, useEditToDoMutation, useDeleteEventMutation } from "../../app/api/eventService";
+import { useGetAllEventsByCurrentUserQuery, useEditTimeTodoMutation, useEditToDoMutation, useDeleteEventMutation } from "../../Services/api/eventService";
 
 
 const dateFormat = 'YYYY-MM-DD'
@@ -93,14 +93,14 @@ function CalendarPage() {
         }
     }
 
-    function updateArrayObjects(listEvents, id, calendarId, changes) {
-        return listEvents.map(obj => {
-            if (obj.id === id && obj.calendarId === calendarId) {
-                return { ...obj, ...changes }
-            }
-            return obj;
-        });
-    }
+    // function updateArrayObjects(listEvents, id, calendarId, changes) {
+    //     return listEvents.map(obj => {
+    //         if (obj.id === id && obj.calendarId === calendarId) {
+    //             return { ...obj, ...changes }
+    //         }
+    //         return obj;
+    //     });
+    // }
 
     const handleEventDetail = () => {
         setIsOpenDetail(true);
@@ -110,10 +110,10 @@ function CalendarPage() {
     const dragDropOrResizeEventHandling = (calendar, objEvent) => {
         const { event, changes } = objEvent
         calendar.updateEvent(event.id, event.calendarId, changes)
-        const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
-        const listEventsNew = updateArrayObjects(listEventsStorage, event.id, event.calendarId, changes)
-        // setListEvents(listEventsNew)
-        localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
+        // const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
+        // const listEventsNew = updateArrayObjects(listEventsStorage, event.id, event.calendarId, changes)
+        // // setListEvents(listEventsNew)
+        // localStorage.setItem("listEvents", JSON.stringify(listEventsNew));
 
         let newEvent = event?.raw;
         if (changes.end) {
@@ -164,13 +164,13 @@ function CalendarPage() {
             // console.log(eventObj);  // Ghi log toàn bộ eventObj để xem cấu trúc của nó
             const event = eventObj?.raw;  // Đảm bảo bạn truy cập đúng thuộc tính event
             // console.log(event);  // Ghi log toàn bộ eventObj để xem cấu trúc của nó
-        
+
 
             if (!event) {
                 console.error('Event is undefined');
                 return;
             }
-        
+
             Swal.fire({
                 title: 'Bạn có chắc chắn?',
                 text: "Bạn sẽ không thể hoàn tác hành động này!",
@@ -197,7 +197,7 @@ function CalendarPage() {
                 }
             });
         });
-        
+
         calendar.on('afterRenderEvent', eventObj => { })
 
         calendar.on('clickEvent', eventObj => {
@@ -483,7 +483,7 @@ function CalendarPage() {
                                 <div className={cx("plus_icon_layout")}>
                                     <div class={cx("icon-plus", "orange", "w25", "icon-plus-library")}></div>
                                 </div>
-                                <ButtonCreateEvent/>
+                                <ButtonCreateEvent />
                             </div>
                             <div className={cx("filter_layout")}>
                                 <div className={cx("label")}>Status</div>
@@ -591,7 +591,7 @@ function CalendarPage() {
                     isOpen={isOpenDetail}
                     setIsOpen={setIsOpenDetail}
                     event={eventDetail}
-                    // setListEvents={setListEvents}
+                // setListEvents={setListEvents}
                 />
             }
         </div >

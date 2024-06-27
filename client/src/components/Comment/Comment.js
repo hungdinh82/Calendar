@@ -6,7 +6,7 @@ import { SendOutlined } from '@ant-design/icons';
 
 import styles from './Comment.module.scss';
 import CommentItem from "./CommentItem/CommentItem";
-import { useAddCommentMutation, useGetCommentByEventIdQuery } from "../../app/api/commentService";
+import { useAddCommentMutation, useGetCommentByEventIdQuery } from "../../Services/api/commentService";
 
 
 const cx = classNames.bind(styles);

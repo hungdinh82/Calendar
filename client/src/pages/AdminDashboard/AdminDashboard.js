@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import styles from './AdminDashboard.module.scss';
-import { useGetAccountsQuery, useDeleteAccountMutation, useAddAccountMutation, useUpdateAccountMutation } from '../../app/api/adminService';
+import { useGetAccountsQuery, useDeleteAccountMutation, useAddAccountMutation, useUpdateAccountMutation } from '../../Services/api/adminService';
 
 const cx = classNames.bind(styles);
 
@@ -12,7 +12,7 @@ function AdminDashboard() {
     const [deleteAccount] = useDeleteAccountMutation();
     const [addAccount] = useAddAccountMutation();
     const [updateAccount] = useUpdateAccountMutation();
-    
+
     const [isEditing, setIsEditing] = useState(false);
     const [currentAccount, setCurrentAccount] = useState({ id: '', mail: '', userName: '', isAdmin: false });
     const navigate = useNavigate();

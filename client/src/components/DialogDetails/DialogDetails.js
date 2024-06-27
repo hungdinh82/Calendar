@@ -7,9 +7,9 @@ import { useEffect, useState } from "react"
 import DialogCreateEvent from "../DialogCreateEvent/DialogCreateEvent"
 import { useNavigate } from "react-router-dom"
 import "./library.scss"
-import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
-import { useEditEventMutation, useGetEventByIdQuery } from "../../app/api/eventService";
-import { useGetCreatorByIdQuery } from "../../app/api/authService";
+import { useGetAllHelperByEventIdQuery } from "../../Services/api/helperService";
+import { useEditEventMutation, useGetEventByIdQuery } from "../../Services/api/eventService";
+import { useGetCreatorByIdQuery } from "../../Services/api/authService";
 import DialogEditTodo from "../DialogEditTodo/DialogEditTodo"
 
 const cx = classNames.bind(styles)
@@ -187,7 +187,7 @@ const DialogDetails = ({ isOpen, setIsOpen, event, isOnlyView }) => {
                 </Modal>
             </div>
             {
-                isOpenUpdate && 
+                isOpenUpdate &&
                 <DialogEditTodo
                     isOpen={isOpenUpdate}
                     setIsOpen={setIsOpenUpdate}

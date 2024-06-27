@@ -11,7 +11,7 @@ import TaskBar from './TaskBar/Taskbar';
 import Detail from './Detail/Detail';
 import Comment from '../../components/Comment/Comment';
 import HeaderOptions from '../../components/HeaderOptions/HeaderOptions';
-import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery } from "../../app/api/eventService";
+import { useGetAllTodoByTargetIdQuery, useGetEventByIdQuery } from "../../Services/api/eventService";
 
 const cx = classNames.bind(styles);
 
@@ -24,16 +24,16 @@ function Overview() {
     const [isCreatorTarget, setIsCreatorTarget] = useState(false);
     const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
     const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
-    const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length / 
-    (todos?.filter((event) => event.status === "Ready").length + 
-    todos?.filter((event) => event.status === "In Progress").length + 
-    todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+    const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length /
+        (todos?.filter((event) => event.status === "Ready").length +
+            todos?.filter((event) => event.status === "In Progress").length +
+            todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
 
     useEffect(() => {
-        setWidth((todos?.filter((event) => event.status === "Done").length / 
-        (todos?.filter((event) => event.status === "Ready").length + 
-        todos?.filter((event) => event.status === "In Progress").length + 
-        todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+        setWidth((todos?.filter((event) => event.status === "Done").length /
+            (todos?.filter((event) => event.status === "Ready").length +
+                todos?.filter((event) => event.status === "In Progress").length +
+                todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
     }, [todos])
 
 
@@ -185,8 +185,8 @@ function Overview() {
                                                     <div className={cx('content-title')}>Detail</div>
                                                     {/* {console.log(target)}   */}
                                                     <Detail event={target}
-                                                    // setListEvents={setListEvents}
-                                                    isCreatorTarget={isCreatorTarget}
+                                                        // setListEvents={setListEvents}
+                                                        isCreatorTarget={isCreatorTarget}
                                                     ></Detail>
                                                 </div>
 

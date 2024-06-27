@@ -8,8 +8,8 @@ import LabelForm from './LabelForm/LabelFrom';
 import Swal from "sweetalert2";
 import "./Library.scss";
 import { useEffect, useState } from 'react';
-import { useEditTargetMutation } from "../../app/api/eventService";
-import { useGetAllHelperByEventIdQuery } from "../../app/api/helperService";
+import { useEditTargetMutation } from "../../Services/api/eventService";
+import { useGetAllHelperByEventIdQuery } from "../../Services/api/helperService";
 import { useSelector } from 'react-redux';
 // import { socket } from '../../app/socket/socket';
 

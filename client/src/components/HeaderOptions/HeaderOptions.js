@@ -9,8 +9,8 @@ import Notify from './Notify/Notify';
 import Search from './Search/Search';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetAllNotificationsByToMailMutation } from "../../app/api/notiService";
-import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useGetAllNotificationsByToMailMutation } from "../../Services/api/notiService";
+import { useGetAllEventsByCurrentUserQuery } from "../../Services/api/eventService";
 
 const cx = classNames.bind(styles);
 

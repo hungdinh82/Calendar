@@ -10,10 +10,10 @@ import DialogEditTarget from "../../../components/DialogEditTarget/DialogEditTar
 import styles from './WorkCard.module.scss';
 import './library.scss'
 // import { useGetUserByMailsQuery } from "../../../app/api/authService";
-import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation } from "../../../app/api/eventService";
-import { useGetAllHelperByEventIdQuery } from "../../../app/api/helperService";
-import { useGetCreatorByIdQuery } from "../../../app/api/authService";
-import { useGetImportantByEventIdUserIdQuery, useUpdateImportantMutation } from "../../../app/api/importantService";
+import { useGetAllTodoByTargetIdQuery, useDeleteEventMutation } from "../../../Services/api/eventService";
+import { useGetAllHelperByEventIdQuery } from "../../../Services/api/helperService";
+import { useGetCreatorByIdQuery } from "../../../Services/api/authService";
+import { useGetImportantByEventIdUserIdQuery, useUpdateImportantMutation } from "../../../Services/api/importantService";
 
 const cx = classNames.bind(styles);
 

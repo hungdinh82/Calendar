@@ -5,7 +5,7 @@ import { Row, Col } from 'antd'
 import moment from 'moment'
 import classNames from 'classnames/bind';
 import DayOfWeek from './DayOfWeek/DayOfWeek'
-import { useGetAllEventsByCurrentUserQuery } from "../../app/api/eventService";
+import { useGetAllEventsByCurrentUserQuery } from "../../Services/api/eventService";
 
 
 const cx = classNames.bind(styles);
@@ -72,7 +72,7 @@ const CustomCalendarMonthView = ({ dateRangeStart, dateRangeEnd, currentMonth, f
                                     isToday={isToday}
                                     isCurrentMonth={isCurrentMonth}
                                     listEvents={listEvents}
-                                    // setListEvents={setListEvents}
+                                // setListEvents={setListEvents}
                                 />
                             </div>
 
