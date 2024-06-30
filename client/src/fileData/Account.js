@@ -33,7 +33,7 @@ const Accounts =
             "password": "123456",
             "userName": "Đinh Văn Hùng",
             "id": 1688224594942,
-            "avatar": "/static/media/img6.812d5cd63108669d2102.png"
+            "avatar": "/static/media/hung.eb15017a59797eb25ad2.png"
         }
     ]
 export default Accounts;
