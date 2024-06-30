@@ -10,17 +10,17 @@ git clone https://github.com/hungdinh82/Calendar
 cd Calendar/server
 npm install
 call touch .env
-echo import DB_USER=postgres >> .env
-echo import DB_PASSWORD=PASSWORD >> .env
-echo import DB_NAME=DB_NAME >> .env
-echo import SECRET=SECRET_KEY >> .env
-echo import SALT_LENGTH=10 >> .env
+echo import DATABASE_HOST=127.0.0.1 >> .env
+echo import DATABASE_PORT=3306 >> .env
+echo import DATABASE_USER=root >> .env
+echo import DATABASE_PASS=**** >> .env
+echo import DATABASE_NAME=main >> .env
 ```
 
 3. Navigate to client directory and install dependencies and create production build
 ```
 cd ../client
-npm install
+npm i
 npm run watch-client
 ```
 
