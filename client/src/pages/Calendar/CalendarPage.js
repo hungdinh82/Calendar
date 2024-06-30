@@ -29,6 +29,7 @@ import CustomCalendarMonthView from "../../components/MonthView/MonthView";
 import HeaderOptions from "../../components/HeaderOptions/HeaderOptions";
 import DialogDetails from "../../components/DialogDetails/DialogDetails";
 import { useGetAllEventsByCurrentUserQuery, useEditTimeTodoMutation, useEditToDoMutation, useDeleteEventMutation } from "../../Services/api/eventService";
+import DialogCreateEvent from "../../components/DialogCreateEvent/DialogCreateEvent";
 
 
 const dateFormat = 'YYYY-MM-DD'
@@ -575,8 +576,20 @@ function CalendarPage() {
                 </div>
             </div >
             {
-                showEventModal &&
+                showEventModal == "update" &&
                 <DialogEditTodo
+                    isOpen={isOpenCreate}
+                    setIsOpen={setIsOpenCreate}
+                    start={startTimes}
+                    end={endTimes}
+                    // setListEvents={setListEvents}
+                    type={showEventModal}
+                    event={modalEvent}
+                />
+            }
+            {
+                showEventModal == "create" &&
+                <DialogCreateEvent
                     isOpen={isOpenCreate}
                     setIsOpen={setIsOpenCreate}
                     start={startTimes}

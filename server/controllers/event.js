@@ -98,16 +98,20 @@ const eventController = {
             eventData.target
         ];
         try {
-            // Check if all helpers exist in the Accounts table
-            const helpersCheckSql = "SELECT mail FROM Accounts WHERE mail IN (?)";
-            const [helpersCheckResult] = await connect.query(helpersCheckSql, [eventData.helper]);
+            // Check if there are any helpers to validate
+            if (eventData.helper && eventData.helper.length > 0) {
+                // Check if all helpers exist in the Accounts table
+                const helpersCheckSql = "SELECT mail FROM Accounts WHERE mail IN (?)";
+                const [helpersCheckResult] = await connect.query(helpersCheckSql, [eventData.helper]);
 
-            const existingHelpers = helpersCheckResult.map(row => row.mail);
-            const nonExistingHelpers = eventData.helper.filter(helper => !existingHelpers.includes(helper));
+                const existingHelpers = helpersCheckResult.map(row => row.mail);
+                const nonExistingHelpers = eventData.helper.filter(helper => !existingHelpers.includes(helper));
 
-            if (nonExistingHelpers.length > 0) {
-                return res.status(400).json({ error: "Some helpers do not exist in the Accounts table", nonExistingHelpers });
+                if (nonExistingHelpers.length > 0) {
+                    return res.status(400).json({ error: "Some helpers do not exist in the Accounts table", nonExistingHelpers });
+                }
             }
+
 
             const [result] = await connect.query(sql, values);
             res.json({ id: result.insertId });
