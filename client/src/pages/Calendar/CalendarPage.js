@@ -110,7 +110,6 @@ function CalendarPage() {
 
     const dragDropOrResizeEventHandling = (calendar, objEvent) => {
         const { event, changes } = objEvent
-        console.log(changes);
         calendar.updateEvent(event.id, event.calendarId, changes)
         // const listEventsStorage = JSON.parse(localStorage.getItem("listEvents"))
         // const listEventsNew = updateArrayObjects(listEventsStorage, event.id, event.calendarId, changes)
