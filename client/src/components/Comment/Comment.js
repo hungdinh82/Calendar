@@ -7,6 +7,7 @@ import { SendOutlined } from '@ant-design/icons';
 import styles from './Comment.module.scss';
 import CommentItem from "./CommentItem/CommentItem";
 import { useAddCommentMutation, useGetCommentByEventIdQuery } from "../../Services/api/commentService";
+import moment from 'moment';
 
 
 const cx = classNames.bind(styles);
@@ -20,8 +21,8 @@ function Comment({ event }) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"))
 
     const [addComment] = useAddCommentMutation();
-    const { data: comments } = useGetCommentByEventIdQuery(eventId);
-    const eventComments = comments;
+    const { data: eventComments } = useGetCommentByEventIdQuery(eventId);
+    // const eventComments = comments;
 
     const onSubmit = (e) => {
         if (e.keyCode === 13 || e.type === "click") {
@@ -59,7 +60,7 @@ function Comment({ event }) {
 
                 {eventComments?.length > 0 && <div className={cx('list-comment')}>
                     {eventComments?.map((item, index) => {
-                        return <CommentItem key={index} userName={item?.userName} userAvatar={item?.avatar} comment={item?.comment}></CommentItem>
+                        return <CommentItem key={index} userName={item?.userName} userAvatar={item?.avatar} comment={item?.comment} createdAt={moment(item?.created_at).format('DD:MM:YYYY, HH:mm:ss')}></CommentItem>
                     })}
                 </div>}
             </div>

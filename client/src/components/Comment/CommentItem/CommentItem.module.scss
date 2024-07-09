@@ -2,6 +2,12 @@
     display: flex;
     align-items: center;
     margin-bottom: 8px;
+    .comment-time {
+        font-size: 12px; // Kích thước chữ mong muốn
+        color: #666666; // Màu sắc chữ mong muốn
+        margin-top: 2px; // Khoảng cách giữa comment-content và comment-time
+        margin-left: auto; // Đẩy comment-time ra bên phải
+    }
 }
 
 .user-comment {

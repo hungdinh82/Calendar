@@ -6,7 +6,7 @@ import styles from './CommentItem.module.scss';
 
 const cx = classNames.bind(styles);
 
-function CommentItem({ userName, userAvatar, comment }) {
+function CommentItem({ userName, userAvatar, comment, createdAt }) {
     return (
         <div className={cx('comment-item')}>
             <div className={cx('user-avatar')}>
@@ -19,6 +19,9 @@ function CommentItem({ userName, userAvatar, comment }) {
                 </div>
                 <div className={cx('user-content')}>
                     {comment}
+                </div>
+                <div className={cx('comment-time')}>
+                    {createdAt}
                 </div>
             </div>
         </div>
