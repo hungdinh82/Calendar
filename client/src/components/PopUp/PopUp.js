@@ -48,23 +48,24 @@ function PopUp({ event, callBack, setListEvents }) {
 
     const [deleteEvent] = useDeleteEventMutation();
 
-    const handleEventDetail = () => {
-        setIsOpenDetail(true);
-    }
+    // const handleEventDetail = () => {
+    //     setIsOpenDetail(true);
+    // }
 
-    function removeObjectFromArray(listEvents, id, calendarid) {
-        return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
-    }
+    // function removeObjectFromArray(listEvents, id, calendarid) {
+    //     return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
+    // }
 
     const onClickDelete = () => {
         Swal.fire({
-            title: 'Bạn thực sự muốn xóa?',
-            text: "Nếu bạn xóa thì tất cả việc làm trong workspace này sẽ bị xóa",
+            title: 'Are you sure you want to delete?',
+            text: "If you delete, all actions in this workspace will be deleted",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
+
         }).then((result) => {
             if (result.isConfirmed) {
 

@@ -165,7 +165,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
         } else if (type === "update") {
             messageApi.open({
                 type: 'success',
-                content: 'Sửa thành công',
+                content: 'Edit event successfully',
             });
             const eventUpdate = {
                 ...newEvent,

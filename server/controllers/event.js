@@ -180,7 +180,7 @@ const eventController = {
             const [currentEvent] = await connect.query("SELECT * FROM Events WHERE id = ?", [eventId]);
 
             if (currentEvent.length === 0) {
-                return res.status(404).json({ error: "Không tìm thấy sự kiện" });
+                return res.status(404).json({ error: "No event found" });
             }
 
             const currentEventData = currentEvent[0];
@@ -199,7 +199,7 @@ const eventController = {
 
             // Nếu không có giá trị nào thay đổi, trả về thông báo không cần cập nhật
             if (Object.keys(fieldsToUpdate).length === 0) {
-                return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
+                return res.json({ success: true, message: "No changes were detected" });
             }
 
             // Tạo câu lệnh SQL để cập nhật các trường đã thay đổi
@@ -238,7 +238,7 @@ const eventController = {
             const [currentNotifies] = await connect.query("SELECT * FROM Notifies WHERE eventId = ?", [eventId]); //chỉ cần check ở bảng Noti không cần check ở bảng helper vì nếu đã là helper thì isAccept = 1
 
             if (currentEvent.length === 0) {
-                return res.status(404).json({ error: "Không tìm thấy sự kiện" });
+                return res.status(404).json({ error: "No event found" });
             }
 
             const currentEventData = currentEvent[0];
@@ -369,12 +369,12 @@ const eventController = {
 
             // Nếu không có giá trị nào thay đổi, trả về thông báo không cần cập nhật
             if (Object.keys(fieldsToUpdate).length === 0) {
-                return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
+                return res.json({ success: true, message: "No changes were detected" });
             }
             res.json({ success: true });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+            res.status(500).json({ error: "Server error" });
         }
     },
 
@@ -401,7 +401,7 @@ const eventController = {
             // console.log(currentHelpers);
 
             if (currentEvent.length === 0) {
-                return res.status(404).json({ error: "Không tìm thấy sự kiện" });
+                return res.status(404).json({ error: "No event found" });
             }
 
             const currentEventData = currentEvent[0];
@@ -494,7 +494,7 @@ const eventController = {
 
             // Nếu không có giá trị nào thay đổi, trả về thông báo không cần cập nhật
             if (Object.keys(fieldsToUpdate).length === 0) {
-                return res.json({ success: true, message: "Không có thay đổi nào được phát hiện" });
+                return res.json({ success: true, message: "No changes were detected" });
             }
             res.json({ success: true });
         } catch (error) {
@@ -516,7 +516,7 @@ const eventController = {
             const [currentTodo] = await connect.query("SELECT * FROM Events WHERE id = ?", [todoId]);
 
             if (currentTodo.length === 0) {
-                return res.status(404).json({ error: "Không tìm thấy todo" });
+                return res.status(404).json({ error: "No todo found" });
             }
 
             // Cập nhật thời gian mới cho todo

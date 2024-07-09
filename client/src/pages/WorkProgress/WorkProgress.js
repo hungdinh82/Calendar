@@ -26,9 +26,9 @@ function WorkProgress() {
             todos?.filter((event) => event.status === "In Progress").length +
             todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
 
-    function removeObjectFromArray(listEvents, id, calendarid) {
-        return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
-    }
+    // function removeObjectFromArray(listEvents, id, calendarid) {
+    //     return listEvents.filter(obj => (obj.id !== id && obj.calendarid !== calendarid));
+    // }
 
     const onDragOver = (event) => {
         event.preventDefault();

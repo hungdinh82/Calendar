@@ -37,7 +37,7 @@ function Login() {
                     Swal.fire({
                         icon: "success",
                         title: "Success",
-                        text: "Đăng nhập thành công",
+                        text: "Login Successfully",
                         confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
                     })
                     navigate("/");
@@ -46,7 +46,7 @@ function Login() {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Sai tài khoản hoặc mật khẩu",
+                        text: "Wrong email or password",
                         confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
                     })
                 }

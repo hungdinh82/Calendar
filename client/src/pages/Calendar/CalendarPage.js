@@ -173,13 +173,13 @@ function CalendarPage() {
             }
 
             Swal.fire({
-                title: 'Bạn có chắc chắn?',
-                text: "Bạn sẽ không thể hoàn tác hành động này!",
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng, xóa nó!'
+                confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     calendar.deleteEvent(eventObj.id, eventObj.calendarId);
@@ -191,8 +191,8 @@ function CalendarPage() {
                         },
                     );
                     Swal.fire(
-                        'Đã xóa!',
-                        'Tập tin của bạn đã bị xóa.',
+                        'Deleted!',
+                        'Your file has been deleted.',
                         'success'
                     );
                 }

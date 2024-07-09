@@ -113,7 +113,8 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
         if (eventType === "todo") {
             // console.log(event.target);
             if (!event.target && helperMoi.length !== 0) {
-                message.error('Nếu Todo bạn không thuộc Target nào thì không thể thêm contributors');
+                // message.error('Nếu Todo bạn không thuộc Target nào thì không thể thêm contributors');
+                message.error('If your Todo does not belong to any Target, you cannot add contributors');
                 return;
             }
             // Get helper emails from helpersCuaTargetNay
@@ -124,7 +125,8 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
             // console.log(allHelpersExist);
 
             if (!allHelpersExist) {
-                message.error('Người dùng này chưa được thêm vào mục tiêu lớn.');
+                // message.error('Người dùng này chưa được thêm vào mục tiêu lớn.');
+                message.error('This user has not been added to the target yet. Please add them to the target first.');
                 return;
             }
         }

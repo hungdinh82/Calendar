@@ -23,7 +23,7 @@ function AdminDashboard() {
         Swal.fire({
             icon: "success",
             title: "Deleted",
-            text: "Tài khoản đã bị xóa thành công",
+            text: "Account deleted successfully",
             confirmButtonText: 'OK',
         });
     };
@@ -49,7 +49,7 @@ function AdminDashboard() {
         Swal.fire({
             icon: "success",
             title: "Saved",
-            text: "Tài khoản đã được lưu thành công",
+            text: "Account saved successfully",
             confirmButtonText: 'OK',
         });
     };
@@ -66,7 +66,7 @@ function AdminDashboard() {
     return (
         <div className={cx('admin-dashboard')}>
             <h1 className={cx('header')}>Admin Dashboard</h1>
-            <button className={cx('add-btn')} onClick={handleAdd}>Thêm tài khoản mới</button>
+            <button className={cx('add-btn')} onClick={handleAdd}>Add new account</button>
             <button className={cx('logout-btn')} onClick={handleLogout}>Logout</button>
             <table className={cx('accounts-table')}>
                 <thead>

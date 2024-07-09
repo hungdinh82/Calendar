@@ -87,7 +87,7 @@ const Signup = () => {
                         Swal.fire({
                             icon: "success",
                             title: "Success",
-                            text: "Đăng ký thành công",
+                            text: "Sign Up Successfully",
                             confirmButtonText: '<div class="fa fa-thumbs-up"}>OK</div>',
                         }).then((result) => {
                             if (result.isConfirmed) setSuccess(true);
@@ -98,7 +98,7 @@ const Signup = () => {
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: "Đăng ký thất bại",
+                            text: "Sign Up Failed",
                             confirmButtonText: '<div class="fa fa-thumbs-up"}>Nhập lại!</div>',
                         })
                     }
