@@ -37,7 +37,7 @@
     .description {
         flex: 1;
         margin: 0;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         max-height: 115px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -46,7 +46,13 @@
         /* number of lines to show */
         -webkit-box-orient: vertical;
         line-height: 2.3rem;
+        img {
+            max-width: 40%;
+            height: auto;
+        }
     }
+
+    
 }
 
 .process-title {
