@@ -24,10 +24,37 @@ function Overview() {
     const [isCreatorTarget, setIsCreatorTarget] = useState(false);
     const { data: todos } = useGetAllTodoByTargetIdQuery(Number(searchParams.get("eventId")));
     const { data: target } = useGetEventByIdQuery(Number(searchParams.get("eventId")));
-    const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length /
-        (todos?.filter((event) => event.status === "Ready").length +
-            todos?.filter((event) => event.status === "In Progress").length +
-            todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+    // const [width, setWidth] = useState((todos?.filter((event) => event.status === "Done").length /
+    //     (todos?.filter((event) => event.status === "Ready").length +
+    //         todos?.filter((event) => event.status === "In Progress").length +
+    //         todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+
+    // useEffect(() => {
+    //     setWidth((todos?.filter((event) => event.status === "Done").length /
+    //         (todos?.filter((event) => event.status === "Ready").length +
+    //             todos?.filter((event) => event.status === "In Progress").length +
+    //             todos?.filter((event) => event.status === "Done").length)) * 100 + '%');
+    // }, [todos])
+    
+    const calculateWidth = (todos) => {
+        const doneCount = todos?.filter((event) => event.status === "Done").length || 0;
+        const readyCount = todos?.filter((event) => event.status === "Ready").length || 0;
+        const inProgressCount = todos?.filter((event) => event.status === "In Progress").length || 0;
+        const totalCount = doneCount + readyCount + inProgressCount;
+
+        if (totalCount > 0) {
+            return (doneCount / totalCount) * 100 + '%';
+        } else {
+            return '0%'; // Default to 0% if there are no todos
+        }
+    };
+
+    const [width, setWidth] = useState(calculateWidth(todos));
+
+    // If todos change and you want to recalculate the width
+    useEffect(() => {
+        setWidth(calculateWidth(todos));
+    }, [todos]);
 
     useEffect(() => {
         setWidth((todos?.filter((event) => event.status === "Done").length /

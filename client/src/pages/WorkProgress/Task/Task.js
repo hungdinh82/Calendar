@@ -6,6 +6,7 @@ import DialogDetails from "../../../components/DialogDetails/DialogDetails";
 import styles from './Task.module.scss';
 import { useState, useEffect } from "react";
 import './library.scss'
+import { useGetAllHelperByEventIdQuery, useGetAllHelperAndCreatorByTodoIdMutation } from "../../../Services/api/helperService";
 
 const cx = classNames.bind(styles);
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -14,8 +15,26 @@ function Task({ isCreatorTarget, useNumber = 1, columnId, event, setListEvents }
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [check, setCheck] = useState(false);
-    const [helper, setHelper] = useState([])
+    // console.log(event?.id);
+    // const [getAllHelpers] = useGetAllHelperAndCreatorByTodoIdMutation(event?.eventId || event?.id);
+    // const [helper, setHelper] = useState([])
+    const [getAllHelpers] = useGetAllHelperAndCreatorByTodoIdMutation();
+    const [helpers, setHelpers] = useState([]);
+
+    useEffect(() => {
+        const fetchHelpers = async () => {
+            try {
+                const response = await getAllHelpers(event?.eventId || event?.id);
+                setHelpers(response.data);
+            } catch (error) {
+                console.error("Failed to fetch helpers:", error);
+            }
+        };
+
+        fetchHelpers();
+    }, [event?.eventId, getAllHelpers]);
     const [isPermission, setIsPermission] = useState(false);
+
     const handleOnDrag = (e) => {
 
         const fromColumnId = columnId;
@@ -99,7 +118,7 @@ function Task({ isCreatorTarget, useNumber = 1, columnId, event, setListEvents }
                         <div className={cx('right-content')}>
                             <Avatar.Group maxCount={3}>
                                 {
-                                    helper?.map((helper) => (
+                                    helpers?.map((helper) => (
                                         <Tooltip title={helper?.userName} placement="bottom">
                                             <Avatar size="small" style={{ backgroundColor: '#87d068' }} src={helper?.avatar} />
                                         </Tooltip>

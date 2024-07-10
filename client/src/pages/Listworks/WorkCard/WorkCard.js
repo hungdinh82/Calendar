@@ -151,7 +151,7 @@ function WorkCard({ event, listEvents, isCreator }) {
                 <p className={cx('description')} dangerouslySetInnerHTML={{ __html: event.description }}></p>
                 <div className={cx('process')}>
                     <div className={cx('process-title')}>
-                        <span>Completion</span>
+                        <span>Completed :</span>
                         <span className={cx('text-content')}>{todos?.filter((event) => event.status === "Done").length + '/' + (todos?.filter((event) => event.status === "Ready").length + todos?.filter((event) => event.status === "In Progress").length + todos?.filter((event) => event.status === "Done").length)}</span>
                     </div>
                     <div className={cx('process-bar')}>
