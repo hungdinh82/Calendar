@@ -13,26 +13,52 @@ function Search({ workList, setOpen }) {
     const [targetFilter, setTargetFilter] = useState([]);
     const [taskFilter, setTaskFilter] = useState([]);
 
+    const removeAccents = (str) => {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D");
+    };
+    
     const handleChangeSearchValue = (e) => {
-        const value = e.target.value.toLowerCase();
+        const value = removeAccents(e.target.value.toLowerCase());
         if (value !== "") {
-
             const target_Filter = workList.filter((item, index) => {
-                return item.eventName.toLowerCase().includes(value) && item.eventType === "target";
-            })
-
+                return removeAccents(item.eventName.toLowerCase()).includes(value) && item.eventType === "target";
+            });
+    
             const task_Filter = workList.filter((item, index) => {
-                return item.eventName.toLowerCase().includes(value) && item.eventType === "todo";
-            })
+                return removeAccents(item.eventName.toLowerCase()).includes(value) && item.eventType === "todo";
+            });
+    
             setTargetFilter(target_Filter);
             setTaskFilter(task_Filter);
         } else {
             setTargetFilter([]);
             setTaskFilter([]);
         }
+    
+        setSearchValue(e.target.value);
+    };
+    
 
-        setSearchValue(value);
-    }
+    // const handleChangeSearchValue = (e) => {
+    //     const value = e.target.value.toLowerCase();
+    //     if (value !== "") {
+
+    //         const target_Filter = workList.filter((item, index) => {
+    //             return item.eventName.toLowerCase().includes(value) && item.eventType === "target";
+    //         })
+
+    //         const task_Filter = workList.filter((item, index) => {
+    //             return item.eventName.toLowerCase().includes(value) && item.eventType === "todo";
+    //         })
+    //         setTargetFilter(target_Filter);
+    //         setTaskFilter(task_Filter);
+    //     } else {
+    //         setTargetFilter([]);
+    //         setTaskFilter([]);
+    //     }
+
+    //     setSearchValue(value);
+    // }
 
     return (
         <div className={cx("search") + " Search"}>

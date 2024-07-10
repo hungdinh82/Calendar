@@ -70,8 +70,8 @@ function HeaderOptions({ calendar = false }) {
                     </Badge>
                 </div>
             </Popover>
-            <Popover open={searchOpen} content={<Search workList={listEvents} setOpen={setSearchOpen}></Search>} trigger="click" placement="bottomRight" arrow={false}>
-                <div className={cx('option-item')} onClick={() => { setSearchOpen(true); setNotyOpen(false) }}>
+            <Popover onOpenChange={(visible) => setSearchOpen(visible)} open={searchOpen} content={<Search workList={listEvents} setOpen={setSearchOpen}></Search>} trigger="click" placement="bottomRight" arrow={false}>
+                <div className={cx('option-item')} onClick={() => { setSearchOpen(!searchOpen); setNotyOpen(false) }}>
                     <SearchOutlined />
                 </div>
             </Popover>
