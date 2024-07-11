@@ -18,23 +18,17 @@ const connectSocket = (server, port) => {
       onlineUsers.push({ information: user, socketId: socket.id });
     });
 
-    // socket.on("new-notification", ({ notification }) => {
-    //   onlineUsers
-    //     .filter((user) => user.information.id === notification.receiver_id)
-    //     .forEach((followed) => {
-    //       socket
-    //         .to(followed.socketId)
-    //         .emit("send-notification", { notification });
-    //     });
-    // });
 
-    socket.on("new-notification", (notification) => {
+    socket.on("new-notification", ({ mails }) => {
       onlineUsers.forEach((user) => {
-        if (user.id === notification.receiverId) {
-          socket
-            .to(user.socketId)
-            .emit("receive-notification", { ...notification });
-        }
+        mails.forEach((mail) => {
+          // console.log(user.information.mail, mail);
+          if (user.information.mail === mail) {
+            socket
+              .to(user.socketId)
+              .emit("receive-notification");
+          }
+        });
       });
       // console.log(onlineUsers);
     });

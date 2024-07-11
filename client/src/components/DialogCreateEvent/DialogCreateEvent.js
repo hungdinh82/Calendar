@@ -148,12 +148,7 @@ const DialogCreateEvent = ({ isOpen, setIsOpen, start, end, type, event, isTarge
                         message.error(response.data.errors[0].message);
                     } else {
                         socket?.emit("new-notification", {
-                            // toMail: helper,
-                            // fromMail: currentUserMail,
-                            // text: `assigned you join target ${newEvent.eventName}`,
-                            // isResolve: 0,
-                            // // eventId: result.insertId,
-                            // isAccept: 0
+                            mails: helper
                         });
                         message.success('Created event successfully');
                     };

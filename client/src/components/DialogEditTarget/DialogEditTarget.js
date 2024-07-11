@@ -101,7 +101,10 @@ const DialogEditTarget = ({ isOpen, setIsOpen, type, event, isTargetPage, target
                     } else if (response.data.errors !== undefined) {
                         message.error(response.data.errors[0].message);
                     } else {
-                        socket?.emit("new-notification", {});
+                        // socket?.emit("new-notification", {});
+                        socket?.emit("new-notification", {
+                            mails: helperMoi
+                        });
                         message.success('Edit event successfully');
                         Swal.fire(
                             'Edit event successfully!',

@@ -84,7 +84,7 @@ function WorkCard({ event, listEvents, isCreator }) {
                         if (response.data.error !== undefined) {
                             message.error(response.data.error.message);
                         } else message.success('Deleted successfully');
-                        console.log(response);
+                        // console.log(response);
                     },
                 );
                 Swal.fire(

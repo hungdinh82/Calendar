@@ -142,6 +142,7 @@ const DialogEditTodo = ({ isOpen, setIsOpen, eventIdCurrent, start, end, type, e
                         message.error(response.data.errors[0].message);
                     } else {
                         socket?.emit("new-notification", {
+                            mails: helperMoi
                         });
                         message.success('Edit event successfully')
                         Swal.fire(
